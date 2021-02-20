@@ -1,0 +1,22 @@
+﻿<Application x:Class="ProjectTracker.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProjectTracker"
+             xmlns:converters="clr-namespace:ProjectTracker.Converters">
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Common.xaml"/>
+                <ResourceDictionary Source="/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="/Styles/Borders.xaml"/>
+                <ResourceDictionary Source="/Styles/Miscellaneous.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:TabWidthConverter x:Key="TabWidthConverter"/>
+            
+            <converters:DatabindingDebugConverter x:Key="DebugConverter"/>
+        </ResourceDictionary>
+
+    </Application.Resources>
+</Application>

@@ -1,0 +1,12 @@
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\bin\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.deps.json
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\bin\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.dll
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.csprojAssemblyReference.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.AssemblyInfoInputs.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.AssemblyInfo.cs
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\bin\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.runtimeconfig.json
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\bin\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.runtimeconfig.dev.json
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.genruntimeconfig.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\bin\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.pdb
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.csproj.CoreCompileInputs.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.dll
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.EntityFramework\obj\Debug\netcoreapp3.1\ProjectTracker.EntityFramework.pdb

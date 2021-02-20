@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ClassLibrary\**" />
+    <EmbeddedResource Remove="ClassLibrary\**" />
+    <None Remove="ClassLibrary\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Model\ProjectTracker.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\ControlViewModels\" />
+  </ItemGroup>
+
+</Project>
