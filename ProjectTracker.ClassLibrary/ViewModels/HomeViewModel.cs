@@ -1,11 +1,16 @@
-﻿using ProjectTracker.ClassLibrary.ViewModels.Abstracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ProjectTracker.ClassLibrary.ViewModels
 {
-    public class HomeViewModel : TabViewModel
+    public class HomeViewModel
     {
+        private TabViewModel _tabViewModel;
+
+        public HomeViewModel(TabViewModel tabViewModel)
+        {
+            this._tabViewModel = tabViewModel;
+        }
     }
 }

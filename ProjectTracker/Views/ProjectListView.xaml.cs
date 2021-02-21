@@ -22,7 +22,6 @@ namespace ProjectTracker.Views
     public partial class ProjectListView : Page
     {
         ProjectListViewModel ViewModel;
-
         public ProjectListView(ProjectListViewModel viewModel)
         {
             ViewModel = viewModel;

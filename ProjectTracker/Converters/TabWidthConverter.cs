@@ -10,9 +10,18 @@ namespace ProjectTracker.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            double width = (double)values[3] - ((double)values[0] + (double)values[1] + (double)values[2]);
-            double tabsWidth = (double)values[4] * (int)values[5];
+            double width = (double)values[2] - ((double)values[0] + (double)values[1]);
 
+            double tabsWidth; 
+
+            if (!(values[4] is int))
+            {
+                tabsWidth = 0;
+            } else
+            {
+                tabsWidth = (double)values[3] * (int)values[4];
+            }
+            
             if (width > tabsWidth)
             {
                 return tabsWidth;

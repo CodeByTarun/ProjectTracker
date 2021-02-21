@@ -1,6 +1,4 @@
-﻿using ProjectTracker.Helpers;
-using ProjectTracker.Model.Models;
-using ProjectTracker.ClassLibrary.ViewModels;
+﻿using ProjectTracker.ClassLibrary.ViewModels;
 using ProjectTracker.Views;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,37 +6,33 @@ using System.Windows.Input;
 
 namespace ProjectTracker
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
         private HomeView homeView;
-        private ProjectListView projectListView;
         private ProjectView projectView;
 
-        public MainWindow(MainViewModel ViewModel, HomeView homeView, ProjectListView projectListView, ProjectView projectView)
+        public MainWindow(TabViewModel ViewModel, HomeView homeView, ProjectView projectView)
         {
             this.homeView = homeView;
-            this.projectListView = projectListView;
             this.projectView = projectView;
 
             DataContext = ViewModel;
             
             InitializeComponent();
 
-            TabControlHelper.SetTabListBox(TabsListBox);
             MainFrame.Navigate(homeView);
         }
 
+        // Drag and Drop
         private void TabBorder_DragEnter(object sender, DragEventArgs e)
         {
-            Project projectDragging = (Project)e.Data.GetData(typeof(Project));
-            Project projectOver = (Project)((Border)sender).DataContext;
+            ProjectViewModel tabDragging = (ProjectViewModel)e.Data.GetData(typeof(ProjectViewModel));
+            ProjectViewModel tabOver = (ProjectViewModel)((Border)sender).DataContext;
 
-            if (projectDragging != projectOver && projectDragging != null)
+            if (tabDragging != tabOver && tabDragging != null)
             {
-                ((MainViewModel)this.DataContext).MoveTab(projectDragging, projectOver);
+                ((TabViewModel)this.DataContext).MoveTab(tabDragging, tabOver);
             }
         }
         private void TabBorder_MouseMove(object sender, MouseEventArgs e)
@@ -54,16 +48,15 @@ namespace ProjectTracker
             }
 
         }
+
+        // Navigation
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Project project = (Project)((ListBox)sender).SelectedItem;
+            ProjectViewModel tab = (ProjectViewModel)((ListBox)sender).SelectedItem;
 
-            if (project == null)
+            if (tab == null)
             {
                 MainFrame.Navigate(homeView);
-            } else if (project.Id == 0)
-            {
-                MainFrame.Navigate(projectListView);
             } else
             {
                 MainFrame.Navigate(projectView);
@@ -71,11 +64,11 @@ namespace ProjectTracker
         }
         private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            Project project = (Project)TabsListBox.SelectedItem;
+            int tabIndex = TabsListBox.SelectedIndex;
 
-            if (project != null && project.Id != 0)
+            if (tabIndex != -1)
             {
-                projectView.ViewModel.CurrentProject = project;
+                projectView.SetDataContext(((TabViewModel)this.DataContext).Tabs[tabIndex]);
             } 
         }
     }

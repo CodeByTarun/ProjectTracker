@@ -62,7 +62,7 @@ namespace ProjectTracker
             services.AddSingleton<ProjectView>();
 
             // ViewModels
-            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<TabViewModel>();
             services.AddSingleton<HomeViewModel>();
             services.AddSingleton<ProjectListViewModel>();
             services.AddSingleton<ProjectViewModel>();

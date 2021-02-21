@@ -4,11 +4,16 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ProjectTracker.Views"
+      xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels;assembly=ProjectTracker.ClassLibrary"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance Type=vm:ProjectViewModel, IsDesignTimeCreatable=True}"
       Title="ProjectView">
 
-    <Grid Background="Yellow">
-        
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding CurrentProject.Name}" Grid.Row="0"/>
     </Grid>
 </Page>

@@ -19,14 +19,14 @@ namespace ProjectTracker.Views
     /// </summary>
     public partial class ProjectView : Page
     {
-        public ProjectViewModel ViewModel;
-
-        public ProjectView(ProjectViewModel viewModel)
+        public ProjectView()
         {
-            this.ViewModel = viewModel;
-            DataContext = this.ViewModel;
-
             InitializeComponent();
+        }
+
+        public void SetDataContext(ProjectViewModel vm)
+        {
+            DataContext = vm;
         }
     }
 }

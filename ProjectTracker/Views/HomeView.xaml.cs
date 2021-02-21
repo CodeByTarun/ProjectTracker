@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectTracker.ClassLibrary.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,8 +19,10 @@ namespace ProjectTracker.Views
     /// </summary>
     public partial class HomeView : Page
     {
-        public HomeView()
+        public HomeView(HomeViewModel homeViewModel)
         {
+            this.DataContext = homeViewModel;
+
             InitializeComponent();
         }
     }

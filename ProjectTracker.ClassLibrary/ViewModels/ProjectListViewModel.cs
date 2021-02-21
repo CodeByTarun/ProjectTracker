@@ -1,17 +1,14 @@
 ﻿using ProjectTracker.ClassLibrary.Helpers;
 using ProjectTracker.ClassLibrary.ServiceInterfaces;
-using ProjectTracker.ClassLibrary.ViewModels.Abstracts;
 using ProjectTracker.Model.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels
 {
-    public class ProjectListViewModel : TabViewModel
+    public class ProjectListViewModel : ObservableObject
     {
         private IEnumerable<Project> projectList;
         private string projectSearchText;

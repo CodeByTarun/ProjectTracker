@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Factories\" />
     <Folder Include="ViewModels\ControlViewModels\" />
   </ItemGroup>
 

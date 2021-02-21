@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectTracker"
-        xmlns:model="clr-namespace:ProjectTracker.Model.Models;assembly=ProjectTracker.Model"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels;assembly=ProjectTracker.ClassLibrary"
@@ -35,7 +34,7 @@
 
 
                 <Button x:Name="HomeButton" Width="75" Margin="5,1,5,1"
-                    Command="{Binding GoToHomeCommand}" CommandParameter="{Binding SelectedProject}">
+                    Command="{Binding GoToHomeCommand}" CommandParameter="{Binding SelectedTab}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -49,7 +48,7 @@
                                             <fa:FontAwesome Icon="Solid_Home" VerticalAlignment="Center" HorizontalAlignment="Stretch" Foreground="White" FontSize="20"/>
                                         </Border>
                                         <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Path=SelectedProject}" Value="{x:Null}">
+                                            <DataTrigger Binding="{Binding Path=SelectedTab}" Value="{x:Null}">
                                                 <Setter TargetName="HomeBorder"  Property="Background" Value="Black"/>
                                             </DataTrigger>
                                             <Trigger Property="IsMouseOver" Value="True">
@@ -64,19 +63,18 @@
                     </Button.Style>
                 </Button>
 
-                <ListBox x:Name="TabsListBox" ItemsSource="{Binding OpenProjects}" Grid.Column="1" 
+                <ListBox x:Name="TabsListBox" ItemsSource="{Binding Tabs, Mode=OneWay}" Grid.Column="1" 
                      HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      BorderThickness="0" Margin="0" Padding="0" 
                      Background="Transparent" ItemContainerStyle="{StaticResource TabListBoxItemStyle}"
-                     SelectedItem="{Binding SelectedProject, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
+                     SelectedItem="{Binding SelectedTab, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
                     <ListBox.Width>
                         <MultiBinding Converter="{StaticResource TabWidthConverter}">
                             <Binding ElementName="HomeButton" Path="ActualWidth"/>
-                            <Binding ElementName="AddTabGrid" Path="ActualWidth"/>
                             <Binding ElementName="ProfileButton" Path="ActualWidth"/>
                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}"/>
                             <Binding Source="{StaticResource MaxTabWidth}"/>
-                            <Binding Path="OpenProjects.Count"/>
+                            <Binding Path="Tabs.Count"/>
                         </MultiBinding>
                     </ListBox.Width>
 
@@ -87,8 +85,8 @@
                     </ListBox.ItemsPanel>
 
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type model:Project}">
-                            <Border x:Name="TabBorder" Style="{StaticResource TabBorder}" ToolTip="{Binding Name}"
+                        <DataTemplate>
+                            <Border x:Name="TabBorder" Style="{StaticResource TabBorder}" ToolTip="{Binding CurrentProject.Name}"
                                 Background="Transparent"
                                 DragEnter="TabBorder_DragEnter" AllowDrop="True"
                                 MouseMove="TabBorder_MouseMove">
@@ -98,7 +96,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding Name}" Grid.Column="0" Foreground="White" MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False"/>
+                                    <TextBlock Text="{Binding CurrentProject.Name}" Grid.Column="0" Foreground="White" MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False"/>
 
                                     <Button x:Name="CloseButton" Style="{StaticResource CloseButton}" 
                                         Grid.Column="1" Margin="5,0,5,0"
@@ -109,11 +107,6 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-
-                <Grid x:Name="AddTabGrid" Width="100" Background="Transparent">
-                    <Button Content="hello" HorizontalAlignment="Left" Command="{Binding AddTabCommand}" CommandParameter="{Binding OpenProjects}"/>
-                </Grid>
-
 
             </StackPanel>
 
