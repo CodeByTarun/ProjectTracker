@@ -38,8 +38,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             Tabs = new ObservableCollection<ProjectViewModel>();
             SelectedTab = null;
 
-            DummyTabList();
-
             CreateCommands();
         }
 

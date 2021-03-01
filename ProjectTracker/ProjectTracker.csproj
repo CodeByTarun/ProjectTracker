@@ -21,4 +21,10 @@
     <ProjectReference Include="..\ProjectTracker.ClassLibrary\ProjectTracker.ClassLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Factories\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Views\DialogViews\" />
+  </ItemGroup>
+
 </Project>

@@ -10,10 +10,38 @@
       d:DataContext="{d:DesignInstance Type=vm:ProjectViewModel, IsDesignTimeCreatable=True}"
       Title="ProjectView">
 
-    <Grid Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="{Binding CurrentProject.Name}" Grid.Row="0"/>
+    <Grid Background="White">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="ProjectItemsListView" Grid.Column="0" Grid.RowSpan="3" Margin="0,0,10,0"
+                      SelectionChanged="ProjectItemsListView_SelectionChanged">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="Pink" CornerRadius="25" Height="50" Width="50" Margin="0,20,0,0">
+                            <Grid>
+                                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Frame x:Name="ProjectViewFrame" Grid.Row="1" Grid.Column="1" NavigationUIVisibility="Hidden" Background="Green"/>
+
+        </Grid>
     </Grid>
 </Page>

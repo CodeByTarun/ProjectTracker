@@ -8,7 +8,7 @@
                 <ControlTemplate TargetType="Button">
                     <Border CornerRadius="10" Width="15" Height="15">
                         <StackPanel>
-                            <fa:FontAwesome Icon="Solid_Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                            <fa:FontAwesome Icon="Solid_Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black"/>
                         </StackPanel>
                     </Border>
                 </ControlTemplate>

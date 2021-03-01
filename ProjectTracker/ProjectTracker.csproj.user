@@ -7,16 +7,40 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\KanbanControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Controls\LimitedInputUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\DialogViews\ProjectDialogView.xaml.cs">
+    <Compile Update="Controls\ProjectListControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Popups\BoardPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Popups\GroupPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Popups\IssuePopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Popups\ProjectPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\HomeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ProjectListView.xaml.cs">
+    <Compile Update="Views\MainView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProjectIssueView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProjectNotesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProjectOverviewView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ProjectView.xaml.cs">
@@ -24,10 +48,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Controls\KanbanControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Controls\LimitedInputUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Controls\ProjectListControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Popups\BoardPopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Popups\GroupPopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Popups\IssuePopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Popups\ProjectPopup.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\Borders.xaml">
@@ -42,13 +84,22 @@
     <Page Update="Styles\Miscellaneous.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\DialogViews\ProjectDialogView.xaml">
+    <Page Update="Styles\Values.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\HomeView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ProjectListView.xaml">
+    <Page Update="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProjectIssueView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProjectNotesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProjectOverviewView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ProjectView.xaml">

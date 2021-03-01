@@ -11,11 +11,13 @@
                 <ResourceDictionary Source="/Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="/Styles/Borders.xaml"/>
                 <ResourceDictionary Source="/Styles/Miscellaneous.xaml"/>
+                <ResourceDictionary Source="/Styles/Values.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <converters:TabWidthConverter x:Key="TabWidthConverter"/>
-            
+            <converters:VisibilityConverter x:Key="VisibilityConverter"/>
             <converters:DatabindingDebugConverter x:Key="DebugConverter"/>
+            <converters:GroupHeightConverter x:Key="GroupHeightConverter"/>
         </ResourceDictionary>
 
     </Application.Resources>

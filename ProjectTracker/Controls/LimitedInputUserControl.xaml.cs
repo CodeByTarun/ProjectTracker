@@ -18,10 +18,23 @@ namespace ProjectTracker.Controls
     /// </summary>
     public partial class LimitedInputUserControl : UserControl
     {
+        #region DP Label
+
+        public string InputText
+        {
+            get { return (string)GetValue(InputTextProperty);  }
+            set { SetValue(InputTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty InputTextProperty =
+            DependencyProperty.Register("InputText", typeof(string), typeof(LimitedInputUserControl), new PropertyMetadata(""));
+
+        #endregion
+
         public LimitedInputUserControl()
         {
             InitializeComponent();
-            this.DataContext = this;
+            LayoutRoot.DataContext = this;
         }
 
         public string Title { get; set; }

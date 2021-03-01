@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ProjectTracker.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -23,6 +23,6 @@
         </Label>
         <TextBox MaxLength="{Binding MaxLength}" Grid.Row="1" Grid.ColumnSpan="2"
                  Name="LimitedTextBox" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 TextWrapping="Wrap"/>
+                 TextWrapping="Wrap" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

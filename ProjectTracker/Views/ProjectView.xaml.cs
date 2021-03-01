@@ -19,14 +19,61 @@ namespace ProjectTracker.Views
     /// </summary>
     public partial class ProjectView : Page
     {
-        public ProjectView()
+        private ProjectOverviewView _projectOverviewView;
+        private ProjectIssueView _projectIssueView;
+        private ProjectNotesView _projectNotesView;
+
+        public ProjectView(ProjectOverviewView projectOverviewView, ProjectIssueView projectIssueView, ProjectNotesView projectNotesView)
         {
+            this._projectOverviewView = projectOverviewView;
+            this._projectIssueView = projectIssueView;
+            this._projectNotesView = projectNotesView;
+
             InitializeComponent();
+            SetProjectItemsControlList();
+        }
+
+        private void SetProjectItemsControlList()
+        {
+            List<ProjectItems> projectItems = new List<ProjectItems>();
+
+            projectItems.Add(new ProjectItems() { Title = "Overview" });
+            projectItems.Add(new ProjectItems() { Title = "Issues" });
+            projectItems.Add(new ProjectItems() { Title = "Notes" });
+
+            ProjectItemsListView.ItemsSource = projectItems;
         }
 
         public void SetDataContext(ProjectViewModel vm)
         {
             DataContext = vm;
+
+            ProjectItemsListView.SelectedIndex = 0;
+        }
+
+        public class ProjectItems
+        {
+            public string Title { get; set; }
+        }
+
+        private void ProjectItemsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ProjectItemsListView.SelectedIndex == 0)
+            {
+                ProjectViewFrame.Navigate(_projectOverviewView);
+                _projectOverviewView.DataContext = ((ProjectViewModel)this.DataContext).ProjectOverviewViewModel;
+            }
+            else if (ProjectItemsListView.SelectedIndex == 1)
+            {
+                ProjectViewFrame.Navigate(_projectIssueView);
+                _projectIssueView.DataContext = ((ProjectViewModel)this.DataContext).ProjectIssueViewModel;
+                _projectIssueView.IssueFrame.DataContext = ((ProjectViewModel)this.DataContext).ProjectIssueViewModel.KanbanControlViewModel;
+            }
+            else if (ProjectItemsListView.SelectedIndex == 2)
+            {
+                ProjectViewFrame.Navigate(_projectNotesView);
+                _projectNotesView.DataContext = ((ProjectViewModel)this.DataContext).ProjectNotesViewModel;
+            }
         }
     }
 }

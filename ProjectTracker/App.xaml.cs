@@ -6,9 +6,13 @@ using ProjectTracker.ClassLibrary.Services;
 using ProjectTracker.Model;
 using ProjectTracker.Model.Models;
 using ProjectTracker.ClassLibrary.ViewModels;
+using ProjectTracker.ClassLibrary.ViewModels.ControlViewModels;
 using ProjectTracker.Views;
 using System;
 using System.Windows;
+using ProjectTracker.ClassLibrary.Factories;
+using ProjectTracker.ClassLibrary.ViewModels.Interfaces;
+using ProjectTracker.ClassLibrary.ViewModels.PopupViewModels;
 
 namespace ProjectTracker
 {
@@ -51,23 +55,37 @@ namespace ProjectTracker
 
             // Factories
             services.AddSingleton<IDesignTimeDbContextFactory<ProjectTrackerDBContext>, ProjectTrackerDBContextFactory>();
+            services.AddSingleton<ProjectViewModelFactory>();
+            services.AddSingleton<ProjectItemsViewModelFactory>();
 
             // Model Services
             services.AddSingleton<IDataService<Project>, GenericDataService<Project>>();
+            services.AddSingleton<IBoardDataService, BoardDataService>();
+            services.AddSingleton<IGroupDataService, GroupDataService>();
+            services.AddSingleton<IIssueDataService, IssueDataService>();
 
             // Views
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<MainView>();
             services.AddSingleton<HomeView>();
-            services.AddSingleton<ProjectListView>();
             services.AddSingleton<ProjectView>();
 
+            // ProjectViews
+            services.AddSingleton<ProjectOverviewView>();
+            services.AddSingleton<ProjectIssueView>();
+            services.AddSingleton<ProjectNotesView>();
+
             // ViewModels
+            services.AddSingleton<MainViewModel>();
             services.AddSingleton<TabViewModel>();
             services.AddSingleton<HomeViewModel>();
             services.AddSingleton<ProjectListViewModel>();
-            services.AddSingleton<ProjectViewModel>();
 
-            // Control ViewModels
+            // Popup ViewModels
+            services.AddSingleton<ProjectPopupViewModel>();
+            services.AddSingleton<BoardPopupViewModel>();
+            services.AddSingleton<GroupPopupViewModel>();
+            services.AddSingleton<IssuePopupViewModel>();
 
             return services.BuildServiceProvider();
         }

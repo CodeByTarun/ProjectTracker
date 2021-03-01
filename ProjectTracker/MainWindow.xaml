@@ -9,111 +9,114 @@
         xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels;assembly=ProjectTracker.ClassLibrary"
         xmlns:views="clr-namespace:ProjectTracker.Views"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:popups="clr-namespace:ProjectTracker.Popups"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=True}"
-        Title="MainWindow" Height="450" Width="1200" MinWidth="600">
+        d:DataContext="{d:DesignInstance Type=vm:TabViewModel, IsDesignTimeCreatable=True}"
+        Title="MainWindow" Height="450" Width="900" MinWidth="600">
 
-    <Window.Resources>
-        <sys:Double x:Key="MaxTabWidth">200</sys:Double>
-    </Window.Resources>
-    
     <Grid Background="{StaticResource QuaternaryColorBrush}">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Frame x:Name="MainFrame" 
+               NavigationUIVisibility="Hidden"/>
 
-        <Grid x:Name="NavigationGrid" Background="{StaticResource TertiaryColorBrush}" Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="PopupGrid" Panel.ZIndex="1">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ProjectPopupViewModel.IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value='Visible'/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding BoardPopupViewModel.IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value='Visible'/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding GroupPopupViewModel.IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value='Visible'/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IssuePopupViewModel.IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value='Visible'/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-            <StackPanel x:Name="NavigationStackPanel" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
+            </Grid.Background>
 
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <Button x:Name="HomeButton" Width="75" Margin="5,1,5,1"
-                    Command="{Binding GoToHomeCommand}" CommandParameter="{Binding SelectedTab}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="HomeBorder" CornerRadius="5,5,0,0">
-                                            <Border.Style>
-                                                <Style TargetType="Border" BasedOn="{StaticResource TabBorder}">
-                                                </Style>
-                                            </Border.Style>
-                                            <fa:FontAwesome Icon="Solid_Home" VerticalAlignment="Center" HorizontalAlignment="Stretch" Foreground="White" FontSize="20"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Path=SelectedTab}" Value="{x:Null}">
-                                                <Setter TargetName="HomeBorder"  Property="Background" Value="Black"/>
-                                            </DataTrigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="HomeBorder" Property="Background" Value="Gray"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
+                <Grid x:Name="ProjectPopupGrid" Grid.Row="1" Grid.Column="1">
+                    <popups:ProjectPopup x:Name="ProjectPopup" DataContext="{Binding ProjectPopupViewModel}">
+                        <popups:ProjectPopup.Style>
+                            <Style TargetType="popups:ProjectPopup">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                        <Setter Property="Visibility" Value='Visible'/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </popups:ProjectPopup.Style>
+                    </popups:ProjectPopup>
+                </Grid>
 
-                    </Button.Style>
-                </Button>
+                <Grid x:Name="BoardPopupGrid" Grid.Row="1" Grid.Column="1">
+                    <popups:BoardPopup x:Name="BoardPopup" DataContext="{Binding BoardPopupViewModel}">
+                        <popups:BoardPopup.Style>
+                            <Style TargetType="popups:BoardPopup">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                        <Setter Property="Visibility" Value='Visible'/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </popups:BoardPopup.Style>
+                    </popups:BoardPopup>
+                </Grid>
 
-                <ListBox x:Name="TabsListBox" ItemsSource="{Binding Tabs, Mode=OneWay}" Grid.Column="1" 
-                     HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     BorderThickness="0" Margin="0" Padding="0" 
-                     Background="Transparent" ItemContainerStyle="{StaticResource TabListBoxItemStyle}"
-                     SelectedItem="{Binding SelectedTab, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
-                    <ListBox.Width>
-                        <MultiBinding Converter="{StaticResource TabWidthConverter}">
-                            <Binding ElementName="HomeButton" Path="ActualWidth"/>
-                            <Binding ElementName="ProfileButton" Path="ActualWidth"/>
-                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}"/>
-                            <Binding Source="{StaticResource MaxTabWidth}"/>
-                            <Binding Path="Tabs.Count"/>
-                        </MultiBinding>
-                    </ListBox.Width>
+                <Grid x:Name="GroupPopupGrid" Grid.Row="1" Grid.Column="1">
+                    <popups:GroupPopup x:Name="GroupPopup" DataContext="{Binding GroupPopupViewModel}">
+                        <popups:GroupPopup.Style>
+                            <Style TargetType="popups:GroupPopup">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                        <Setter Property="Visibility" Value='Visible'/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </popups:GroupPopup.Style>
+                    </popups:GroupPopup>
+                </Grid>
 
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid HorizontalAlignment="Stretch" Rows="1"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+                <Grid x:Name="IssuePopupGrid" Grid.Row="1" Grid.Column="1">
+                    <popups:IssuePopup x:Name="IssuePopup" DataContext="{Binding IssuePopupViewModel}">
+                        <popups:IssuePopup.Style>
+                            <Style TargetType="popups:IssuePopup">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                        <Setter Property="Visibility" Value='Visible'/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </popups:IssuePopup.Style>
+                    </popups:IssuePopup>
+                </Grid>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border x:Name="TabBorder" Style="{StaticResource TabBorder}" ToolTip="{Binding CurrentProject.Name}"
-                                Background="Transparent"
-                                DragEnter="TabBorder_DragEnter" AllowDrop="True"
-                                MouseMove="TabBorder_MouseMove">
-                                <Grid Margin="5,5,5,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Text="{Binding CurrentProject.Name}" Grid.Column="0" Foreground="White" MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False"/>
-
-                                    <Button x:Name="CloseButton" Style="{StaticResource CloseButton}" 
-                                        Grid.Column="1" Margin="5,0,5,0"
-                                        Command="{Binding DataContext.RemoveTabCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
-
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-            </StackPanel>
-
-            <Button x:Name="ProfileButton" Content="Profile" Grid.Column="1"/>
-
+            </Grid>
         </Grid>
-
-        <Frame x:Name="MainFrame" Grid.Row="1" Navigated="MainFrame_Navigated" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

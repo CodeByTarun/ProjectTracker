@@ -10,14 +10,14 @@ namespace ProjectTracker.ClassLibrary.Services
 {
     public class GenericDataService<T> : IDataService<T> where T : DomainObject
     {
-        private readonly IDesignTimeDbContextFactory<ProjectTrackerDBContext> _contextFactory;
+        protected readonly IDesignTimeDbContextFactory<ProjectTrackerDBContext> _contextFactory;
 
         public GenericDataService(IDesignTimeDbContextFactory<ProjectTrackerDBContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
 
-        public async Task<T> Create(T entity)
+        public virtual async Task<T> Create(T entity)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {
@@ -28,7 +28,7 @@ namespace ProjectTracker.ClassLibrary.Services
             }
         }
 
-        public async Task<bool> Delete(int id)
+        public virtual async Task<bool> Delete(int id)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {

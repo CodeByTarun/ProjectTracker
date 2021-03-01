@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ProjectTracker.ClassLibrary.ViewModels.ControlViewModels;
 
 namespace ProjectTracker.ClassLibrary.ViewModels
 {
     public class HomeViewModel
     {
-        private TabViewModel _tabViewModel;
+        public ProjectListViewModel ProjectListViewModel { get; private set; }
 
-        public HomeViewModel(TabViewModel tabViewModel)
+        public HomeViewModel(ProjectListViewModel projectListViewModel)
         {
-            this._tabViewModel = tabViewModel;
+            this.ProjectListViewModel = projectListViewModel;
         }
     }
 }

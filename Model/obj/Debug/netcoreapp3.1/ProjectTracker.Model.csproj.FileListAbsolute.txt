@@ -9,3 +9,4 @@ C:\Users\tarun\source\repos\ProjectTracker\Model\obj\Debug\netcoreapp3.1\Project
 C:\Users\tarun\source\repos\ProjectTracker\Model\obj\Debug\netcoreapp3.1\ProjectTracker.Model.dll
 C:\Users\tarun\source\repos\ProjectTracker\Model\obj\Debug\netcoreapp3.1\ProjectTracker.Model.pdb
 C:\Users\tarun\source\repos\ProjectTracker\Model\obj\Debug\netcoreapp3.1\ProjectTracker.Model.genruntimeconfig.cache
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\Debug\netcoreapp3.1\ProjectTracker.Model.csprojAssemblyReference.cache
