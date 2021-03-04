@@ -14,6 +14,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         // Extra Fields
         private string _description;
         private int _projectId;
+        private Board _boardToEdit;
 
         public string Description
         {
@@ -49,7 +50,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         public void ShowCreateBoardPopup(Project project)
         {
             _projectId = project.Id;
-            _itemId = 0;
 
             DialogTitle = "Create a Board";
             ButtonContent = "Create";
@@ -58,7 +58,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
         public void ShowEditBoardPopup(Board boardToEdit)
         {
-            _itemId = boardToEdit.Id;
+            _isEdit = true;
+
+            _boardToEdit = boardToEdit;
             _projectId = boardToEdit.ProjectID;
 
             Name = boardToEdit.Name;
@@ -84,23 +86,19 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
         protected async override void EditItem()
         {
-            Board board = new Board()
-            {
-                Name = Name,
-                Description = Description,
-                DateCreated = DateTime.Now,
-                ProjectID = _projectId
-            };
+            _boardToEdit.Name = Name;
+            _boardToEdit.Description = Description;
 
-            await _boardDataService.Update(_itemId ,board);
+            await _boardDataService.Update(_boardToEdit.Id , _boardToEdit);
         }
 
         protected override void ResetFields()
         {
             Name = "";
             Description = "";
-
+            _boardToEdit = null;
             _projectId = 0;
+            _isEdit = true;
         }
     }
 }

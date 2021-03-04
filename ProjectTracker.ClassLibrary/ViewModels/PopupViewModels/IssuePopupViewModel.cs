@@ -8,6 +8,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
     public class IssuePopupViewModel : AbstractPopupViewModel
     {
+        private Group _group;
+        private Issue _issueToEdit;
+
         private string _description;
         public string Description
         {
@@ -35,9 +38,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             this._issueDataService = issueDataService;
         }
 
-        public void ShowCreateIssuePopup()
+        public void ShowCreateIssuePopup(Group group)
         {
-            _itemId = 0;
+            _group = group;
 
             DialogTitle = "Create an Issue";
             ButtonContent = "Create";
@@ -46,7 +49,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
         public void ShowEditIssuePopup(Issue issueToEdit)
         {
-            _itemId = issueToEdit.Id;
+            _isEdit = true;
+            _issueToEdit = issueToEdit;
 
             Name = issueToEdit.Name;
             Description = issueToEdit.Description;
@@ -64,26 +68,26 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
                 Name = Name,
                 Description = Description,
                 DateCreated = DateTime.Now,
+                GroupID = _group.Id
             };
 
             await _issueDataService.Create(issue);
         }
         protected async override void EditItem()
         {
-            Issue issue = new Issue()
-            {
-                Name = Name,
-                Description = Description,
-                DateCreated = DateTime.Now,
-            };
+            _issueToEdit.Name = Name;
+            _issueToEdit.Description = Description;
 
-            await _issueDataService.Update(_itemId, issue);
+            await _issueDataService.Update(_issueToEdit.Id, _issueToEdit);
         }
 
         protected override void ResetFields()
         {
             this.Name = "";
             this.Description = "";
+            _group = null;
+            _issueToEdit = null;
+            _isEdit = false;
         }
     }
 }

@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:GroupPopupViewModel, IsDesignTimeCreatable=True}">
 
-    <Border CornerRadius="10" Background="White">
+    <Border CornerRadius="10" Background="White" VerticalAlignment="Center">
         <Grid x:Name="PopupGrid" Margin="15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -25,7 +25,8 @@
                                                   Grid.Row="1" Width="300"
                                                   InputText="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}" Grid.Row="2"/>
+            <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75"  VerticalAlignment="Center"
+                    Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}" Grid.Row="2"/>
         </Grid>
     </Border>
 </UserControl>

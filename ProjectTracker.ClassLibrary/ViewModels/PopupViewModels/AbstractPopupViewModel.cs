@@ -12,8 +12,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
     public abstract class AbstractPopupViewModel : ObservableObject, IPopupViewModel
     {
+        protected bool _isEdit;
         private bool _isVisible;
-        protected int _itemId;
         private string _dialogTitle;
         private string _buttonContent;
         private string _name;
@@ -98,7 +98,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         private void CreateOrEditItem(object na)
         {
-            if (_itemId == 0)
+            if (!_isEdit)
             {
                 CreateItem();
             }

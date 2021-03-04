@@ -34,7 +34,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels
                 _selectedBoard = value;
                 RaisePropertyChangedEvent(nameof(SelectedBoard));
                 SetBoardFields();
-                KanbanControlViewModel.SelectedBoard = SelectedBoard;
             }
         }
         public IEnumerable<Board> BoardList
@@ -122,12 +121,13 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         {
             BoardList = await _boardDataService.GetAllInProject(_currentProject.Id);
         }
-        private void SetBoardFields()
+        private async void SetBoardFields()
         {
             if (SelectedBoard != null)
             {
                 BoardName = SelectedBoard.Name;
                 BoardDescription = SelectedBoard.Description;
+                KanbanControlViewModel.SelectedBoard = await _boardDataService.GetBoardWithInnerEntities(SelectedBoard.Id);
             }
         }
         #endregion

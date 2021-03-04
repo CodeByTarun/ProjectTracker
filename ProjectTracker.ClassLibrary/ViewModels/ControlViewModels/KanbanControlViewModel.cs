@@ -5,8 +5,10 @@ using ProjectTracker.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
@@ -15,7 +17,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
     {
         #region Fields
         private Board _selectedBoard;
-        private ObservableCollection<Group> _groupList;
+        private ICollectionView _groupList;
+        private string _issueSearchText;
 
         public Board SelectedBoard
         {
@@ -27,9 +30,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 _selectedBoard = value;
                 RaisePropertyChangedEvent(nameof(SelectedBoard));
+                CreateCollectionView();
             }
         }
-        public ObservableCollection<Group> GroupList
+        public ICollectionView GroupList
         {
             get
             {
@@ -41,7 +45,21 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
                 RaisePropertyChangedEvent(nameof(GroupList));
             }
         }
+        public string IssueSearchText
+        {
+            get
+            {
+                return _issueSearchText;
+            }
+            set
+            {
+                _issueSearchText = value;
+                RaisePropertyChangedEvent(nameof(IssueSearchText));
+                GroupList.Refresh();
+            }
+        }
 
+        private IBoardDataService _boardDataService;
         private IGroupDataService _groupDataService;
         private IIssueDataService _issueDataService;
 
@@ -60,17 +78,17 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         #region Constructors
         public KanbanControlViewModel()
         {
-            GroupList = CreateGroupList();
+            _selectedBoard.Groups = CreateGroupList();
         }
-        public KanbanControlViewModel(IGroupDataService groupDataService, IIssueDataService issueDataService, GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel)
+        public KanbanControlViewModel(IBoardDataService boardDataService, IGroupDataService groupDataService, IIssueDataService issueDataService, GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel)
         {
+            _boardDataService = boardDataService;
             _groupDataService = groupDataService;
             _issueDataService = issueDataService;
             _groupPopupViewModel = groupPopupViewModel;
             _issuePopupViewModel = issuePopupViewModel;
 
             InitialSetup();
-            GroupList = CreateGroupList();
         }
         #endregion
 
@@ -193,6 +211,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         private void InitialSetup()
         {
             CreateCommands();
+            CreateCollectionView();
         }
         private void CreateCommands()
         {
@@ -204,10 +223,24 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             EditIssueCommand = new RelayCommand(ShowEditIssuePopup);
             DeleteIssueCommand = new RelayCommand(DeleteIssue);
         }
-
-        private void GetBoard()
+        private void CreateCollectionView()
         {
+            if (SelectedBoard != null)
+            {
+                GroupList = CollectionViewSource.GetDefaultView(SelectedBoard.Groups);
+                _groupList.Filter = IssueFilter;
+            }
+        }
 
+        private bool IssueFilter(object item)
+        {
+            Issue issue = item as Issue;
+            return (issue.Name.ToLower().Contains(IssueSearchText.ToLower()) || issue.Description.ToLower().Contains(IssueSearchText.ToLower()));
+        }
+
+        private async void GetBoard()
+        {
+            SelectedBoard = await _boardDataService.GetBoardWithInnerEntities(SelectedBoard.Id);
         }
         #endregion
 
@@ -220,10 +253,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         private void ShowEditGroupPopup(object groupToEdit)
         {
             GroupSubscribeToEvents();
-            _groupPopupViewModel.ShowEditGroupPopup((Group)groupToEdit, _selectedBoard);
+            _groupPopupViewModel.ShowEditGroupPopup((Group)groupToEdit);
         }
         /// TODO
-        private void DeleteGroup(object na)
+        private void DeleteGroup(object groupToDelete)
         {
 
         }
@@ -242,45 +275,86 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         private void _groupPopupViewModel_ClosePopupEvent(object sender, EventArgs e)
         {
             GroupUnsubscribeToEvents();
-
-            GetBoard();
         }
         private void _groupPopupViewModel_CreateOrEditEvent(object sender, EventArgs e)
         {
             GroupUnsubscribeToEvents();
+            GetBoard();
         }
 
         #endregion
 
         #region Issue Commands
-        /// TODO
-        private void ShowCreateIssuePopup(object na)
+        private void ShowCreateIssuePopup(object group)
         {
-
+            IssueSubscribeToEvents();
+            _issuePopupViewModel.ShowCreateIssuePopup((Group)group);
         }
-        /// TODO
-        private void ShowEditIssuePopup(object na)
+        private void ShowEditIssuePopup(object issueToEdit)
         {
-
+            IssueSubscribeToEvents();
+            _issuePopupViewModel.ShowEditIssuePopup((Issue)issueToEdit);
         }
         /// TODO
         private void DeleteIssue(object na)
         {
 
         }
+        
+        private void IssueSubscribeToEvents()
+        {
+            _issuePopupViewModel.CreateOrEditEvent += _issuePopupViewModel_CreateOrEditEvent;
+            _issuePopupViewModel.ClosePopupEvent += _issuePopupViewModel_ClosePopupEvent;
+        }
+        private void IssueUnsubscribeToEvents()
+        {
+            _issuePopupViewModel.CreateOrEditEvent -= _issuePopupViewModel_CreateOrEditEvent;
+            _issuePopupViewModel.ClosePopupEvent -= _issuePopupViewModel_ClosePopupEvent;
+        }
+
+        private void _issuePopupViewModel_ClosePopupEvent(object sender, EventArgs e)
+        {
+            IssueUnsubscribeToEvents();
+        }
+        private void _issuePopupViewModel_CreateOrEditEvent(object sender, EventArgs e)
+        {
+            IssueUnsubscribeToEvents();
+            GetBoard();
+        }
+
+        
         #endregion
 
         #region Drag and Drop Functions
         public void MoveGroups(Group groupDragging, Group groupOver)
         {
-            int indexDragging = GroupList.IndexOf(groupDragging);
-            int indexOver = GroupList.IndexOf(groupOver);
+            int indexDragging = SelectedBoard.Groups.IndexOf(groupDragging);
+            int indexOver = SelectedBoard.Groups.IndexOf(groupOver);
 
-            Group group = _groupList[indexDragging];
-            _groupList.RemoveAt(indexDragging);
-            _groupList.Insert(indexOver, group);
+            Group group = _selectedBoard.Groups[indexDragging];
+            _selectedBoard.Groups.RemoveAt(indexDragging);
+            _selectedBoard.Groups.Insert(indexOver, group);
 
-            RaisePropertyChangedEvent(nameof(GroupList));
+            RaisePropertyChangedEvent(nameof(SelectedBoard));
+        }
+        public void MoveGroupInDatabase(Group groupMoving)
+        {
+            int indexOfGroupMoved = SelectedBoard.Groups.IndexOf(groupMoving);
+
+            Group groupBefore = null;
+            Group groupAfter = null;
+
+            if (indexOfGroupMoved - 1 >= 0)
+            {
+                groupBefore = SelectedBoard.Groups[indexOfGroupMoved - 1];
+            }
+
+            if (indexOfGroupMoved + 1 <= SelectedBoard.Groups.Count() - 1)
+            {
+                groupAfter = SelectedBoard.Groups[indexOfGroupMoved + 1];
+            }
+
+            _groupDataService.Move(groupMoving, groupBefore, groupAfter);
         }
 
         public void MoveIssues(Issue issueDragging, Issue issueOver)
@@ -290,38 +364,37 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             // 2. Issues are in different groups 
             // - remove from existing group and add to group of element dragged over.
 
-            int indexOfGroup = _groupList.IndexOf(issueDragging.Group);
+            int indexOfGroup = _selectedBoard.Groups.IndexOf(issueDragging.Group);
 
             if (issueDragging.Group == issueOver.Group)
             {
-                int indexOfIssueOver = _groupList[indexOfGroup].Issues.IndexOf(issueOver);
-                _groupList[indexOfGroup].Issues.Remove(issueDragging);
-                _groupList[indexOfGroup].Issues.Insert(indexOfIssueOver, issueDragging);
+                int indexOfIssueOver = _selectedBoard.Groups[indexOfGroup].Issues.IndexOf(issueOver);
+                _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
+                _selectedBoard.Groups[indexOfGroup].Issues.Insert(indexOfIssueOver, issueDragging);
             }
             else
             {
-                int indexOfGroupOver = _groupList.IndexOf(issueOver.Group);
-                int indexOfIssueOver = _groupList[indexOfGroupOver].Issues.IndexOf(issueOver);
+                int indexOfGroupOver = _selectedBoard.Groups.IndexOf(issueOver.Group);
+                int indexOfIssueOver = _selectedBoard.Groups[indexOfGroupOver].Issues.IndexOf(issueOver);
 
                 issueDragging.Group = issueOver.Group;
 
-                _groupList[indexOfGroup].Issues.Remove(issueDragging);
-                _groupList[indexOfGroupOver].Issues.Insert(indexOfIssueOver, issueDragging);
+                _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
+                _selectedBoard.Groups[indexOfGroupOver].Issues.Insert(indexOfIssueOver, issueDragging);
             }
-            RaisePropertyChangedEvent(nameof(GroupList));
+            RaisePropertyChangedEvent(nameof(SelectedBoard));
         }
-
         public void MoveIssueToEnd(Issue issueDragging, Group groupOver)
         {
-            int indexOfGroup = _groupList.IndexOf(issueDragging.Group);
-            int indexOfGroupOver = _groupList.IndexOf(groupOver);
+            int indexOfGroup = _selectedBoard.Groups.IndexOf(issueDragging.Group);
+            int indexOfGroupOver = _selectedBoard.Groups.IndexOf(groupOver);
 
             if (issueDragging.Group == groupOver)
             {
-                if (_groupList[indexOfGroup].Issues.Last() != issueDragging)
+                if (_selectedBoard.Groups[indexOfGroup].Issues.Last() != issueDragging)
                 {
-                    _groupList[indexOfGroup].Issues.Remove(issueDragging);
-                    _groupList[indexOfGroup].Issues.Add(issueDragging);
+                    _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
+                    _selectedBoard.Groups[indexOfGroup].Issues.Add(issueDragging);
                 }
                 else
                 {
@@ -330,14 +403,43 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             }
             else
             {
-                _groupList[indexOfGroup].Issues.Remove(issueDragging);
-                _groupList[indexOfGroupOver].Issues.Add(issueDragging);
+                _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
+                _selectedBoard.Groups[indexOfGroupOver].Issues.Add(issueDragging);
 
                 issueDragging.Group = groupOver;
             }
-            RaisePropertyChangedEvent(nameof(GroupList));
+            RaisePropertyChangedEvent(nameof(SelectedBoard));
         }
+        public void MoveIssueInDatabase(Issue issue)
+        {
+            int indexOfGroupIssueIsMovingTo = SelectedBoard.Groups.IndexOf(SelectedBoard.Groups.FirstOrDefault(g => g.Id == issue.Group.Id));
 
+            Issue issueMoving = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues.FirstOrDefault(i => i.Id == issue.Id);
+
+            int indexOfIssueMoved = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues.IndexOf(issueMoving);
+
+            Issue issueBefore = null;
+            Issue issueAfter = null;
+
+            if (indexOfIssueMoved - 1 >= 0)
+            {
+                issueBefore = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved - 1];
+            }
+
+            if (indexOfIssueMoved + 1 <= SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues.Count() - 1)
+            {
+                issueAfter = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved + 1];
+            }
+
+            _issueDataService.Move(issueMoving, issueBefore, issueAfter, issue.Group.Id);
+        }
+        #endregion
+
+        #region Search Functions
+        private void FilterIssueList()
+        {
+              
+        }
         #endregion
     }
 }

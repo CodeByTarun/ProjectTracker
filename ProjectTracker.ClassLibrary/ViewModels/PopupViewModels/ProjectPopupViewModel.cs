@@ -11,9 +11,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
     public class ProjectPopupViewModel : AbstractPopupViewModel
     {
-
         #region Fields
         // Project Properties
+        private Project _projectToEdit;
+
         private string _description;
 
         public string Description
@@ -52,8 +53,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         public void ShowCreateProjectPopup()
         {
-            _itemId = 0;
-
             DialogTitle = "Create a Project";
             ButtonContent = "Create";
 
@@ -62,7 +61,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
         public void ShowEditProjectPopup(Project projectToEdit)
         {
-            _itemId = projectToEdit.Id;
+            _isEdit = true;
+            _projectToEdit = projectToEdit;
 
             Name = projectToEdit.Name;
             Description = projectToEdit.Description;
@@ -77,6 +77,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             Name = "";
             Description = "";
+            _projectToEdit = null;
+            _isEdit = false;
         }
 
         protected async override void CreateItem()
@@ -93,14 +95,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         protected async override void EditItem()
         {
-            Project project = new Project()
-            {
-                Name = Name,
-                Description = Description,
-                DateCreated = DateTime.Now
-            };
+            _projectToEdit.Name = Name;
+            _projectToEdit.Description = Description;
 
-            await _projectService.Update(_itemId, project);
+            await _projectService.Update(_projectToEdit.Id, _projectToEdit);
         }
 
         #endregion

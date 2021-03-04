@@ -35,7 +35,6 @@ namespace ProjectTracker.ClassLibrary.Services
                 return createdResult.Entity;
             }
         }
-
         public override async Task<bool> Delete(int id)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))

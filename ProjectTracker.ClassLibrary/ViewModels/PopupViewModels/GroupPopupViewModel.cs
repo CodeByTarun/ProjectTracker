@@ -10,6 +10,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
     {
         private IGroupDataService _groupDataService;
         private Board _board;
+        private Group _groupToEdit;
 
         public GroupPopupViewModel() : base()
         {
@@ -24,8 +25,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         public void ShowCreateGroupPopup(Board board)
         {
-            _itemId = 0;
-
             _board = board;
 
             DialogTitle = "Create a Group";
@@ -34,11 +33,11 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             IsVisible = true;
         }
 
-        public void ShowEditGroupPopup(Group groupToEdit, Board board)
+        public void ShowEditGroupPopup(Group groupToEdit)
         {
-            _itemId = groupToEdit.Id;
+            _isEdit = true;
 
-            _board = board;
+            _groupToEdit = groupToEdit;
 
             Name = groupToEdit.Name;
 
@@ -61,19 +60,17 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         protected async override void EditItem()
         {
-            Group group = new Group()
-            {
-                Name = this.Name,
-                BoardID = _board.Id
-            };
+            _groupToEdit.Name = Name;
 
-            await _groupDataService.Update(_itemId, group);
+            await _groupDataService.Update(_groupToEdit.Id, _groupToEdit);
         }
 
         protected override void ResetFields()
         {
             Name = "";
             _board = null;
+            _groupToEdit = null;
+            _isEdit = false;
         }
     }
 }

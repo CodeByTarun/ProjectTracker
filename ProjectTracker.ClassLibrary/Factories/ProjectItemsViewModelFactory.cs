@@ -48,7 +48,7 @@ namespace ProjectTracker.ClassLibrary.Factories
 
         public KanbanControlViewModel CreateKanbanControlViewModel()
         {
-            return new KanbanControlViewModel(_groupDataService, _issueDataService, _groupPopupViewModel, _issuePopupViewModel);
+            return new KanbanControlViewModel(_boardDataService, _groupDataService, _issueDataService, _groupPopupViewModel, _issuePopupViewModel);
         }
     }
 }

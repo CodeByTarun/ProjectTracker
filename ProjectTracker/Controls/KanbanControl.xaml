@@ -7,94 +7,165 @@
              xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels.ControlViewModels;assembly=ProjectTracker.ClassLibrary"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:KanbanControlViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="root">
     
     <Border x:Name="KanbanBorder">
-        <Grid x:Name="KanbanGrid" Background="DarkRed">
+        <Grid x:Name="KanbanGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding IssueSearchText}" Grid.Row="0" HorizontalAlignment="Stretch"/>
 
             <!-- First create the groups and hook them up to the database, once that works correctly then work on the issues -->
-            <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding Path=GroupList}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Name="GroupBorder" CornerRadius="10" Background="LightGray" Margin="30,15,15,15"
-                                    AllowDrop="True"
-                                    PreviewMouseLeftButtonDown="GroupBorder_PreviewMouseLeftButtonDown"
-                                    DragEnter="GroupBorder_DragEnter"
-                                    DragOver="GroupBorder_DragOver"
-                                    Drop="GroupBorder_Drop">
+            <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding Path=GroupList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Name="GroupBorder" CornerRadius="10" Background="LightGray" Margin="30,15,15,15"
+                                        AllowDrop="True"
+                                        PreviewMouseLeftButtonDown="GroupBorder_PreviewMouseLeftButtonDown"
+                                        DragEnter="GroupBorder_DragEnter">
                                 
-                                <Grid x:Name="GroupGrid">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                    <Grid x:Name="GroupGrid">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                    <Grid x:Name="GroupHeaderGrid"
-                                          Width="300"
-                                          Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                        <Grid x:Name="GroupHeaderGrid"
+                                              Width="300"
+                                              Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Column="0"
-                                            Orientation="Horizontal"
-                                            Margin="10,10,10,10">
+                                            <StackPanel Grid.Column="0"
+                                                Orientation="Horizontal"
+                                                Margin="10,10,10,10">
 
-                                            <Border x:Name="CardCount" 
-                                                Background="LightSteelBlue" 
-                                                Height="20" Width="20" 
-                                                CornerRadius="10" Margin="0,0,10,0"
-                                                IsHitTestVisible="False">
-                                                <TextBlock Text="{Binding Issues.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="12"/>
-                                            </Border>
+                                                <Border x:Name="CardCount" 
+                                                    Background="LightSteelBlue" 
+                                                    Height="20" Width="20" 
+                                                    CornerRadius="10" Margin="0,0,10,0"
+                                                    IsHitTestVisible="False">
+                                                    <TextBlock Text="{Binding Issues.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="12"/>
+                                                </Border>
 
-                                            <TextBlock x:Name="GroupName"
-                                                   IsHitTestVisible="False"
-                                                   Text="{Binding Path=Name}"
-                                                   TextWrapping="Wrap"
-                                                   VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                                <TextBlock x:Name="GroupName"
+                                                       IsHitTestVisible="False"
+                                                       Text="{Binding Path=Name}"
+                                                       TextWrapping="Wrap"
+                                                       VerticalAlignment="Center"/>
+                                            </StackPanel>
                                         
-                                        <StackPanel Grid.Column="1"
-                                            Orientation="Horizontal">
+                                            <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal">
 
-                                            <Button x:Name="GroupMenu"
-                                            Margin="30,0,10,0"
-                                            Height="20"
-                                            Content="Threebuttons"/>
+                                                <Button x:Name="GroupMenu"
+                                                Margin="30,0,10,0"
+                                                Height="20"
+                                                Content="Threebuttons">
+                                                    <Button.ContextMenu>
+                                                        <ContextMenu Name="GroupContextMenu">
+                                                            <MenuItem Header="Edit Group" Click="EditGroup_Click"/>
+                                                            <MenuItem Header="Delete Group" Click="DeleteGroup_Click"/>
+                                                        </ContextMenu>
+                                                    </Button.ContextMenu>
+                                                </Button>
 
-                                            <Button x:Name="AddIssueButton"
-                                            Margin="0,0,10,0"
-                                            Height="20"
-                                            Content="+"/>
+                                                <Button x:Name="AddIssueButton"
+                                                        Command="{Binding ElementName=root, Path=DataContext.CreateIssueCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Margin="0,0,10,0"
+                                                        Height="20"
+                                                        Content="+"/>
 
-                                        </StackPanel>
+                                            </StackPanel>
+
+                                        </Grid>
+
+                                        <ScrollViewer x:Name="IssuesScrollViewer"
+                                                      Grid.Row="1"
+                                                      Margin="10,0,10,10"
+                                                      VerticalScrollBarVisibility="Auto"
+                                                      HorizontalScrollBarVisibility="Disabled"
+                                                      Background="Transparent">
+
+                                            <ScrollViewer.MaxHeight>
+                                                <MultiBinding Converter="{StaticResource GroupHeightConverter}">
+                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type Border}}"/>
+                                                    <Binding Path="ActualHeight" ElementName="GroupHeaderGrid"/>
+                                                </MultiBinding>
+                                            </ScrollViewer.MaxHeight>
+
+
+                                            <ItemsControl x:Name="IssuesItemsControl" ItemsSource="{Binding Path=Issues}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border x:Name="IssueBorder" CornerRadius="5" Background="White" Margin="0,10,0,0"
+                                                                AllowDrop="True"
+                                                                DragEnter="IssueBorder_DragEnter"
+                                                                PreviewMouseLeftButtonDown="IssueBorder_PreviewMouseLeftButtonDown">
+                                                            <Grid Margin="10,10,10,10">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="*"/>
+                                                                    <RowDefinition Height="*"/>
+                                                                    <RowDefinition Height="*"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <DockPanel x:Name="IssueHeader" Grid.Row="0">
+                                                                    <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap" IsHitTestVisible="False"/>
+                                                                    <Button Content="three buttons" HorizontalAlignment="Right">
+                                                                        <Button.ContextMenu>
+                                                                            <ContextMenu Name="IssueContextMenu">
+                                                                                <MenuItem Header="Edit Issue" Click="EditIssue_Click"/>
+                                                                                <MenuItem Header="Delete Issue" Click="DeleteIssue_Click"/>
+                                                                            </ContextMenu>
+                                                                        </Button.ContextMenu>
+                                                                    </Button>
+                                                                </DockPanel>
+
+                                                                <TextBlock x:Name="IssueDescription"
+                                                                   IsHitTestVisible="False"
+                                                                   Text="{Binding Path=Description}" 
+                                                                   TextWrapping="Wrap" Grid.Row="1"/>
+
+                                                                <DockPanel x:Name="IssueInfo" Grid.Row="2" IsHitTestVisible="False">
+                                                                    <TextBlock Text="{Binding Path=DateCreated}" HorizontalAlignment="Right"/>
+                                                                </DockPanel>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                        </ScrollViewer>
+
+                                        <Grid x:Name="GroupEmptySpaceGrid" Grid.Row="2" Background="Transparent"
+                                              AllowDrop="True"
+                                              DragEnter="GroupEmptySpaceGrid_DragEnter"/>
 
                                     </Grid>
-
-                                    <ScrollViewer Grid.Row="1"/>
-
-                                    <Grid x:Name="GroupEmptySpaceGrid" Grid.Row="2"
-                                          AllowDrop="True"
-                                          Drop="GroupEmptySpaceGrid_Drop"
-                                          DragEnter="GroupEmptySpaceGrid_DragEnter"/>
-
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 
-                <!-- Add a create group button here -->
-                
+                    <!-- Add a create group button here -->
+                    <Button Content="Add Group" HorizontalAlignment="Center" VerticalAlignment="Top"
+                            Command="{Binding CreateGroupCommand}" CommandParameter="{x:Null}"/>
+                </StackPanel>
             </ScrollViewer>
             
         </Grid>
