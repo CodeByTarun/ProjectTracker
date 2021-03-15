@@ -30,25 +30,12 @@ namespace ProjectTracker.Views
             this._projectNotesView = projectNotesView;
 
             InitializeComponent();
-            SetProjectItemsControlList();
-        }
-
-        private void SetProjectItemsControlList()
-        {
-            List<ProjectItems> projectItems = new List<ProjectItems>();
-
-            projectItems.Add(new ProjectItems() { Title = "Overview" });
-            projectItems.Add(new ProjectItems() { Title = "Issues" });
-            projectItems.Add(new ProjectItems() { Title = "Notes" });
-
-            ProjectItemsListView.ItemsSource = projectItems;
         }
 
         public void SetDataContext(ProjectViewModel vm)
         {
+            DataContext = null;
             DataContext = vm;
-
-            ProjectItemsListView.SelectedIndex = 0;
         }
 
         public class ProjectItems
@@ -62,6 +49,7 @@ namespace ProjectTracker.Views
             {
                 ProjectViewFrame.Navigate(_projectOverviewView);
                 _projectOverviewView.DataContext = ((ProjectViewModel)this.DataContext).ProjectOverviewViewModel;
+                _projectOverviewView.BoardListControlFrame.DataContext = ((ProjectViewModel)this.DataContext).ProjectOverviewViewModel.BoardListViewModel;
             }
             else if (ProjectItemsListView.SelectedIndex == 1)
             {

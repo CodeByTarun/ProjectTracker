@@ -9,6 +9,9 @@
       Title="ProjectOverviewView">
 
     <Grid Background="DarkOrange">
-        
+
+        <Frame x:Name="BoardListControlFrame" Source="pack://application:,,,/Controls/BoardListControl.xaml" DataContext="{Binding BoardListViewModel}"
+               LoadCompleted="BoardListControlFrame_LoadCompleted" DataContextChanged="BoardListControlFrame_DataContextChanged"/>
+
     </Grid>
 </Page>

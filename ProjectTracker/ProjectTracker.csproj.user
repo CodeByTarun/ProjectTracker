@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\BoardListControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Controls\KanbanControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14,6 +17,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Controls\ProjectListControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\TagListControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Popups\TagPopupControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Popups\BoardPopup.xaml.cs">
@@ -48,6 +57,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Controls\BoardListControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Controls\KanbanControl.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -55,6 +67,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\ProjectListControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\TagListControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Popups\TagPopupControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">

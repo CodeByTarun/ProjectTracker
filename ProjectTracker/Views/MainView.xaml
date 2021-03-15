@@ -70,7 +70,7 @@
                     <ListBox.Width>
                         <MultiBinding Converter="{StaticResource TabWidthConverter}">
                             <Binding ElementName="HomeButton" Path="ActualWidth"/>
-                            <Binding ElementName="ProfileButton" Path="ActualWidth"/>
+                            <Binding ElementName="UtilitiesStackPanel" Path="ActualWidth"/>
                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Page}"/>
                             <Binding Source="{StaticResource MaxTabWidth}"/>
                             <Binding Path="Tabs.Count"/>
@@ -109,8 +109,12 @@
 
             </StackPanel>
 
-            <Button x:Name="ProfileButton" Content="Profile" Grid.Column="1"/>
-
+            <StackPanel Grid.Column="1" Orientation="Horizontal" x:Name="UtilitiesStackPanel">
+                <Button x:Name="TagButton" Content="Tags" Command="{Binding OpenTagsPopupCommand}" CommandParameter="{x:Null}"/>
+                <Button x:Name="TimerButton" Content="Timer"/>
+                <Button x:Name="ProfileButton" Content="Profile"/>
+            </StackPanel>
+            
         </Grid>
 
         <Frame x:Name="MainFrame" Grid.Row="1" Navigated="MainFrame_Navigated" NavigationUIVisibility="Hidden"/>

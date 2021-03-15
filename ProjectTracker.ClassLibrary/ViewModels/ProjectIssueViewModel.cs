@@ -81,6 +81,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         public ICommand CreateBoardCommand { get; private set; }
         public ICommand EditBoardCommand { get; private set; }
         public ICommand DeleteBoardCommand { get; private set; }
+
+        public event EventHandler RefreshBoardEvent;
         #endregion
 
         #region Constructors
@@ -117,10 +119,11 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             EditBoardCommand = new RelayCommand(ShowEditBoardPopup, CanEditOrDeleteBoard);
             DeleteBoardCommand = new RelayCommand(DeleteBoard, CanEditOrDeleteBoard);
         }
-        private async void GetBoardList()
+        public async void GetBoardList()
         {
             BoardList = await _boardDataService.GetAllInProject(_currentProject.Id);
         }
+
         private async void SetBoardFields()
         {
             if (SelectedBoard != null)
@@ -146,9 +149,13 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             _isEdit = true;
         }
         /// TODO
-        private void DeleteBoard(object na)
+        private async void DeleteBoard(object na)
         {
+            await _boardDataService.Delete(SelectedBoard.Id);
 
+            SelectedBoard = BoardList.FirstOrDefault();
+
+            RefreshBoardEvent?.Invoke(this, EventArgs.Empty);
         }
         private bool CanEditOrDeleteBoard(object na)
         {
@@ -184,6 +191,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             }
             UnsubscribeToBoardEvents();
 
+            RefreshBoardEvent?.Invoke(this, EventArgs.Empty);
             _isEdit = false;
         }
 

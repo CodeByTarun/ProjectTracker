@@ -11,6 +11,11 @@
     <Border CornerRadius="10" Background="White">
         <Grid x:Name="PopupGrid" Margin="15">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -30,16 +35,29 @@
                                               InputText="{Binding Description, Mode=TwoWay}"/>
 
             <StackPanel Grid.Row="3">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Status" Width="157.5"/>
-                    <Label Content="Tag"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox Name="StatusComboBox" Width="142.5"/>
-                    <ComboBox Name="TagComboBox" Margin="15,0,0,0" Width="142.5" IsEditable="True" IsTextSearchEnabled="True"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Status" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
+
+                    <ComboBox Name="StatusComboBox" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
+
+                    <Label Content="Add Tags" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,0"/>
+                    <ComboBox Name="TagComboBox" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="5,0,0,0"/>
+
+
+                </Grid>
                 <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
             </StackPanel>
+            
+            
         </Grid>
     </Border>
     

@@ -31,7 +31,9 @@ namespace ProjectTracker.ClassLibrary.Factories
 
         public ProjectOverviewViewModel CreateProjectOverviewViewModel(Project currentProject)
         {
-            return new ProjectOverviewViewModel(currentProject);
+            BoardListViewModel boardListViewModel = CreateBoardListViewModel(currentProject);
+
+            return new ProjectOverviewViewModel(currentProject, boardListViewModel);
         }
 
         public ProjectIssueViewModel CreateProjectIssueViewModel(Project currentProject)
@@ -49,6 +51,11 @@ namespace ProjectTracker.ClassLibrary.Factories
         public KanbanControlViewModel CreateKanbanControlViewModel()
         {
             return new KanbanControlViewModel(_boardDataService, _groupDataService, _issueDataService, _groupPopupViewModel, _issuePopupViewModel);
+        }
+
+        public BoardListViewModel CreateBoardListViewModel(Project currentProject)
+        {
+            return new BoardListViewModel(currentProject, _boardDataService, _boardPopupViewModel);
         }
     }
 }

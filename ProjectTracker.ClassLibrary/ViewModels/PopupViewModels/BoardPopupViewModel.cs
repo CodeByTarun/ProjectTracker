@@ -98,7 +98,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             Description = "";
             _boardToEdit = null;
             _projectId = 0;
-            _isEdit = true;
+            _isEdit = false;
         }
     }
 }

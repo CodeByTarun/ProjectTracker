@@ -63,24 +63,21 @@ namespace ProjectTracker.Tests
                 Name = "Project1",
                 DateCreated = DateTime.Now,
                 StatusInt = 1,
-                Description = "First Semester",
-                Tag = "School"
+                Description = "First Semester"
             };
             Project project2 = new Project
             {
                 Name = "Project2",
                 DateCreated = DateTime.Now,
                 StatusInt = 0,
-                Description = "Second project",
-                Tag = "Work"
+                Description = "Second project"
             };
             Project project3 = new Project
             {
                 Name = "Project3",
                 DateCreated = DateTime.Now,
                 StatusInt = 2,
-                Description = "Third project",
-                Tag = "School"
+                Description = "Third project"
             };
 
             await _projectDataService.Create(project1);
@@ -146,7 +143,6 @@ namespace ProjectTracker.Tests
             {
                 Name = "First Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 1
             };
@@ -155,7 +151,6 @@ namespace ProjectTracker.Tests
             {
                 Name = "Second Issue",
                 Description = "Testing",
-                Tag = "TODO",
                 DateCreated = DateTime.Now,
                 GroupID = 1
             };
@@ -164,7 +159,6 @@ namespace ProjectTracker.Tests
             {
                 Name = "Third Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 1
             };

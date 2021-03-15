@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectTracker.ClassLibrary.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,24 @@ namespace ProjectTracker.Views
         public ProjectOverviewView()
         {
             InitializeComponent();
+        }
+
+        private void BoardListControlFrame_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            UpdateFrameDataContext(sender);
+        }
+
+        private void BoardListControlFrame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            UpdateFrameDataContext(sender);
+        }
+
+        private void UpdateFrameDataContext(object sender)
+        {
+            var content = BoardListControlFrame.Content as FrameworkElement;
+            if (content == null || this.DataContext == null)
+                return;
+            content.DataContext = (this.DataContext as ProjectOverviewViewModel).BoardListViewModel;
         }
     }
 }

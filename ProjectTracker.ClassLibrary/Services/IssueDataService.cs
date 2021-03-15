@@ -56,22 +56,10 @@ namespace ProjectTracker.ClassLibrary.Services
             }
         }
 
+        /// TODO: This needs to be implemented
         public async Task<IEnumerable<string>> GetAllTags(int projectId)
         {
-            using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
-            {
-                IEnumerable<string> tags = await (from boards in context.Boards
-                                                  where boards.ProjectID == projectId
-                                                  join groups in context.Groups on boards.Id equals groups.BoardID into boards2groups
-                                                  from groups in boards2groups
-                                                  join issues in context.Issues on groups.Id equals issues.GroupID
-                                                  select new { issues })
-                                                  .Select(i => i.issues.Tag)
-                                                  .Distinct()
-                                                  .ToListAsync();
-
-                return tags;
-            }
+            return new List<string>();
         }
 
         public async Task Move(Issue issue, Issue issueBefore, Issue issueAfter, int groupMovedToId)

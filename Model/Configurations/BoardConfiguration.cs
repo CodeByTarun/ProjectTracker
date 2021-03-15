@@ -13,6 +13,9 @@ namespace ProjectTracker.Model.Configurations
                    .WithOne(g => g.Board)
                    .HasForeignKey(g => g.BoardID)
                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<Tag>(p => p.Tags)
+                .WithMany(t => t.Boards);
         }
     }
 }

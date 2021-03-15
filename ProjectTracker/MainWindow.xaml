@@ -36,6 +36,9 @@
                         <DataTrigger Binding="{Binding IssuePopupViewModel.IsVisible}" Value="True">
                             <Setter Property="Visibility" Value='Visible'/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding TagPopupViewModel.IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value='Visible'/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
@@ -116,6 +119,21 @@
                     </popups:IssuePopup>
                 </Grid>
 
+                <Grid x:Name="TagPopupGrid" Grid.Row="1" Grid.Column="1">
+                    <popups:TagPopup x:Name="TagPopup" DataContext="{Binding TagPopupViewModel}">
+                        <popups:TagPopup.Style>
+                            <Style TargetType="popups:TagPopup">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                        <Setter Property="Visibility" Value='Visible'/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </popups:TagPopup.Style>
+                    </popups:TagPopup>
+                </Grid>
+                
             </Grid>
         </Grid>
     </Grid>

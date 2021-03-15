@@ -63,6 +63,7 @@ namespace ProjectTracker
             services.AddSingleton<IBoardDataService, BoardDataService>();
             services.AddSingleton<IGroupDataService, GroupDataService>();
             services.AddSingleton<IIssueDataService, IssueDataService>();
+            services.AddSingleton<ITagDataService, TagDataService>();
 
             // Views
             services.AddSingleton<MainWindow>();
@@ -86,6 +87,7 @@ namespace ProjectTracker
             services.AddSingleton<BoardPopupViewModel>();
             services.AddSingleton<GroupPopupViewModel>();
             services.AddSingleton<IssuePopupViewModel>();
+            services.AddSingleton<TagPopupViewModel>();
 
             return services.BuildServiceProvider();
         }

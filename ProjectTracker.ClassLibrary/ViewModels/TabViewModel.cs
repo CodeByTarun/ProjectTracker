@@ -1,5 +1,6 @@
 ﻿using ProjectTracker.ClassLibrary.Helpers;
 using ProjectTracker.ClassLibrary.ServiceInterfaces;
+using ProjectTracker.ClassLibrary.ViewModels.PopupViewModels;
 using ProjectTracker.Model.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         // Commands
         public ICommand RemoveTabCommand { get; private set; }
         public ICommand GoToHomeCommand { get; private set; }
+        public ICommand OpenTagsPopupCommand { get; private set; }
 
         public ObservableCollection<ProjectViewModel> Tabs { get; set; }
         public ProjectViewModel SelectedTab
@@ -32,9 +34,18 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             }
         }
 
+        private TagPopupViewModel _tagPopupViewModel;
+
         /// Design Time Constructor 
         public TabViewModel()
         {
+            Tabs = new ObservableCollection<ProjectViewModel>();
+            DummyTabList();
+        }
+        public TabViewModel(TagPopupViewModel tagPopupViewModel)
+        {
+            _tagPopupViewModel = tagPopupViewModel;
+
             Tabs = new ObservableCollection<ProjectViewModel>();
             SelectedTab = null;
 
@@ -45,6 +56,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         {
             RemoveTabCommand = new RelayCommand(RemoveTab);
             GoToHomeCommand = new RelayCommand(GoToHome, CanGoToHome);
+            OpenTagsPopupCommand = new RelayCommand(OpenTagPopup);
         }
 
         /// REMOVE THIS AFTER
@@ -117,6 +129,12 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             return tab != null;
         }
 
+        // OpenTagPopupCommand
+        private void OpenTagPopup(object na)
+        {
+            _tagPopupViewModel.ShowTagPopup();
+        }
+
         // Dragging
         public void MoveTab(ProjectViewModel tabDragging, ProjectViewModel tabOver)
         {
@@ -128,6 +146,19 @@ namespace ProjectTracker.ClassLibrary.ViewModels
 
             SelectedTab = tabSelected;
             RaisePropertyChangedEvent(nameof(Tabs));
+        }
+
+        // Check if project is in Tabs collection
+        public void CheckTabs(Project project)
+        {
+            foreach (ProjectViewModel viewModel in Tabs)
+            {
+                if (viewModel.CurrentProject.Id == project.Id)
+                {
+                    viewModel.CurrentProject = project;
+                    break;
+                }
+            }
         }
     }
 }

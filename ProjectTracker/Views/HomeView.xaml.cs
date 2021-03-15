@@ -10,10 +10,9 @@ namespace ProjectTracker.Views
     /// </summary>
     public partial class HomeView : Page
     {
-        public HomeView(HomeViewModel homeViewModel)
+        public HomeView(HomeViewModel viewModel)
         {
-            this.DataContext = homeViewModel;
-
+            this.DataContext = viewModel;
             InitializeComponent();
         }
 

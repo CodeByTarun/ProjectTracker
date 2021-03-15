@@ -18,6 +18,9 @@
             <converters:VisibilityConverter x:Key="VisibilityConverter"/>
             <converters:DatabindingDebugConverter x:Key="DebugConverter"/>
             <converters:GroupHeightConverter x:Key="GroupHeightConverter"/>
+            <converters:ColorConverter x:Key="ColorConverter"/>
+            <converters:ColorToIntConverter x:Key="ColorToIntConverter"/>
+            <converters:IssueVisibiltyConverter x:Key="IssueVisiblityConverter"/>
         </ResourceDictionary>
 
     </Application.Resources>

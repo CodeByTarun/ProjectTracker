@@ -83,7 +83,6 @@ namespace ProjectTracker.Tests.Tests
             {
                 Name = "First Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 2
             };
@@ -92,7 +91,6 @@ namespace ProjectTracker.Tests.Tests
             {
                 Name = "Second Issue",
                 Description = "Testing",
-                Tag = "TODO",
                 DateCreated = DateTime.Now,
                 GroupID = 2
             };
@@ -101,7 +99,6 @@ namespace ProjectTracker.Tests.Tests
             {
                 Name = "Third Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 2
             };

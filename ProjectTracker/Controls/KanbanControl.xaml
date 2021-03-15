@@ -17,12 +17,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding IssueSearchText}" Grid.Row="0" HorizontalAlignment="Stretch"/>
+            <TextBox x:Name="IssueSearchBox" Text="{Binding IssueSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" HorizontalAlignment="Stretch"/>
 
             <!-- First create the groups and hook them up to the database, once that works correctly then work on the issues -->
             <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
-                    <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding Path=GroupList}">
+                    <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding SelectedBoard.Groups}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -146,6 +146,18 @@
                                                                 </DockPanel>
                                                             </Grid>
                                                         </Border>
+                                                        <DataTemplate.Triggers>
+                                                            <DataTrigger Value="True">
+                                                                <DataTrigger.Binding>
+                                                                    <MultiBinding Converter="{StaticResource IssueVisiblityConverter}">
+                                                                        <Binding Path="Name"/>
+                                                                        <Binding Path="Description"/>
+                                                                        <Binding ElementName="IssueSearchBox" Path="Text"/>
+                                                                    </MultiBinding>
+                                                                </DataTrigger.Binding>
+                                                                <Setter Property="Visibility" Value="Collapsed" TargetName="IssueBorder"/>
+                                                            </DataTrigger>
+                                                        </DataTemplate.Triggers>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>

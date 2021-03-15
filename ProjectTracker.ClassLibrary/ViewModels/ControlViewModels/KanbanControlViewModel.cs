@@ -17,7 +17,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
     {
         #region Fields
         private Board _selectedBoard;
-        private ICollectionView _groupList;
         private string _issueSearchText;
 
         public Board SelectedBoard
@@ -30,19 +29,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 _selectedBoard = value;
                 RaisePropertyChangedEvent(nameof(SelectedBoard));
-                CreateCollectionView();
-            }
-        }
-        public ICollectionView GroupList
-        {
-            get
-            {
-                return _groupList;
-            }
-            set
-            {
-                _groupList = value;
-                RaisePropertyChangedEvent(nameof(GroupList));
             }
         }
         public string IssueSearchText
@@ -55,7 +41,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 _issueSearchText = value;
                 RaisePropertyChangedEvent(nameof(IssueSearchText));
-                GroupList.Refresh();
             }
         }
 
@@ -118,7 +103,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 Name = "First Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 1,
                 Group = group1,
@@ -128,7 +112,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 Name = "Second Issue",
                 Description = "Testing",
-                Tag = "TODO",
                 DateCreated = DateTime.Now,
                 GroupID = 1,
                 Group = group1,
@@ -138,7 +121,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 Name = "Third Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 1,
                 Group = group1,
@@ -149,7 +131,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 Name = "Fourth Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 2,
                 Group = group2,
@@ -159,7 +140,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 Name = "Fifth Issue",
                 Description = "Testing",
-                Tag = "TODO",
                 DateCreated = DateTime.Now,
                 GroupID = 2,
                 Group = group2,
@@ -169,7 +149,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 Name = "Sixth Issue",
                 Description = "Testing",
-                Tag = "Bug",
                 DateCreated = DateTime.Now,
                 GroupID = 3,
                 Group = group3,
@@ -211,7 +190,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         private void InitialSetup()
         {
             CreateCommands();
-            CreateCollectionView();
         }
         private void CreateCommands()
         {
@@ -222,20 +200,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             CreateIssueCommand = new RelayCommand(ShowCreateIssuePopup);
             EditIssueCommand = new RelayCommand(ShowEditIssuePopup);
             DeleteIssueCommand = new RelayCommand(DeleteIssue);
-        }
-        private void CreateCollectionView()
-        {
-            if (SelectedBoard != null)
-            {
-                GroupList = CollectionViewSource.GetDefaultView(SelectedBoard.Groups);
-                _groupList.Filter = IssueFilter;
-            }
-        }
-
-        private bool IssueFilter(object item)
-        {
-            Issue issue = item as Issue;
-            return (issue.Name.ToLower().Contains(IssueSearchText.ToLower()) || issue.Description.ToLower().Contains(IssueSearchText.ToLower()));
         }
 
         private async void GetBoard()
@@ -256,9 +220,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             _groupPopupViewModel.ShowEditGroupPopup((Group)groupToEdit);
         }
         /// TODO
-        private void DeleteGroup(object groupToDelete)
+        private async void DeleteGroup(object groupToDelete)
         {
-
+            await _groupDataService.Delete((groupToDelete as Group).Id);
+            GetBoard();
         }
 
         private void GroupSubscribeToEvents()
@@ -296,9 +261,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             _issuePopupViewModel.ShowEditIssuePopup((Issue)issueToEdit);
         }
         /// TODO
-        private void DeleteIssue(object na)
+        private async void DeleteIssue(object issueToDelete)
         {
-
+            await _issueDataService.Delete((issueToDelete as Issue).Id);
+            GetBoard();
         }
         
         private void IssueSubscribeToEvents()

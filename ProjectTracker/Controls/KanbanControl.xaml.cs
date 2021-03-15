@@ -95,7 +95,8 @@ namespace ProjectTracker.Controls
         }
         private void DeleteGroup_Click(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as KanbanControlViewModel).DeleteGroupCommand.Execute(null);
+            object group = ((sender as FrameworkElement).TemplatedParent as FrameworkElement).DataContext;
+            (this.DataContext as KanbanControlViewModel).DeleteGroupCommand.Execute(group);
         }
 
         private void EditIssue_Click(object sender, RoutedEventArgs e)
@@ -106,7 +107,8 @@ namespace ProjectTracker.Controls
 
         private void DeleteIssue_Click(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as KanbanControlViewModel).DeleteIssueCommand.Execute(null);
+            object issue = ((sender as FrameworkElement).TemplatedParent as FrameworkElement).DataContext;
+            (this.DataContext as KanbanControlViewModel).DeleteIssueCommand.Execute(issue);
         }
     }
 }

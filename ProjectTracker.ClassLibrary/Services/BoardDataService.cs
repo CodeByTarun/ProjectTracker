@@ -97,7 +97,7 @@ namespace ProjectTracker.ClassLibrary.Services
         public async Task<ObservableCollection<Issue>> GetIssuesInGroup(int groupId, ProjectTrackerDBContext context)
         {
             List<Issue> issues = await context.Set<Issue>().FromSqlRaw("WITH RECURSIVE my_tree as (SELECT * FROM Issues WHERE NextID = 0 AND GroupID = {0} " +
-                    "UNION ALL SELECT g.Id, g.name, g.Description, g.Tag, g.DateCreated, g.GroupID, g.NextID FROM Issues g join my_tree p on p.Id = g.NextID) SELECT * FROM my_tree", groupId).ToListAsync();
+                    "UNION ALL SELECT g.Id, g.DateCreated, g.Description, g.GroupID, g.Name, g.NextID FROM Issues g join my_tree p on p.Id = g.NextID) SELECT * FROM my_tree", groupId).ToListAsync();
 
             ObservableCollection<Issue> observableIssues = new ObservableCollection<Issue>(Enumerable.Reverse(issues));
 

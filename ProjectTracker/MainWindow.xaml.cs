@@ -13,9 +13,8 @@ namespace ProjectTracker
     {
         public MainWindow(MainViewModel viewModel, MainView mainView)
         {
-            DataContext = viewModel;
-
             InitializeComponent();
+            this.DataContext = viewModel;
 
             MainFrame.Navigate(mainView);
         }

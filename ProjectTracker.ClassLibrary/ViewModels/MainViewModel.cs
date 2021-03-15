@@ -9,21 +9,39 @@ namespace ProjectTracker.ClassLibrary.ViewModels
     {
         // ViewModels
         public TabViewModel TabViewModel { get; private set; }
+        public HomeViewModel HomeViewModel { get; private set; }
 
         // PopupViewModels
-        public ProjectPopupViewModel ProjectPopupViewModel {get; private set;}
+        public ProjectPopupViewModel ProjectPopupViewModel { get; private set; }
         public BoardPopupViewModel BoardPopupViewModel { get; private set; }
         public GroupPopupViewModel GroupPopupViewModel { get; private set; }
         public IssuePopupViewModel IssuePopupViewModel { get; private set; }
+        public TagPopupViewModel TagPopupViewModel { get; private set; }
 
-        public MainViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel, BoardPopupViewModel boardPopupViewModel, 
-            GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel)
+        public MainViewModel(TabViewModel tabViewModel, HomeViewModel homeViewModel, ProjectPopupViewModel projectPopupViewModel, BoardPopupViewModel boardPopupViewModel,
+            GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel, TagPopupViewModel tagPopupViewModel)
         {
             TabViewModel = tabViewModel;
+            HomeViewModel = homeViewModel;
+
             ProjectPopupViewModel = projectPopupViewModel;
             BoardPopupViewModel = boardPopupViewModel;
             GroupPopupViewModel = groupPopupViewModel;
             IssuePopupViewModel = issuePopupViewModel;
+            TagPopupViewModel = tagPopupViewModel;
+
+            SubscribeToEvents();
+        }
+
+        private void SubscribeToEvents()
+        {
+            HomeViewModel.ProjectListViewModel.UpdateTabsEvent += ProjectListViewModel_UpdateTabsEvent;
+        }
+
+        // Need to check if the project edited or deleted is in the tab list
+        private void ProjectListViewModel_UpdateTabsEvent(object sender, EventArgs e)
+        {
+            TabViewModel.CheckTabs(HomeViewModel.ProjectListViewModel.SelectedProject);
         }
     }
 }

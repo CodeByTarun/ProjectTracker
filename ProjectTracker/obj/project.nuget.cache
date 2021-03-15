@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "jMtk0ht1+Cp1150kzwdf2RDhYbBzvZS+I0Pyb3fkt7zXfjULHBHmmriKdn/s7QBPsev5xhQ02KTXc7NjAeVU/Q==",
+  "dgSpecHash": "ZlUIik/Gv6iCJkCDPt1kRP7NhlDx4LrlyFI3g1Pywuc5Wv6bMj0dUcNcEKQ6f8+pzFxLoN35an7njY3IIti+fg==",
   "success": true,
   "projectFilePath": "C:\\Users\\tarun\\source\\repos\\ProjectTracker\\ProjectTracker\\ProjectTracker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tarun\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
+    "C:\\Users\\tarun\\.nuget\\packages\\extended.wpf.toolkit\\4.0.2\\extended.wpf.toolkit.4.0.2.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\fontawesome5\\2.1.0\\fontawesome5.2.1.0.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -120,5 +121,16 @@
     "C:\\Users\\tarun\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Extended.Wpf.Toolkit 4.0.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Extended.Wpf.Toolkit",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

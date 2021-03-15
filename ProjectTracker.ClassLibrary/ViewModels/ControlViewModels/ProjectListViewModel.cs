@@ -3,6 +3,7 @@ using ProjectTracker.ClassLibrary.Helpers;
 using ProjectTracker.ClassLibrary.ServiceInterfaces;
 using ProjectTracker.ClassLibrary.ViewModels.PopupViewModels;
 using ProjectTracker.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -69,7 +70,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         public ICommand RefreshProjectListCommand { get; private set; }
 
         // Services
-        private IDataService<Project> _projectService;
+        private IDataService<Project> _projectDataService;
+
+        public event EventHandler UpdateTabsEvent;
 
         #endregion
 
@@ -81,16 +84,14 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             DummyProjectList();
             CreateCommands();
         }
-        public ProjectListViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel ,ProjectViewModelFactory projectViewModelFactory, IDataService<Project> projectService)
+        public ProjectListViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel ,ProjectViewModelFactory projectViewModelFactory, IDataService<Project> projectDataService)
         {
             this._tabViewModel = tabViewModel;
             this._projectPopupViewModel = projectPopupViewModel;
             this._projectViewModelFactory = projectViewModelFactory;
-            this._projectService = projectService;
+            this._projectDataService = projectDataService;
 
-            /// TODO: This needs to be taken from the database
             GetProjectList(null);
-            /// TODO: Remove this later on
             CreateCommands();
         }
 
@@ -98,7 +99,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
 
         private async void GetProjectList(object na)
         {
-            ProjectList = await _projectService.GetAll();
+            ProjectList = await _projectDataService.GetAll();
         }
 
         #region Commands
@@ -165,6 +166,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         {
             GetProjectList(null);
 
+            UpdateTabsEvent?.Invoke(this, EventArgs.Empty);
+
             UnsubscribeToEvents();
         }
         private void _projectPopupViewModel_ClosePopupEvent(object sender, System.EventArgs e)
@@ -184,9 +187,11 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         }
 
         /// TODO
-        public void RemoveProject(object selectedProject)
+        public async void RemoveProject(object selectedProject)
         {
-
+            await _projectDataService.Delete(SelectedProject.Id);
+            GetProjectList(null);
+            UpdateTabsEvent?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

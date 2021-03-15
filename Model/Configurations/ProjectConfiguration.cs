@@ -9,15 +9,13 @@ namespace ProjectTracker.Model.Configurations
         public void Configure(EntityTypeBuilder<Project> builder)
         {
             // One-to-Many Relations
-            builder.HasMany<Document>(p => p.Documents)
-                   .WithOne(d => d.Project)
-                   .HasForeignKey(d => d.ProjectID)
-                   .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasMany<Board>(p => p.Boards)
                 .WithOne(b => b.Project)
                 .HasForeignKey(b => b.ProjectID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<Tag>(p => p.Tags)
+                .WithMany(t => t.Projects);
         }
     }
 }

@@ -14,7 +14,52 @@ namespace ProjectTracker.Model.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.2");
+                .HasAnnotation("ProductVersion", "5.0.3");
+
+            modelBuilder.Entity("BoardTag", b =>
+                {
+                    b.Property<int>("BoardsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("BoardsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("BoardTag");
+                });
+
+            modelBuilder.Entity("IssueTag", b =>
+                {
+                    b.Property<int>("IssuesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("IssuesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("IssueTag");
+                });
+
+            modelBuilder.Entity("ProjectTag", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ProjectsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("ProjectTag");
+                });
 
             modelBuilder.Entity("ProjectTracker.Model.Models.Board", b =>
                 {
@@ -42,40 +87,6 @@ namespace ProjectTracker.Model.Migrations
                     b.HasIndex("ProjectID");
 
                     b.ToTable("Boards");
-                });
-
-            modelBuilder.Entity("ProjectTracker.Model.Models.Document", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsURL")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Path")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ProjectID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Tag")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectID");
-
-                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("ProjectTracker.Model.Models.Group", b =>
@@ -121,9 +132,6 @@ namespace ProjectTracker.Model.Migrations
                     b.Property<int>("NextID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GroupID");
@@ -149,29 +157,80 @@ namespace ProjectTracker.Model.Migrations
                     b.Property<int>("StatusInt")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Tag")
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("ProjectTracker.Model.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsFontBlack")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("BoardTag", b =>
+                {
+                    b.HasOne("ProjectTracker.Model.Models.Board", null)
+                        .WithMany()
+                        .HasForeignKey("BoardsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectTracker.Model.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IssueTag", b =>
+                {
+                    b.HasOne("ProjectTracker.Model.Models.Issue", null)
+                        .WithMany()
+                        .HasForeignKey("IssuesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectTracker.Model.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectTag", b =>
+                {
+                    b.HasOne("ProjectTracker.Model.Models.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectTracker.Model.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjectTracker.Model.Models.Board", b =>
                 {
                     b.HasOne("ProjectTracker.Model.Models.Project", "Project")
                         .WithMany("Boards")
-                        .HasForeignKey("ProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("ProjectTracker.Model.Models.Document", b =>
-                {
-                    b.HasOne("ProjectTracker.Model.Models.Project", "Project")
-                        .WithMany("Documents")
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -214,8 +273,6 @@ namespace ProjectTracker.Model.Migrations
             modelBuilder.Entity("ProjectTracker.Model.Models.Project", b =>
                 {
                     b.Navigation("Boards");
-
-                    b.Navigation("Documents");
                 });
 #pragma warning restore 612, 618
         }

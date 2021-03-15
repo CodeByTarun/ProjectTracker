@@ -181,6 +181,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Extended.Wpf.Toolkit": {
+              "target": "Package",
+              "version": "[4.0.2, )"
+            },
             "FontAwesome5": {
               "target": "Package",
               "version": "[2.1.0, )"

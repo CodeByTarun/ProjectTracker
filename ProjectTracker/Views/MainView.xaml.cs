@@ -21,15 +21,13 @@ namespace ProjectTracker.Views
     {
         private HomeView homeView;
         private ProjectView projectView;
-        public MainView(TabViewModel ViewModel, HomeView homeView, ProjectView projectView)
+        public MainView(TabViewModel tabViewModel, HomeView homeView, ProjectView projectView)
         {
             this.homeView = homeView;
             this.projectView = projectView;
-
-            DataContext = ViewModel;
-
+            this.DataContext = tabViewModel;
+            
             InitializeComponent();
-
             MainFrame.Navigate(homeView);
         }
 
@@ -70,6 +68,7 @@ namespace ProjectTracker.Views
             else
             {
                 MainFrame.Navigate(projectView);
+
             }
         }
         private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -78,7 +77,8 @@ namespace ProjectTracker.Views
 
             if (tabIndex != -1)
             {
-                projectView.SetDataContext(((TabViewModel)this.DataContext).Tabs[tabIndex]);
+                projectView.SetDataContext((this.DataContext as TabViewModel).Tabs[tabIndex]);
+                
             }
         }
     }

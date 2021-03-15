@@ -23,21 +23,27 @@
             </Grid.ColumnDefinitions>
 
             <ListView x:Name="ProjectItemsListView" Grid.Column="0" Grid.RowSpan="3" Margin="0,0,10,0"
-                      SelectionChanged="ProjectItemsListView_SelectionChanged">
+                      SelectionChanged="ProjectItemsListView_SelectionChanged" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="Pink" CornerRadius="25" Height="50" Width="50" Margin="0,20,0,0">
-                            <Grid>
-                                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+
+                <ListViewItem>
+                    <Border Background="Pink" CornerRadius="25" Height="50" Width="50" Margin="0,20,0,0">
+                        <Grid>
+                            <TextBlock Text="Overview" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ListViewItem>
+                <ListViewItem>
+                    <Border Background="Pink" CornerRadius="25" Height="50" Width="50" Margin="0,20,0,0">
+                        <Grid>
+                            <TextBlock Text="Board" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ListViewItem>
             </ListView>
 
             <Frame x:Name="ProjectViewFrame" Grid.Row="1" Grid.Column="1" NavigationUIVisibility="Hidden" Background="Green"/>
