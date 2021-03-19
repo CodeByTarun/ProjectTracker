@@ -5,6 +5,7 @@ using ProjectTracker.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProjectTracker.ClassLibrary.Services
 {
@@ -13,5 +14,6 @@ namespace ProjectTracker.ClassLibrary.Services
         public TagDataService(IDesignTimeDbContextFactory<ProjectTrackerDBContext> contextFactory) : base(contextFactory)
         {
         }
+        
     }
 }

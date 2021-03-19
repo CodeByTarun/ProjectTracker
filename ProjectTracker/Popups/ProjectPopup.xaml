@@ -35,25 +35,12 @@
                                               InputText="{Binding Description, Mode=TwoWay}"/>
 
             <StackPanel Grid.Row="3">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Content="Status" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
-
-                    <ComboBox Name="StatusComboBox" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
-
-                    <Label Content="Add Tags" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,0"/>
-                    <ComboBox Name="TagComboBox" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="5,0,0,0"/>
-
-
-                </Grid>
+                <controls:AddTagsControl TagList="{Binding TagList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         ItemTags="{Binding ItemTags, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         SelectedTag="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TagSearchText="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         AddTagCommand="{Binding AddItemTagCommand}"
+                                         RemoveTagCommand="{Binding RemoveItemTagCommand}"/>
                 <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
             </StackPanel>
             

@@ -219,7 +219,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             GroupSubscribeToEvents();
             _groupPopupViewModel.ShowEditGroupPopup((Group)groupToEdit);
         }
-        /// TODO
         private async void DeleteGroup(object groupToDelete)
         {
             await _groupDataService.Delete((groupToDelete as Group).Id);
@@ -260,7 +259,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             IssueSubscribeToEvents();
             _issuePopupViewModel.ShowEditIssuePopup((Issue)issueToEdit);
         }
-        /// TODO
+
         private async void DeleteIssue(object issueToDelete)
         {
             await _issueDataService.Delete((issueToDelete as Issue).Id);

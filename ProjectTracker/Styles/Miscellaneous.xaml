@@ -30,7 +30,6 @@
         </Setter>
     </Style>
 
-    
     <!-- Project Data Grid -->
     <Style x:Key="BaseDataGridStyle" TargetType="DataGrid">
         <Setter Property="SelectionMode" Value="Single"/>

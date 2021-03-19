@@ -282,13 +282,12 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             ResetFields();
             IsVisible = false;
         }
-        // TODO
+
         public void ShowTagPopup()
         {
             IsVisible = true;
         }
 
-        // TODO
         private void FilterTags()
         {
             if (TagList != null)

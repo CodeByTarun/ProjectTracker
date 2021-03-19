@@ -13,10 +13,11 @@ namespace ProjectTracker.Tests
     {
         private IDesignTimeDbContextFactory<ProjectTrackerDBContext> _contextFactory;
 
-        private IDataService<Project> _projectDataService;
+        private IProjectDataService _projectDataService;
         private IBoardDataService _boardDataService;
         private IGroupDataService _groupDataService;
         private IIssueDataService _issueDataService;
+        private ITagDataService _tagDataService;
 
         public SQLTestSetup(IDesignTimeDbContextFactory<ProjectTrackerDBContext> contextFactory)
         {
@@ -27,10 +28,11 @@ namespace ProjectTracker.Tests
                 context.Database.EnsureCreated();
             }
 
-            _projectDataService = new GenericDataService<Project>(_contextFactory);
+            _projectDataService = new ProjectDataService(_contextFactory);
             _boardDataService = new BoardDataService(_contextFactory);
             _groupDataService = new GroupDataService(_contextFactory);
             _issueDataService = new IssueDataService(_contextFactory);
+            _tagDataService = new TagDataService(_contextFactory);
         }
 
         public void ProjectTest()
@@ -54,6 +56,28 @@ namespace ProjectTracker.Tests
             CreateProjectBoards();
             CreateProjectBoardGroups();
             CreateIssues();
+        }
+        public async void CreateTagsForTests()
+        {
+            Tag tag1 = new Tag
+            {
+                Name = "Bug",
+                IsFontBlack = true
+            };
+            Tag tag2 = new Tag
+            {
+                Name = "Gaming",
+                IsFontBlack = true
+            };
+            Tag tag3 = new Tag
+            {
+                Name = "Task",
+                IsFontBlack = true
+            };
+
+            await _tagDataService.Create(tag1);
+            await _tagDataService.Create(tag2);
+            await _tagDataService.Create(tag3);
         }
 
         private async void CreateProjects()

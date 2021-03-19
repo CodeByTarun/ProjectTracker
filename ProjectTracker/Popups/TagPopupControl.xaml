@@ -43,7 +43,20 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Border CornerRadius="5" Background="{Binding Color, Converter={StaticResource ColorConverter}}" Grid.Column="0">
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Name}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFontBlack}" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsFontBlack}" Value="False">
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Border>
 
                             <Button Grid.Column="1" Content="Edit" HorizontalAlignment="Right" Command="{Binding ElementName=root, Path=DataContext.StartEditCommand}" CommandParameter="{Binding}"/>
@@ -71,8 +84,32 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <toolkit:WatermarkTextBox x:Name="TagNameTextBox" Watermark="Name" Grid.Column="0" Grid.Row="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                <toolkit:ColorPicker x:Name="TagColorPicker" Grid.Column="1" Margin="10,0,10,0" Grid.Row="1" SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource ColorToIntConverter}}"/>
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="CancelEdit" Command="{Binding CancelEditCommand}" CommandParameter="{x:Null}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource CloseButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DataContext.IsEdit, ElementName=root}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DataContext.IsEdit, ElementName=root}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <toolkit:WatermarkTextBox x:Name="TagNameTextBox" Watermark="Name" Grid.Column="1" 
+                                              HorizontalAlignment="Stretch"
+                                              HorizontalContentAlignment="Stretch"
+                                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                
+               <toolkit:ColorPicker x:Name="TagColorPicker" Grid.Column="1" Margin="10,0,10,0" Grid.Row="1" SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource ColorToIntConverter}}"/>
                 <ToggleButton Content="Text Color"  Grid.Column="2" Margin="0,0,10,0" Grid.Row="1" IsChecked="{Binding IsFontBlack, Mode=TwoWay}"/>
                 <Button x:Name="AddEditButton" Grid.Row="1" Grid.Column="3">
                     <Button.Style>

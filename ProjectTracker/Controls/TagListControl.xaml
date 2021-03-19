@@ -7,11 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
     <Grid x:Name="LayoutRoot">
-        <ListView ItemsSource="{Binding Tags}">
+        <ListView ItemsSource="{Binding TagList}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border x:Name="TagBorder" CornerRadius="10" Margin="0,0,10,0" Background="{Binding Color, Converter={StaticResource ColorConverter}}">
-                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text="{Binding Name}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFontBlack}" Value="True">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsFontBlack}" Value="False">
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>

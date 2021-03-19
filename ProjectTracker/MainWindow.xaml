@@ -12,6 +12,7 @@
         xmlns:popups="clr-namespace:ProjectTracker.Popups"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:TabViewModel, IsDesignTimeCreatable=True}"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Title="MainWindow" Height="450" Width="900" MinWidth="600">
 
     <Grid Background="{StaticResource QuaternaryColorBrush}">

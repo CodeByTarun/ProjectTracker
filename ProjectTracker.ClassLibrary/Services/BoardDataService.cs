@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ProjectTracker.ClassLibrary.Services
 {
-    public class BoardDataService : GenericDataService<Board>, IBoardDataService
+    public class BoardDataService : GenericWithTagsDataService<Board>, IBoardDataService
     {
         public BoardDataService(IDesignTimeDbContextFactory<ProjectTrackerDBContext> contextFactory) : base(contextFactory)
         {
@@ -22,7 +22,7 @@ namespace ProjectTracker.ClassLibrary.Services
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {
-                IEnumerable<Board> boards = await context.Set<Board>().Where(b => b.ProjectID == projectId).ToListAsync();
+                IEnumerable<Board> boards = await context.Set<Board>().Include(b => b.Tags).Where(b => b.ProjectID == projectId).ToListAsync();
                 return boards;
             }
         }
@@ -101,7 +101,28 @@ namespace ProjectTracker.ClassLibrary.Services
 
             ObservableCollection<Issue> observableIssues = new ObservableCollection<Issue>(Enumerable.Reverse(issues));
 
+            if (observableIssues != null)
+            {
+                foreach (Issue issue in observableIssues)
+                {
+                    issue.Tags = GetTagsInIssue(issue.Id, context);
+                }
+            }
+
             return observableIssues;
+        }
+        public ObservableCollection<Tag> GetTagsInIssue(int issuesId, ProjectTrackerDBContext context)
+        {
+
+            List<Tag> tags = (List<Tag>)context.Set<Issue>().Include(i => i.Tags).FirstOrDefault(i => i.Id == issuesId).Tags.ToList();
+
+            if(tags != null)
+            {
+                return new ObservableCollection<Tag>(tags);
+            } else
+            {
+                return null;
+            }
         }
     }
 }

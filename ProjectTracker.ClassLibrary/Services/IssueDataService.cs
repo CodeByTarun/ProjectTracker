@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProjectTracker.ClassLibrary.Services
 {
-    public class IssueDataService : GenericDataService<Issue>, IIssueDataService
+    public class IssueDataService : GenericWithTagsDataService<Issue>, IIssueDataService
     {
         public IssueDataService(IDesignTimeDbContextFactory<ProjectTrackerDBContext> contextFactory) : base(contextFactory)
         {

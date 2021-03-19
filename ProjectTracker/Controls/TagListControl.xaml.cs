@@ -19,7 +19,14 @@ namespace ProjectTracker.Controls
     /// </summary>
     public partial class TagListControl : UserControl
     {
-        public IEnumerable<Tag> Tags { get; set; }
+        public IEnumerable<Tag> TagList
+        {
+            get { return (IEnumerable<Tag>)GetValue(TagListProperty); }
+            set { SetValue(TagListProperty, value); }
+        }
+
+        public static readonly DependencyProperty TagListProperty =
+            DependencyProperty.Register("TagList", typeof(IEnumerable<Tag>), typeof(TagListControl));
 
         public TagListControl()
         {

@@ -4,12 +4,13 @@ using ProjectTracker.ClassLibrary.ViewModels.Interfaces;
 using ProjectTracker.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
-    public class ProjectPopupViewModel : AbstractPopupViewModel
+    public class ProjectPopupViewModel : TagExtensionAbstractPopupViewModel
     {
         #region Fields
         // Project Properties
@@ -31,46 +32,68 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
 
         // Services
-        private IDataService<Project> _projectService;
+        private IProjectDataService _projectService;
         #endregion
 
         #region Constructors
-        public ProjectPopupViewModel()
+
+        public ProjectPopupViewModel(IProjectDataService projectService, ITagDataService tagDataService) : base(tagDataService)
+        {
+            _projectService = projectService;
+            InitialSetup();
+        }
+        #endregion
+
+        #region Setup
+
+        private void InitialSetup()
+        {
+            PropertiesSetup();
+            CreateCommands();
+        }
+
+        private void PropertiesSetup()
         {
             IsVisible = false;
-            CreateCommands();
             DialogTitle = "Create a Project";
             ButtonContent = "Create";
         }
 
-        public ProjectPopupViewModel(IDataService<Project> projectService) : base()
-        {
-            _projectService = projectService;
-        }
         #endregion
 
         #region Command Functions
 
         public void ShowCreateProjectPopup()
         {
+            IsVisible = true;
+
             DialogTitle = "Create a Project";
             ButtonContent = "Create";
 
-            IsVisible = true;
-
+            TagSearchText = "";
         }
         public void ShowEditProjectPopup(Project projectToEdit)
         {
+            IsVisible = true;
+
+            DialogTitle = "Edit Project";
+            ButtonContent = "Save";
+
             _isEdit = true;
             _projectToEdit = projectToEdit;
 
             Name = projectToEdit.Name;
             Description = projectToEdit.Description;
 
-            DialogTitle = "Edit Project";
-            ButtonContent = "Save";
+            if (projectToEdit.Tags != null)
+            {
+                foreach (Tag tag in projectToEdit.Tags)
+                {
+                    ItemTags.Add(tag);
+                }
+            }
 
-            IsVisible = true;
+            TagSearchText = "";
         }
 
         protected override void ResetFields()
@@ -79,6 +102,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             Description = "";
             _projectToEdit = null;
             _isEdit = false;
+
+            base.ResetFields();
         }
 
         protected async override void CreateItem()
@@ -87,6 +112,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             {
                 Name = Name,
                 Description = Description,
+                Tags = ItemTags,
                 DateCreated = DateTime.Now
             };
 
@@ -97,6 +123,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             _projectToEdit.Name = Name;
             _projectToEdit.Description = Description;
+            _projectToEdit.Tags = ItemTags;
 
             await _projectService.Update(_projectToEdit.Id, _projectToEdit);
         }

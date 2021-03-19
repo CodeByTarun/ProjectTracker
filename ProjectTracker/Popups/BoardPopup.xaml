@@ -17,6 +17,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -33,8 +34,15 @@
 
             <DatePicker Grid.Row="3" Width="300" Margin="0,10,0,10"/>
 
-            <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}" Grid.Row="4"/>
-
+            <StackPanel Grid.Row="4">
+                <controls:AddTagsControl TagList="{Binding TagList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         ItemTags="{Binding ItemTags, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         SelectedTag="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TagSearchText="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         AddTagCommand="{Binding AddItemTagCommand}"
+                                         RemoveTagCommand="{Binding RemoveItemTagCommand}"/>
+                <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>

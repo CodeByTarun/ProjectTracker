@@ -11,6 +11,7 @@ namespace ProjectTracker.ClassLibrary.Factories
 {
     public class ProjectItemsViewModelFactory
     {
+        private IProjectDataService _projectDataService;
         private IBoardDataService _boardDataService;
         private IGroupDataService _groupDataService;
         private IIssueDataService _issueDataService;
@@ -19,8 +20,9 @@ namespace ProjectTracker.ClassLibrary.Factories
         private GroupPopupViewModel _groupPopupViewModel;
         private IssuePopupViewModel _issuePopupViewModel;
 
-        public ProjectItemsViewModelFactory(IBoardDataService boardDataService, IGroupDataService groupDataService, IIssueDataService issueDataService, BoardPopupViewModel boardPopupViewModel, GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel)
+        public ProjectItemsViewModelFactory(IProjectDataService projectDataService, IBoardDataService boardDataService, IGroupDataService groupDataService, IIssueDataService issueDataService, BoardPopupViewModel boardPopupViewModel, GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel)
         {
+            _projectDataService = projectDataService;
             _boardDataService = boardDataService;
             _groupDataService = groupDataService;
             _issueDataService = issueDataService;
@@ -33,7 +35,7 @@ namespace ProjectTracker.ClassLibrary.Factories
         {
             BoardListViewModel boardListViewModel = CreateBoardListViewModel(currentProject);
 
-            return new ProjectOverviewViewModel(currentProject, boardListViewModel);
+            return new ProjectOverviewViewModel(currentProject, boardListViewModel, _projectDataService);
         }
 
         public ProjectIssueViewModel CreateProjectIssueViewModel(Project currentProject)

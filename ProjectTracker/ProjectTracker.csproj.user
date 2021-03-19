@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\AddTagsControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Controls\BoardListControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -57,6 +60,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Controls\AddTagsControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Controls\BoardListControl.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -3,10 +3,10 @@ C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Debug
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.pdb
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Debug\netcoreapp3.1\ProjectTracker.Model.dll
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Debug\netcoreapp3.1\ProjectTracker.Model.pdb
-C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.csprojAssemblyReference.cache
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.AssemblyInfoInputs.cache
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.AssemblyInfo.cs
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.csproj.CoreCompileInputs.cache
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.csproj.CopyComplete
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.dll
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.pdb
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Debug\netcoreapp3.1\ProjectTracker.ClassLibrary.csprojAssemblyReference.cache

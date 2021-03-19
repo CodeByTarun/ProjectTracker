@@ -75,7 +75,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*" HeaderStyle="{StaticResource BaseDataGridHeaderStyle}" CellStyle="{StaticResource BaseDataCellStyle}" ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="3*" HeaderStyle="{StaticResource BaseDataGridHeaderStyle}" CellStyle="{StaticResource BaseDataCellStyle}" ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="3*" HeaderStyle="{StaticResource BaseDataGridHeaderStyle}" CellStyle="{StaticResource BaseDataCellStyle}" ElementStyle="{StaticResource DataGridTextBlockStyle}"/>                
                 <DataGridTextColumn Header="Date Created" Binding="{Binding DateCreated}" Width="*" HeaderStyle="{StaticResource BaseDataGridHeaderStyle}" CellStyle="{StaticResource BaseDataCellStyle}" ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
                 <DataGridTextColumn Width="*" HeaderStyle="{StaticResource BlankGridHeaderStyle}" CellStyle="{StaticResource MenuDataCellStyle}"/>
                 <DataGridTextColumn Header="Status" Binding="{Binding StatusInt}" Width="*" HeaderStyle="{StaticResource BaseDataGridHeaderStyle}" CellStyle="{StaticResource BaseDataCellStyle}" ElementStyle="{StaticResource DataGridTextBlockStyle}"/>

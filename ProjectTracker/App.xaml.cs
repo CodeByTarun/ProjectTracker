@@ -59,7 +59,7 @@ namespace ProjectTracker
             services.AddSingleton<ProjectItemsViewModelFactory>();
 
             // Model Services
-            services.AddSingleton<IDataService<Project>, GenericDataService<Project>>();
+            services.AddSingleton<IProjectDataService, ProjectDataService>();
             services.AddSingleton<IBoardDataService, BoardDataService>();
             services.AddSingleton<IGroupDataService, GroupDataService>();
             services.AddSingleton<IIssueDataService, IssueDataService>();

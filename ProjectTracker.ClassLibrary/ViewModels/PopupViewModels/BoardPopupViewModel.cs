@@ -4,12 +4,13 @@ using ProjectTracker.ClassLibrary.ViewModels.Interfaces;
 using ProjectTracker.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
-    public class BoardPopupViewModel : AbstractPopupViewModel
+    public class BoardPopupViewModel : TagExtensionAbstractPopupViewModel
     {
         // Extra Fields
         private string _description;
@@ -33,18 +34,20 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         IBoardDataService _boardDataService;
 
         // Constructor
-        public BoardPopupViewModel()
-        {
-            IsVisible = false;
-            CreateCommands();
-
-            DialogTitle = "Create a Board";
-            ButtonContent = "Create";
-        }
-        public BoardPopupViewModel(IBoardDataService boardDataService) : base()
+        public BoardPopupViewModel(IBoardDataService boardDataService, ITagDataService tagDataService) : base(tagDataService)
         {
             this._boardDataService = boardDataService;
+            InitialSetup();
         }
+
+        #region Setup
+
+        private void InitialSetup()
+        {
+            GetTagList();
+        }
+
+        #endregion 
 
         // Methods for showing Create and Edit Popups
         public void ShowCreateBoardPopup(Project project)
@@ -53,6 +56,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             DialogTitle = "Create a Board";
             ButtonContent = "Create";
+
+            TagSearchText = "";
 
             IsVisible = true;
         }
@@ -66,6 +71,16 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             Name = boardToEdit.Name;
             Description = boardToEdit.Description;
 
+            if (boardToEdit.Tags != null)
+            {
+                foreach (Tag tag in boardToEdit.Tags)
+                {
+                    ItemTags.Add(tag);
+                }
+            }
+
+            TagSearchText = "";
+
             DialogTitle = "Edit Project";
             ButtonContent = "Save";
 
@@ -78,6 +93,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             {
                 Name = Name,
                 Description = Description,
+                Tags = ItemTags,
                 DateCreated = DateTime.Now,
                 ProjectID = _projectId
             };
@@ -88,6 +104,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             _boardToEdit.Name = Name;
             _boardToEdit.Description = Description;
+            _boardToEdit.Tags = ItemTags;
 
             await _boardDataService.Update(_boardToEdit.Id , _boardToEdit);
         }
@@ -99,6 +116,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             _boardToEdit = null;
             _projectId = 0;
             _isEdit = false;
+
+            base.ResetFields();
         }
     }
 }

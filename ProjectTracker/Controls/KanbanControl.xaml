@@ -31,7 +31,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Name="GroupBorder" CornerRadius="10" Background="LightGray" Margin="30,15,15,15"
-                                        AllowDrop="True"
+                                        AllowDrop="True" Width="400"
                                         PreviewMouseLeftButtonDown="GroupBorder_PreviewMouseLeftButtonDown"
                                         DragEnter="GroupBorder_DragEnter">
                                 
@@ -122,6 +122,7 @@
                                                                     <RowDefinition Height="*"/>
                                                                     <RowDefinition Height="*"/>
                                                                     <RowDefinition Height="*"/>
+                                                                    <RowDefinition Height="*"/>
                                                                 </Grid.RowDefinitions>
 
                                                                 <DockPanel x:Name="IssueHeader" Grid.Row="0">
@@ -141,7 +142,9 @@
                                                                    Text="{Binding Path=Description}" 
                                                                    TextWrapping="Wrap" Grid.Row="1"/>
 
-                                                                <DockPanel x:Name="IssueInfo" Grid.Row="2" IsHitTestVisible="False">
+                                                                <local:TagListControl TagList="{Binding Tags}" Grid.Row="2"/>
+
+                                                                <DockPanel x:Name="IssueInfo" Grid.Row="3" IsHitTestVisible="False">
                                                                     <TextBlock Text="{Binding Path=DateCreated}" HorizontalAlignment="Right"/>
                                                                 </DockPanel>
                                                             </Grid>

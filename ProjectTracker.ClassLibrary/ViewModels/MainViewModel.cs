@@ -36,12 +36,39 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         private void SubscribeToEvents()
         {
             HomeViewModel.ProjectListViewModel.UpdateTabsEvent += ProjectListViewModel_UpdateTabsEvent;
-        }
+            TagPopupViewModel.AddTagEvent += TagPopupViewModel_AddTagEvent;
+            TagPopupViewModel.EditOrDeleteTagEvent += TagPopupViewModel_EditOrDeleteTagEvent;
+        }        
 
-        // Need to check if the project edited or deleted is in the tab list
         private void ProjectListViewModel_UpdateTabsEvent(object sender, EventArgs e)
         {
             TabViewModel.CheckTabs(HomeViewModel.ProjectListViewModel.SelectedProject);
+        }
+
+        // For this just need to update the popups and tag filter (when created for kanban board, board list, and project list)
+        private void TagPopupViewModel_AddTagEvent(object sender, EventArgs e)
+        {
+            UpdateTagsInPopups();
+        }
+
+        // For this need to update the above and update the board list, kanban board, and project list
+        private void TagPopupViewModel_EditOrDeleteTagEvent(object sender, EventArgs e)
+        {
+            UpdateTagsInPopups();
+            UpdateTagsInControls();
+        }
+
+        private void UpdateTagsInPopups()
+        {
+            ProjectPopupViewModel.GetTagList();
+            BoardPopupViewModel.GetTagList();
+            IssuePopupViewModel.GetTagList();
+        }
+
+        private void UpdateTagsInControls()
+        {
+            TabViewModel.UpdateTagsInAllTabs();
+            HomeViewModel.ProjectListViewModel.GetProjectList(null);
         }
     }
 }

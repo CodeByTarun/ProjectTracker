@@ -40,7 +40,7 @@ namespace ProjectTracker.ClassLibrary.Services
             }
         }
 
-        public async Task<T> Get(int id)
+        public virtual async Task<T> Get(int id)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {
@@ -49,7 +49,7 @@ namespace ProjectTracker.ClassLibrary.Services
             }
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {
@@ -58,7 +58,7 @@ namespace ProjectTracker.ClassLibrary.Services
             }
         }
 
-        public async Task<T> Update(int id, T entity)
+        public virtual async Task<T> Update(int id, T entity)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {

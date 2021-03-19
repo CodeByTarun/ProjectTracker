@@ -2,11 +2,12 @@
 using ProjectTracker.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
-    public class IssuePopupViewModel : AbstractPopupViewModel
+    public class IssuePopupViewModel : TagExtensionAbstractPopupViewModel
     {
         private Group _group;
         private Issue _issueToEdit;
@@ -27,16 +28,20 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         private IIssueDataService _issueDataService;
 
-        public IssuePopupViewModel() : base()
-        {
-            DialogTitle = "Create an Issue";
-            ButtonContent = "Create";
-        }
-
-        public IssuePopupViewModel(IIssueDataService issueDataService) : base()
+        public IssuePopupViewModel(IIssueDataService issueDataService, ITagDataService tagDataService) : base(tagDataService)
         {
             this._issueDataService = issueDataService;
+            InitialSetup();
         }
+
+        #region Setup
+
+        private void InitialSetup()
+        {
+            GetTagList();
+        }
+
+        #endregion 
 
         public void ShowCreateIssuePopup(Group group)
         {
@@ -46,6 +51,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             ButtonContent = "Create";
 
             IsVisible = true;
+
+            TagSearchText = "";
         }
         public void ShowEditIssuePopup(Issue issueToEdit)
         {
@@ -54,6 +61,16 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             Name = issueToEdit.Name;
             Description = issueToEdit.Description;
+
+            if (issueToEdit.Tags != null)
+            {
+                foreach (Tag tag in issueToEdit.Tags)
+                {
+                    ItemTags.Add(tag);
+                }
+            }
+
+            TagSearchText = "";
 
             DialogTitle = "Edit Issue";
             ButtonContent = "Save";
@@ -67,6 +84,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             {
                 Name = Name,
                 Description = Description,
+                Tags = ItemTags,
                 DateCreated = DateTime.Now,
                 GroupID = _group.Id
             };
@@ -77,6 +95,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             _issueToEdit.Name = Name;
             _issueToEdit.Description = Description;
+            _issueToEdit.Tags = ItemTags;
 
             await _issueDataService.Update(_issueToEdit.Id, _issueToEdit);
         }
@@ -88,6 +107,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             _group = null;
             _issueToEdit = null;
             _isEdit = false;
+
+            base.ResetFields();
         }
     }
 }

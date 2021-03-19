@@ -113,6 +113,18 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             GetBoardList();
             SetBoardFields();
         }
+
+        internal void UpdateTags()
+        {
+            Board currentBoard = SelectedBoard;
+            GetBoardList();
+
+            if (currentBoard != null)
+            {
+                SelectedBoard = BoardList.FirstOrDefault(b => b.Id == currentBoard.Id);
+            }
+        }
+
         private void CreateCommands()
         {
             CreateBoardCommand = new RelayCommand(ShowCreateBoardPopup);
@@ -148,7 +160,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
 
             _isEdit = true;
         }
-        /// TODO
+
         private async void DeleteBoard(object na)
         {
             await _boardDataService.Delete(SelectedBoard.Id);

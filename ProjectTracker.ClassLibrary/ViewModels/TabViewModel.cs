@@ -2,6 +2,7 @@
 using ProjectTracker.ClassLibrary.ServiceInterfaces;
 using ProjectTracker.ClassLibrary.ViewModels.PopupViewModels;
 using ProjectTracker.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -92,6 +93,15 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             Tabs.Add(p1);
             Tabs.Add(p2);
             Tabs.Add(p3);
+        }
+
+        internal void UpdateTagsInAllTabs()
+        {
+            foreach (ProjectViewModel viewModel in Tabs)
+            {
+                viewModel.ProjectOverviewViewModel.UpdateTags();
+                viewModel.ProjectIssueViewModel.UpdateTags();
+            }
         }
 
         // Remove Tab Command

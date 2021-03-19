@@ -70,7 +70,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         public ICommand RefreshProjectListCommand { get; private set; }
 
         // Services
-        private IDataService<Project> _projectDataService;
+        private IProjectDataService _projectDataService;
 
         public event EventHandler UpdateTabsEvent;
 
@@ -84,7 +84,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             DummyProjectList();
             CreateCommands();
         }
-        public ProjectListViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel ,ProjectViewModelFactory projectViewModelFactory, IDataService<Project> projectDataService)
+        public ProjectListViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel ,ProjectViewModelFactory projectViewModelFactory, IProjectDataService projectDataService)
         {
             this._tabViewModel = tabViewModel;
             this._projectPopupViewModel = projectPopupViewModel;
@@ -97,7 +97,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
 
         #endregion
 
-        private async void GetProjectList(object na)
+        public async void GetProjectList(object na)
         {
             ProjectList = await _projectDataService.GetAll();
         }
@@ -186,7 +186,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             _projectPopupViewModel.ClosePopupEvent -= _projectPopupViewModel_ClosePopupEvent;
         }
 
-        /// TODO
         public async void RemoveProject(object selectedProject)
         {
             await _projectDataService.Delete(SelectedProject.Id);
