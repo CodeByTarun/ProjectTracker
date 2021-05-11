@@ -140,7 +140,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         public event EventHandler AddTagEvent;
 
         #endregion
-
         public TagPopupViewModel()
         {
             CreateDummyTagList();
@@ -189,8 +188,11 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             EditTagCommand = new RelayCommand(EditTag, CanEditTag);
             StartEditCommand = new RelayCommand(StartEdit);
             CancelEditCommand = new RelayCommand(CancelEdit);
-            DeleteTagCommand = new RelayCommand(DeleteTag);
+            DeleteTagCommand = new RelayCommand(DeleteTag, CanDeleteTag);
         }
+
+        
+
         private void ResetFields()
         {
             Name = "";
@@ -222,12 +224,15 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         private void StartEdit(object selectedTag)
         {
-            IsEdit = true;
-            SelectedTag = selectedTag as Tag;
+            if (selectedTag != null)
+            {
+                IsEdit = true;
+                SelectedTag = selectedTag as Tag;
 
-            Name = SelectedTag.Name;
-            Color = SelectedTag.Color;
-            IsFontBlack = SelectedTag.IsFontBlack;
+                Name = SelectedTag.Name;
+                Color = SelectedTag.Color;
+                IsFontBlack = SelectedTag.IsFontBlack;
+            }
         }
 
         private async void EditTag(object obj)
@@ -253,12 +258,20 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             ResetFields();
         }
 
-        private async void DeleteTag(object SelectedTag)
+        private bool CanDeleteTag(object selectedTag)
         {
-            await _tagDataService.Delete((SelectedTag as Tag).Id);
-            GetTags();
+            return (selectedTag != this.SelectedTag);
+        }
 
-            EditOrDeleteTagEvent?.Invoke(this, EventArgs.Empty);
+        private async void DeleteTag(object selectedTag)
+        {
+            if (selectedTag != null)
+            {
+                await _tagDataService.Delete((selectedTag as Tag).Id);
+                GetTags();
+
+                EditOrDeleteTagEvent?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private bool CanCreateTag(object obj)
@@ -274,6 +287,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
         private bool CanEditTag(object obj)
         {
+            if (SelectedTag == null) return false;
+
             return !(Name == "" || Color == 0);
         }
 

@@ -3,6 +3,7 @@ using ProjectTracker.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
@@ -47,7 +48,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             IsVisible = true;
         }
 
-        protected async override void CreateItem()
+        protected async override Task CreateItem()
         {
             Group group = new Group()
             {
@@ -58,7 +59,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             await _groupDataService.Create(group);
         }
 
-        protected async override void EditItem()
+        protected async override Task EditItem()
         {
             _groupToEdit.Name = Name;
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 
 namespace ProjectTracker.ClassLibrary.Services
 {
@@ -19,11 +20,28 @@ namespace ProjectTracker.ClassLibrary.Services
 
         public async override Task<Issue> Create(Issue entity)
         {
+            IEnumerable<Tag> tags = null;
+
+            if (entity.Tags != null)
+            {
+                tags = entity.Tags;
+            }
+
+            entity.Tags = new Collection<Tag>();
+
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
             {
                 var nextT = await context.Set<Issue>().FirstOrDefaultAsync((i) => i.GroupID == entity.GroupID && i.NextID == 0);
                 entity.NextID = 0;
 
+                if (tags != null)
+                {
+                    foreach (Tag tag in tags)
+                    {
+                        Tag tagToAdd = context.Tags.FirstOrDefault(t => t.Id == tag.Id);
+                        entity.Tags.Add(tagToAdd);
+                    }
+                }
                 var createdResult = await context.Set<Issue>().AddAsync(entity);
                 await context.SaveChangesAsync();
 

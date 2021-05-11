@@ -1,10 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:collection="clr-namespace:System.Collections;assembly=mscorlib"
                     xmlns:local="clr-namespace:ProjectTracker.Styles">
 
-    <sys:Int32 x:Key="ObjectNameMaxLength">100</sys:Int32>
+    <sys:Int32 x:Key="ObjectNameMaxLength">20</sys:Int32>
     <sys:Int32 x:Key="DescriptionMaxLength">400</sys:Int32>
-    <sys:Int32 x:Key="TagMaxLength">30</sys:Int32>
-    
+    <sys:Int32 x:Key="TagMaxLength">10</sys:Int32>
+    <sys:Int32 x:Key="IssueNameMaxLength">40</sys:Int32>
+
+    <x:Array x:Key="StatusArray" Type="{x:Type sys:String}">
+        <sys:String>Proposed</sys:String>
+        <sys:String>Active</sys:String>
+        <sys:String>On Hold</sys:String>
+        <sys:String>Completed</sys:String>
+        <sys:String>Canceled</sys:String>
+    </x:Array>
+
+    <x:Array x:Key="ObjectStatusArray" Type="{x:Type sys:Object}">
+        <sys:String>Proposed</sys:String>
+        <sys:String>Active</sys:String>
+        <sys:String>On Hold</sys:String>
+        <sys:String>Completed</sys:String>
+        <sys:String>Canceled</sys:String>
+    </x:Array>
+
 </ResourceDictionary>

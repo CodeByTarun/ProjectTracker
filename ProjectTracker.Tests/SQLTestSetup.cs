@@ -86,21 +86,21 @@ namespace ProjectTracker.Tests
             {
                 Name = "Project1",
                 DateCreated = DateTime.Now,
-                StatusInt = 1,
+                Status = "Open",
                 Description = "First Semester"
             };
             Project project2 = new Project
             {
                 Name = "Project2",
                 DateCreated = DateTime.Now,
-                StatusInt = 0,
+                Status = "Closed",
                 Description = "Second project"
             };
             Project project3 = new Project
             {
                 Name = "Project3",
                 DateCreated = DateTime.Now,
-                StatusInt = 2,
+                Status = "Completed",
                 Description = "Third project"
             };
 

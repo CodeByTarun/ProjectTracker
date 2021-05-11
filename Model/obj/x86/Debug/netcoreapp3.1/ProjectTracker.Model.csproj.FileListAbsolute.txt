@@ -1,0 +1,12 @@
+C:\Users\tarun\source\repos\ProjectTracker\Model\bin\x86\Debug\netcoreapp3.1\ProjectTracker.Model.deps.json
+C:\Users\tarun\source\repos\ProjectTracker\Model\bin\x86\Debug\netcoreapp3.1\ProjectTracker.Model.runtimeconfig.json
+C:\Users\tarun\source\repos\ProjectTracker\Model\bin\x86\Debug\netcoreapp3.1\ProjectTracker.Model.runtimeconfig.dev.json
+C:\Users\tarun\source\repos\ProjectTracker\Model\bin\x86\Debug\netcoreapp3.1\ProjectTracker.Model.dll
+C:\Users\tarun\source\repos\ProjectTracker\Model\bin\x86\Debug\netcoreapp3.1\ProjectTracker.Model.pdb
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.AssemblyInfoInputs.cache
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.AssemblyInfo.cs
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.dll
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.pdb
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.genruntimeconfig.cache
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.csprojAssemblyReference.cache
+C:\Users\tarun\source\repos\ProjectTracker\Model\obj\x86\Debug\netcoreapp3.1\ProjectTracker.Model.csproj.CoreCompileInputs.cache

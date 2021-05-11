@@ -83,24 +83,13 @@ namespace ProjectTracker.Controls
             comboBox.IsDropDownOpen = true;
         }
 
-        private void AddTagButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddTagButton.Visibility = Visibility.Collapsed;
-            TagListComboBox.Visibility = Visibility.Visible;
-        }
-
         private void TagListComboBox_DropDownClosed(object sender, EventArgs e)
         {
-            int listCount = ItemTagListView.Items.Count;
-
             AddTagCommand.Execute(TagListComboBox.SelectedItem);
             TagListComboBox.SelectedIndex = -1;
 
-            if (listCount != ItemTagListView.Items.Count)
-            {
-                AddTagButton.Visibility = Visibility.Visible;
-                TagListComboBox.Visibility = Visibility.Collapsed;
-            }
+            FocusManager.SetFocusedElement(FocusManager.GetFocusScope(TagListComboBox), null);
+            Keyboard.ClearFocus();
         }
 
         private void RemoveTagButton_Click(object sender, RoutedEventArgs e)

@@ -17,12 +17,55 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
 
         private TabViewModel _tabViewModel;
         private ProjectPopupViewModel _projectPopupViewModel;
+        private DeletePopupViewModel _deletePopupViewModel;
 
         private ProjectViewModelFactory _projectViewModelFactory;
 
         private IEnumerable<Project> projectList;
         private string projectSearchText;
         private Project selectedProject;
+
+        private string _selectedStatus;
+        public string SelectedStatus
+        {
+            get
+            {
+                return _selectedStatus;
+            }
+            set
+            {
+                _selectedStatus = value;
+                RaisePropertyChangedEvent(nameof(SelectedStatus));
+            }
+        }
+
+        private IEnumerable<Tag> _tagList;
+        public IEnumerable<Tag> TagList
+        {
+            get
+            {
+                return _tagList;
+            }
+            set
+            {
+                _tagList = value;
+                RaisePropertyChangedEvent(nameof(TagList));
+            }
+        }
+
+        private Tag _selectedTag;
+        public Tag SelectedTag
+        {
+            get
+            {
+                return _selectedTag;
+            }
+            set
+            {
+                _selectedTag = value;
+                RaisePropertyChangedEvent(nameof(SelectedTag));
+            }
+        }
 
         public IEnumerable<Project> ProjectList
         {
@@ -68,6 +111,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         public ICommand EditProjectCommand { get; private set; }
         public ICommand RemoveProjectCommand { get; private set; }
         public ICommand RefreshProjectListCommand { get; private set; }
+        public ICommand StatusFilterCommand { get; private set; }
+        public ICommand TagFilterCommand { get; private set; }
 
         // Services
         private IProjectDataService _projectDataService;
@@ -84,12 +129,14 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             DummyProjectList();
             CreateCommands();
         }
-        public ProjectListViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel ,ProjectViewModelFactory projectViewModelFactory, IProjectDataService projectDataService)
+        public ProjectListViewModel(TabViewModel tabViewModel, ProjectPopupViewModel projectPopupViewModel ,ProjectViewModelFactory projectViewModelFactory, 
+            IProjectDataService projectDataService, DeletePopupViewModel deletePopupViewModel)
         {
             this._tabViewModel = tabViewModel;
             this._projectPopupViewModel = projectPopupViewModel;
             this._projectViewModelFactory = projectViewModelFactory;
             this._projectDataService = projectDataService;
+            this._deletePopupViewModel = deletePopupViewModel;
 
             GetProjectList(null);
             CreateCommands();
@@ -100,6 +147,33 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         public async void GetProjectList(object na)
         {
             ProjectList = await _projectDataService.GetAll();
+
+            GetTagList();
+
+            FilterProjectList();
+        }
+
+        private void GetTagList()
+        {
+            if (ProjectList != null)
+            {
+                Tag selectedTag = SelectedTag;
+
+                TagList = ProjectList.SelectMany(p => p.Tags).Distinct().OrderBy(t => t.Name).ToList();
+
+                if(selectedTag != null)
+                {
+                    SelectedTag = TagList.FirstOrDefault(t => t.Id == selectedTag.Id);
+                }
+
+                if (SelectedTag != null)
+                {
+                    if (!TagList.Any(t => t.Id == SelectedTag.Id))
+                    {
+                        SelectedTag = null;
+                    }
+                }
+            }
         }
 
         #region Commands
@@ -129,25 +203,32 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         }
         private void CreateCommands()
         {
-            OpenProjectCommand = new RelayCommand(OpenProject);
+            OpenProjectCommand = new RelayCommand(OpenProject, CanOpenProject);
             CreateProjectCommand = new RelayCommand(CreateProject);
             EditProjectCommand = new RelayCommand(EditProject);
-            RemoveProjectCommand = new RelayCommand(RemoveProject);
+            RemoveProjectCommand = new RelayCommand(ShowDeleteDialog);
             RefreshProjectListCommand = new RelayCommand(GetProjectList);
+            StatusFilterCommand = new RelayCommand(StatusFilter);
+            TagFilterCommand = new RelayCommand(TagFilter);
         }
+
+        private bool CanOpenProject(object obj)
+        {
+            if (_tabViewModel.Tabs.Count <= 10)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }  
+
         public void OpenProject(object selectedProject)
         {
-            ProjectViewModel vm = _tabViewModel.Tabs.FirstOrDefault(p => p.CurrentProject.Id == (selectedProject as Project).Id);
-            int index = _tabViewModel.Tabs.IndexOf(vm);
-
-            if (index >= 0)
+            if (selectedProject != null)
             {
-                _tabViewModel.SelectedTab = vm;
-            } else
-            {
-                ProjectViewModel viewModel = _projectViewModelFactory.CreateProjectViewModel((Project)selectedProject);
-                _tabViewModel.Tabs.Add(viewModel);
-                _tabViewModel.SelectedTab = _tabViewModel.Tabs.LastOrDefault();
+                _tabViewModel.AddTab((Project)selectedProject);
             }
         }
         public void CreateProject(object selectedProject)
@@ -164,9 +245,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         }
         private void _projectPopupViewModel_CreateOrEditEvent(object sender, System.EventArgs e)
         {
-            GetProjectList(null);
+            UpdateTabsEvent?.Invoke(true, EventArgs.Empty);
 
-            UpdateTabsEvent?.Invoke(this, EventArgs.Empty);
+            GetProjectList(null);
 
             UnsubscribeToEvents();
         }
@@ -186,18 +267,66 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             _projectPopupViewModel.ClosePopupEvent -= _projectPopupViewModel_ClosePopupEvent;
         }
 
-        public async void RemoveProject(object selectedProject)
+        public void ShowDeleteDialog(object selectedProject)
+        {
+            if (selectedProject != null)
+            {
+                _deletePopupViewModel.ShowDeleteDialog(SelectedProject.Name);
+                SubscribeToDeleteDialogEvents();
+            }
+        }
+
+        private void SubscribeToDeleteDialogEvents()
+        {
+            _deletePopupViewModel.DeletedEvent += _deletePopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent += _deletePopupViewModel_CanceledEvent;
+        }
+
+        private void UnsubscribeToDeleteDialogEvents()
+        {
+            _deletePopupViewModel.DeletedEvent -= _deletePopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent -= _deletePopupViewModel_CanceledEvent;
+        }
+
+        private void _deletePopupViewModel_CanceledEvent(object sender, EventArgs e)
+        {
+            UnsubscribeToDeleteDialogEvents();
+        }
+
+        private async void _deletePopupViewModel_DeletedEvent(object sender, EventArgs e)
         {
             await _projectDataService.Delete(SelectedProject.Id);
+            UpdateTabsEvent?.Invoke(false, EventArgs.Empty);
             GetProjectList(null);
-            UpdateTabsEvent?.Invoke(this, EventArgs.Empty);
+
+            UnsubscribeToDeleteDialogEvents();
         }
 
         #endregion
 
+        #region Filter Functions
+
         private void FilterProjectList()
         {
-            ProjectList = ProjectList.Where(i => i.Name.ToLower().Contains(ProjectSearchText.ToLower()) || i.Description.ToLower().Contains(ProjectSearchText.ToLower()));
+            if (ProjectList != null)
+            {
+                ProjectList = ProjectList
+                                .Where(i => SelectedStatus == null || i.Status.Equals(SelectedStatus))
+                                .Where(i => SelectedTag == null || i.Tags.Any(i => i.Id == SelectedTag.Id))
+                                .Where(i => ProjectSearchText == null || (i.Name.ToLower().Contains(ProjectSearchText.ToLower()) || i.Description.ToLower().Contains(ProjectSearchText.ToLower())));
+            }
         }
+
+        private void TagFilter(object selectedTag)
+        {
+            FilterProjectList();
+        }
+
+        private void StatusFilter(object selectedStatus)
+        {
+            FilterProjectList();
+        }
+
+        #endregion
     }
 }

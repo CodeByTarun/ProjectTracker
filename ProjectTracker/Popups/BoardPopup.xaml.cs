@@ -21,6 +21,7 @@ namespace ProjectTracker.Popups
         public BoardPopup()
         {
             InitializeComponent();
+            PopupDatePicker.DisplayDateStart = DateTime.Today;
         }
     }
 }

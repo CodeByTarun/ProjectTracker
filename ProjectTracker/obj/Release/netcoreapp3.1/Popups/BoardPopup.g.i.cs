@@ -63,7 +63,7 @@ namespace ProjectTracker.Popups {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ProjectTracker;component/popups/boardpopup.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ProjectTracker;V1.0.0.0;component/popups/boardpopup.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Popups\BoardPopup.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

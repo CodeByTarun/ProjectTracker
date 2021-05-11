@@ -16,42 +16,41 @@
         <sys:Double x:Key="MaxTabWidth">200</sys:Double>
     </Page.Resources>
 
-    <Grid Background="{StaticResource QuaternaryColorBrush}">
+    <Grid Background="{StaticResource PrimaryColorBrush}">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="NavigationGrid" Background="{StaticResource TertiaryColorBrush}" Grid.Row="0">
+        <Grid x:Name="NavigationGrid" Background="{StaticResource DarkPrimaryColorBrush}" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/> 
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="NavigationStackPanel" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
+            <StackPanel x:Name="NavigationStackPanel" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="5,5,0,0">
 
 
-                <Button x:Name="HomeButton" Width="75" Margin="5,1,5,1"
+                <Button x:Name="HomeButton" Margin="10,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True"
                     Command="{Binding GoToHomeCommand}" CommandParameter="{Binding SelectedTab}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border x:Name="HomeBorder" CornerRadius="5,5,0,0">
-                                            <Border.Style>
-                                                <Style TargetType="Border" BasedOn="{StaticResource TabBorder}">
-                                                </Style>
-                                            </Border.Style>
-                                            <fa:FontAwesome Icon="Solid_Home" VerticalAlignment="Center" HorizontalAlignment="Stretch" Foreground="White" FontSize="20"/>
+                                        <Border x:Name="LayoutRoot" Background="Transparent" Width="35" Height="30" CornerRadius="5">
+                                            <TextBlock x:Name="txt" Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="15" 
+                                                       Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Path=SelectedTab}" Value="{x:Null}">
-                                                <Setter TargetName="HomeBorder"  Property="Background" Value="Black"/>
+                                                <Setter TargetName="LayoutRoot"  Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
                                             </DataTrigger>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="HomeBorder" Property="Background" Value="Gray"/>
+                                                <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -64,7 +63,7 @@
 
                 <ListBox x:Name="TabsListBox" ItemsSource="{Binding Tabs, Mode=OneWay}" Grid.Column="1" 
                      HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     BorderThickness="0" Margin="0" Padding="0" 
+                     BorderThickness="0" Margin="5" Padding="0" VerticalAlignment="Bottom"
                      Background="Transparent" ItemContainerStyle="{StaticResource TabListBoxItemStyle}"
                      SelectedItem="{Binding SelectedTab, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
                     <ListBox.Width>
@@ -85,20 +84,33 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="TabBorder" Style="{StaticResource TabBorder}" ToolTip="{Binding CurrentProject.Name}"
-                                Background="Transparent"
-                                DragEnter="TabBorder_DragEnter" AllowDrop="True"
-                                MouseMove="TabBorder_MouseMove">
+                            <Border x:Name="TabBorder" Style="{StaticResource TabBorder}"
+                                    WindowChrome.IsHitTestVisibleInChrome="True"
+                                    Height="30"
+                                    Background="Transparent"
+                                    DragEnter="TabBorder_DragEnter" AllowDrop="True"
+                                    MouseMove="TabBorder_MouseMove">
+                                <Border.ToolTip>
+                                    <ToolTip x:Name="TabToolTip" Placement="Bottom" Background="Transparent" BorderThickness="0">
+                                        <Border CornerRadius="5" Background="White" Margin="-5,2,0,0" Width="250" Height="Auto">
+                                            <StackPanel Orientation="Vertical" Margin="5">
+                                                <TextBlock Text="{Binding CurrentProject.Name}" TextWrapping="Wrap" FontWeight="Bold" FontSize="13" Margin="0,0,0,2"/>
+                                                <TextBlock Text="{Binding CurrentProject.Description}" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </ToolTip>
+                                </Border.ToolTip>
                                 <Grid Margin="5,5,5,5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding CurrentProject.Name}" Grid.Column="0" Foreground="White" MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False"/>
+                                    <TextBlock Text="{Binding CurrentProject.Name}" Grid.Column="0" Foreground="{StaticResource MainFontColorBrush}" Margin="5,0,0,0" VerticalAlignment="Center"
+                                               MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False"/>
 
                                     <Button x:Name="CloseButton" Style="{StaticResource CloseButton}" 
-                                        Grid.Column="1" Margin="5,0,5,0"
+                                        Grid.Column="1" Margin="5,0,5,0" VerticalAlignment="Center"
                                         Command="{Binding DataContext.RemoveTabCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
 
                                 </Grid>
@@ -110,14 +122,41 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" x:Name="UtilitiesStackPanel">
-                <Button x:Name="TagButton" Content="Tags" Command="{Binding OpenTagsPopupCommand}" CommandParameter="{x:Null}"/>
-                <Button x:Name="TimerButton" Content="Timer"/>
-                <Button x:Name="ProfileButton" Content="Profile"/>
+                <Button x:Name="TagButton" Style="{StaticResource TagButtonStyle}" Command="{Binding OpenTagsPopupCommand}" CommandParameter="{x:Null}" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button x:Name="TimerButton" Style="{StaticResource TimerButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" Visibility="Collapsed"/>
+                <Button x:Name="ProfileButton" Style="{StaticResource ProfileButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" Visibility="Collapsed"/>
+
+                <Button x:Name="btnMinimize"
+                            Style="{StaticResource MinimizeButtonStyle}"
+                            VerticalAlignment="Top"
+                            VerticalContentAlignment="Bottom"
+                            Click="MinimizeClick"
+                            DockPanel.Dock="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True" />
+                <Button x:Name="btnRestore"
+                        VerticalAlignment="Top"
+                            Click="MaximizeRestoreClick"
+                            Style="{StaticResource RestoreButtonStyle}"
+                            DockPanel.Dock="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button x:Name="btnClose"
+                        VerticalAlignment="Top"
+                             Style="{StaticResource CloseButtonStyle}"
+                             Click="CloseClick"
+                             DockPanel.Dock="Right"
+                             WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
-            
         </Grid>
 
-        <Frame x:Name="MainFrame" Grid.Row="1" Navigated="MainFrame_Navigated" NavigationUIVisibility="Hidden"/>
+        <Grid x:Name="TransitionGrid" Background="{StaticResource DarkPrimaryColorBrush}" Grid.Row="1" Margin="0,-1,0,0" Height="5">
+            <Grid.Effect>
+                <DropShadowEffect Opacity="0.3" Direction="-40" BlurRadius="10" ShadowDepth="5"/>
+            </Grid.Effect>
+        </Grid>
+
+        <Frame x:Name="MainFrame" Grid.Row="2"
+               Navigating="MainFrame_Navigating"
+               NavigationUIVisibility="Hidden" Margin="15"/>
 
     </Grid>
 </Page>

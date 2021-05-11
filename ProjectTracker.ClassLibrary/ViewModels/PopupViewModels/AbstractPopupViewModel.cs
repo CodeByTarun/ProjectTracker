@@ -3,6 +3,7 @@ using ProjectTracker.ClassLibrary.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
@@ -96,15 +97,15 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
         protected abstract void ResetFields();
 
-        private void CreateOrEditItem(object na)
+        private async void CreateOrEditItem(object na)
         {
             if (!_isEdit)
             {
-                CreateItem();
+                await CreateItem();
             }
             else
             {
-                EditItem();
+                await EditItem();
             }
 
             CreateOrEditEvent?.Invoke(this, EventArgs.Empty);
@@ -116,7 +117,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             return (Name != "");
         }
 
-        protected abstract void CreateItem();
-        protected abstract void EditItem();
+        protected abstract Task CreateItem();
+        protected abstract Task EditItem();
     }
 }

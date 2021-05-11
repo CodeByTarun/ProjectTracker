@@ -9,12 +9,43 @@
              mc:Ignorable="d" 
              x:Name="root"
              d:DesignHeight="50" d:DesignWidth="800">
-    <Grid x:Name="LayoutRoot" Background="White">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Tags:" Margin="10" VerticalAlignment="Center"/>
-            <ListView x:Name="ItemTagListView" Margin="0,10,0,10" VerticalAlignment="Center" ItemsSource="{Binding ItemTags, UpdateSourceTrigger=PropertyChanged}">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <ComboBox x:Name="TagListComboBox" Margin="5,10,10,10" DisplayMemberPath="Name" 
+                      IsEditable="True" IsTextSearchEnabled="True" Visibility="Visible" VerticalAlignment="Center"
+                      PreviewTextInput="TagListComboBox_PreviewTextInput" Height="30" MaxWidth="100"
+                      DropDownClosed="TagListComboBox_DropDownClosed" Style="{StaticResource PopupComboBox}"
+                      ItemsSource="{Binding TagList, Mode=OneWay}" SelectedItem="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+                      Text="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                </ComboBox>
+
+                <TextBlock x:Name="PlaceholderTextBlock" Grid.Column="1" Text="Add a Tag" 
+                   Panel.ZIndex="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=TagListComboBox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+            
+            <ListView x:Name="ItemTagListView" Margin="0,0,0,0" VerticalAlignment="Center" Background="Transparent" HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch" Grid.Column="1" BorderThickness="0" 
+                      ItemsSource="{Binding ItemTags, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.Style>
-                    <Style TargetType="{x:Type ListView}">
+                    <Style TargetType="{x:Type ListView}" >
                         <Style.Triggers>
                             <Trigger Property="HasItems" Value="False">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -25,21 +56,40 @@
                         </Style.Triggers>
                     </Style>
                 </ListView.Style>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <StackPanel>
+                                        <Border Margin="3">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </StackPanel>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Border x:Name="Border" CornerRadius="10" Background="{Binding Color, Converter={StaticResource ColorConverter}}" Grid.Column="0">
 
-                            <Border CornerRadius="5" Background="{Binding Color, Converter={StaticResource ColorConverter}}" Grid.Column="0">
-                                <TextBlock Text="{Binding Name}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{Binding Name}" Margin="10,5,10,5">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
@@ -53,24 +103,20 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                            </Border>
-                            <Button x:Name="RemoveTagButton" Content="x" Grid.Column="1"
-                                    Click="RemoveTagButton_Click"/>
-                        </Grid>
+
+                                <Button x:Name="RemoveTagButton" Content="x" Grid.Column="1" Margin="-8,0,5,0" Visibility="Collapsed"
+                                    Click="RemoveTagButton_Click" Style="{StaticResource CloseButton}"/>
+                            </Grid>
+                        </Border>
+
+                        <DataTemplate.Triggers>
+                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RemoveTagButton" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            <ComboBox x:Name="TagListComboBox" Margin="10" Width="80" DisplayMemberPath="Name" 
-                      IsEditable="True" IsTextSearchEnabled="True" Visibility="Collapsed"
-                      PreviewTextInput="TagListComboBox_PreviewTextInput"
-                      DropDownClosed="TagListComboBox_DropDownClosed"
-                      ItemsSource="{Binding TagList, Mode=OneWay}" SelectedItem="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
-                      Text="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-
-            </ComboBox>
-
-            <Button x:Name="AddTagButton" Content="Add a tag" Margin="10,10,0,10" VerticalAlignment="Center" Click="AddTagButton_Click"/>
-        </StackPanel>            
+        </Grid>            
     </Grid>
 </UserControl>

@@ -116,11 +116,12 @@ namespace ProjectTracker.ClassLibrary.Services
             {
                 T entityTagRemoval = context.Set<T>().Include(t => t.Tags).FirstOrDefault(t => t.Id == id);
 
-                if (entityTagRemoval.Tags != null)
+                if (entityTagRemoval.Tags.Count != 0)
                 {
                     foreach (Tag tag in entityTagRemoval.Tags.ToList())
                     {
-                        entityTagRemoval.Tags.Remove(tag);
+                        Tag tagToRemove = context.Tags.FirstOrDefault(T => T.Id == tag.Id);
+                        entityTagRemoval.Tags.Remove(tagToRemove);
                     }
                     await context.SaveChangesAsync();
                 }

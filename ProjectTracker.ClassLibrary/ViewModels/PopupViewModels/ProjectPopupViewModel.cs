@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
@@ -17,6 +18,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         private Project _projectToEdit;
 
         private string _description;
+        private string _status;
+        private DateTime? _deadlineDate;
 
         public string Description
         {
@@ -28,6 +31,30 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             {
                 _description = value;
                 RaisePropertyChangedEvent(nameof(Description));
+            }
+        }
+        public string Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                _status = value;
+                RaisePropertyChangedEvent(nameof(Status));
+            }
+        }
+        public DateTime? DeadlineDate
+        {
+            get
+            {
+                return _deadlineDate;
+            }
+            set
+            {
+                _deadlineDate = value;
+                RaisePropertyChangedEvent(nameof(DeadlineDate));
             }
         }
 
@@ -50,6 +77,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             PropertiesSetup();
             CreateCommands();
+            Status = "Proposed";
         }
 
         private void PropertiesSetup()
@@ -84,6 +112,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             Name = projectToEdit.Name;
             Description = projectToEdit.Description;
+            Status = projectToEdit.Status;
+            DeadlineDate = projectToEdit.DeadlineDate;
 
             if (projectToEdit.Tags != null)
             {
@@ -100,30 +130,36 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             Name = "";
             Description = "";
+            Status = "Proposed";
+            DeadlineDate = null;
             _projectToEdit = null;
             _isEdit = false;
 
             base.ResetFields();
         }
 
-        protected async override void CreateItem()
+        protected async override Task CreateItem()
         {
             Project project = new Project()
             {
                 Name = Name,
                 Description = Description,
                 Tags = ItemTags,
-                DateCreated = DateTime.Now
+                Status = Status,
+                DateCreated = DateTime.Now,
+                DeadlineDate = DeadlineDate
             };
 
             await _projectService.Create(project);
         }
 
-        protected async override void EditItem()
+        protected async override Task EditItem()
         {
             _projectToEdit.Name = Name;
             _projectToEdit.Description = Description;
+            _projectToEdit.Status = Status;
             _projectToEdit.Tags = ItemTags;
+            _projectToEdit.DeadlineDate = DeadlineDate;
 
             await _projectService.Update(_projectToEdit.Id, _projectToEdit);
         }

@@ -14,7 +14,7 @@ namespace ProjectTracker.Model.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.3");
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("BoardTag", b =>
                 {
@@ -70,7 +70,7 @@ namespace ProjectTracker.Model.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DeadlineDate")
+                    b.Property<DateTime?>("DeadlineDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -81,6 +81,9 @@ namespace ProjectTracker.Model.Migrations
 
                     b.Property<int>("ProjectID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -120,6 +123,9 @@ namespace ProjectTracker.Model.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("DeadlineDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -148,14 +154,17 @@ namespace ProjectTracker.Model.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("DeadlineDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StatusInt")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

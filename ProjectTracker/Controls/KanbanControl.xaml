@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:ProjectTracker.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels.ControlViewModels;assembly=ProjectTracker.ClassLibrary"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:KanbanControlViewModel, IsDesignTimeCreatable=True}"
@@ -17,10 +19,26 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="IssueSearchBox" Text="{Binding IssueSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" HorizontalAlignment="Stretch"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+            
+                <local:SearchControl x:Name="IssueSearchBox" Grid.Column="0" HorizontalAlignment="Stretch"
+                                     PlaceholderText="Search Issues..."
+                                     SearchText="{Binding IssueSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <local:ComboBoxWithCommandControl x:Name="IssueTagComboBox" Grid.Column="1" Height="30"
+                                                  IsPathNameRequired="True" Width="175" VerticalAlignment="Center"
+                                                  PlaceholderText="Tag Filter"
+                                                  Items="{Binding TagList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedItem="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </Grid>
 
             <!-- First create the groups and hook them up to the database, once that works correctly then work on the issues -->
-            <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+            <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Margin="0,0,0,15">
                 <StackPanel Orientation="Horizontal">
                     <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding SelectedBoard.Groups}">
                         <ItemsControl.ItemsPanel>
@@ -30,21 +48,19 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Name="GroupBorder" CornerRadius="10" Background="LightGray" Margin="30,15,15,15"
-                                        AllowDrop="True" Width="400"
+                                <Border Name="GroupBorder" CornerRadius="10" Background="DimGray" Margin="0,15,15,0"
+                                        AllowDrop="True" Width="350"
                                         PreviewMouseLeftButtonDown="GroupBorder_PreviewMouseLeftButtonDown"
                                         DragEnter="GroupBorder_DragEnter">
                                 
-                                    <Grid x:Name="GroupGrid">
+                                    <Grid x:Name="GroupGrid" Margin="0,5,0,5">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Grid x:Name="GroupHeaderGrid"
-                                              Width="300"
-                                              Grid.Row="0">
+                                        <Grid x:Name="GroupHeaderGrid" Width="350" Grid.Row="0" Margin="5,0,0,5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
@@ -55,41 +71,58 @@
                                                 Margin="10,10,10,10">
 
                                                 <Border x:Name="CardCount" 
-                                                    Background="LightSteelBlue" 
-                                                    Height="20" Width="20" 
-                                                    CornerRadius="10" Margin="0,0,10,0"
+                                                    Background="{StaticResource SecondaryColorBrush}" 
+                                                    Height="30" Width="30" 
+                                                    CornerRadius="5" Margin="0,0,10,0"
                                                     IsHitTestVisible="False">
-                                                    <TextBlock Text="{Binding Issues.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="12"/>
+                                                    <TextBlock Text="{Binding Issues.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                               Margin="0,0,0,0" FontSize="15" Foreground="{StaticResource MainFontColorBrush}" FontWeight="SemiBold"/>
                                                 </Border>
 
                                                 <TextBlock x:Name="GroupName"
                                                        IsHitTestVisible="False"
+                                                       Foreground="{StaticResource MainFontColorBrush}"
+                                                       FontSize="15"
+                                                       FontWeight="DemiBold"
                                                        Text="{Binding Path=Name}"
                                                        TextWrapping="Wrap"
                                                        VerticalAlignment="Center"/>
                                             </StackPanel>
                                         
-                                            <StackPanel Grid.Column="1"
-                                                Orientation="Horizontal">
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
 
-                                                <Button x:Name="GroupMenu"
-                                                Margin="30,0,10,0"
-                                                Height="20"
-                                                Content="Threebuttons">
+                                                <Button x:Name="GroupMenu" Style="{StaticResource MenuButton}"
+                                                        Margin="30,0,0,0"
+                                                        Content="Threebuttons">
                                                     <Button.ContextMenu>
-                                                        <ContextMenu Name="GroupContextMenu">
-                                                            <MenuItem Header="Edit Group" Click="EditGroup_Click"/>
-                                                            <MenuItem Header="Delete Group" Click="DeleteGroup_Click"/>
+                                                        <ContextMenu Name="GroupContextMenu" Style="{StaticResource ItemMenuStyle}">
+                                                            <MenuItem Header="Edit Group" Click="EditGroup_Click" Style="{StaticResource EditMenuItemStyle}"/>
+                                                            <MenuItem Header="Delete Group" Click="DeleteGroup_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
                                                         </ContextMenu>
                                                     </Button.ContextMenu>
+
+                                                    <Button.Triggers>
+                                                        <EventTrigger SourceName="GroupMenu" RoutedEvent="Button.Click">
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GroupContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
+                                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                                            <DiscreteObjectKeyFrame.Value>
+                                                                                <sys:Boolean>True</sys:Boolean>
+                                                                            </DiscreteObjectKeyFrame.Value>
+                                                                        </DiscreteObjectKeyFrame>
+                                                                    </ObjectAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </Button.Triggers>
                                                 </Button>
 
-                                                <Button x:Name="AddIssueButton"
+                                                <Button x:Name="AddIssueButton" Style="{StaticResource AddButton}"
                                                         Command="{Binding ElementName=root, Path=DataContext.CreateIssueCommand}"
                                                         CommandParameter="{Binding}"
                                                         Margin="0,0,10,0"
-                                                        Height="20"
-                                                        Content="+"/>
+                                                        Content="Create Issue"/>
 
                                             </StackPanel>
 
@@ -97,7 +130,7 @@
 
                                         <ScrollViewer x:Name="IssuesScrollViewer"
                                                       Grid.Row="1"
-                                                      Margin="10,0,10,10"
+                                                      Margin="10,-5,10,10"
                                                       VerticalScrollBarVisibility="Auto"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Background="Transparent">
@@ -113,8 +146,8 @@
                                             <ItemsControl x:Name="IssuesItemsControl" ItemsSource="{Binding Path=Issues}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Border x:Name="IssueBorder" CornerRadius="5" Background="White" Margin="0,10,0,0"
-                                                                AllowDrop="True"
+                                                        <Border x:Name="IssueBorder" CornerRadius="5" Background="WhiteSmoke" Margin="0,2.5,0,5"
+                                                                AllowDrop="True" BorderBrush="{StaticResource PrimaryColorBrush}" BorderThickness="1"
                                                                 DragEnter="IssueBorder_DragEnter"
                                                                 PreviewMouseLeftButtonDown="IssueBorder_PreviewMouseLeftButtonDown">
                                                             <Grid Margin="10,10,10,10">
@@ -125,37 +158,90 @@
                                                                     <RowDefinition Height="*"/>
                                                                 </Grid.RowDefinitions>
 
-                                                                <DockPanel x:Name="IssueHeader" Grid.Row="0">
-                                                                    <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap" IsHitTestVisible="False"/>
-                                                                    <Button Content="three buttons" HorizontalAlignment="Right">
+                                                                <Grid x:Name="IssueHeader" Grid.Row="0" Margin="0,5,0,10">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap" IsHitTestVisible="False" 
+                                                                               Foreground="Black" FontWeight="Bold" Grid.Column="0"/>
+                                                                    <Button x:Name="IssueMenuButton" Content="Menu" HorizontalAlignment="Right"
+                                                                            Grid.Column="1" Style="{StaticResource IssueMenuButton}" Margin="0,0,5,0">
                                                                         <Button.ContextMenu>
-                                                                            <ContextMenu Name="IssueContextMenu">
-                                                                                <MenuItem Header="Edit Issue" Click="EditIssue_Click"/>
-                                                                                <MenuItem Header="Delete Issue" Click="DeleteIssue_Click"/>
+                                                                            <ContextMenu Name="IssueContextMenu" Style="{StaticResource ItemMenuStyle}">
+                                                                                <MenuItem Header="Edit Issue" Click="EditIssue_Click" Style="{StaticResource EditMenuItemStyle}"/>
+                                                                                <MenuItem Header="Delete Issue" Click="DeleteIssue_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
                                                                             </ContextMenu>
                                                                         </Button.ContextMenu>
+
+                                                                        <Button.Triggers>
+                                                                            <EventTrigger SourceName="IssueMenuButton" RoutedEvent="Button.Click">
+                                                                                <BeginStoryboard>
+                                                                                    <Storyboard>
+                                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="IssueContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
+                                                                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                                                                <DiscreteObjectKeyFrame.Value>
+                                                                                                    <sys:Boolean>True</sys:Boolean>
+                                                                                                </DiscreteObjectKeyFrame.Value>
+                                                                                            </DiscreteObjectKeyFrame>
+                                                                                        </ObjectAnimationUsingKeyFrames>
+                                                                                    </Storyboard>
+                                                                                </BeginStoryboard>
+                                                                            </EventTrigger>
+                                                                        </Button.Triggers>
                                                                     </Button>
-                                                                </DockPanel>
+                                                                </Grid>
 
                                                                 <TextBlock x:Name="IssueDescription"
-                                                                   IsHitTestVisible="False"
-                                                                   Text="{Binding Path=Description}" 
-                                                                   TextWrapping="Wrap" Grid.Row="1"/>
+                                                                           IsHitTestVisible="False"
+                                                                           Foreground="Black"
+                                                                           Text="{Binding Path=Description}" 
+                                                                           TextWrapping="Wrap" Grid.Row="1">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="Text" Value="">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                </Trigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>   
 
-                                                                <local:TagListControl TagList="{Binding Tags}" Grid.Row="2"/>
+                                                                <local:TagListControl TagList="{Binding Tags}" IsVerticalMarginRequired="True" Grid.Row="2" Margin="0,0,0,5"/>
 
-                                                                <DockPanel x:Name="IssueInfo" Grid.Row="3" IsHitTestVisible="False">
-                                                                    <TextBlock Text="{Binding Path=DateCreated}" HorizontalAlignment="Right"/>
-                                                                </DockPanel>
+                                                                <Grid x:Name="IssueInfo" Grid.Row="3" HorizontalAlignment="Right" IsHitTestVisible="True">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <fa:FontAwesome Icon="Solid_Exclamation" Foreground="IndianRed" 
+                                                                                    Visibility="{Binding DeadlineDate, Converter={StaticResource DeadlineExclamationVisibilityConverter}}"
+                                                                                    VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                                                    <TextBlock Text="{Binding Path=DeadlineDate, StringFormat='{}{0: MMM d}'}"
+                                                                               Grid.Column="1" Foreground="Black" ToolTip="Deadline">
+                                                                        <TextBlock.Style>
+                                                                            <Style TargetType="TextBlock">
+                                                                                <Style.Triggers>
+                                                                                    <DataTrigger Binding="{Binding DeadlineDate}" Value="{x:Null}">
+                                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </TextBlock.Style>
+                                                                    </TextBlock>
+                                                                </Grid>
                                                             </Grid>
                                                         </Border>
                                                         <DataTemplate.Triggers>
-                                                            <DataTrigger Value="True">
+                                                            <DataTrigger Value="False">
                                                                 <DataTrigger.Binding>
                                                                     <MultiBinding Converter="{StaticResource IssueVisiblityConverter}">
                                                                         <Binding Path="Name"/>
                                                                         <Binding Path="Description"/>
-                                                                        <Binding ElementName="IssueSearchBox" Path="Text"/>
+                                                                        <Binding ElementName="IssueSearchBox" Path="SearchText"/>
+                                                                        <Binding Path="Tags"/>
+                                                                        <Binding ElementName="IssueTagComboBox" Path="SelectedItem"/>
                                                                     </MultiBinding>
                                                                 </DataTrigger.Binding>
                                                                 <Setter Property="Visibility" Value="Collapsed" TargetName="IssueBorder"/>
@@ -178,7 +264,8 @@
                     </ItemsControl>
                 
                     <!-- Add a create group button here -->
-                    <Button Content="Add Group" HorizontalAlignment="Center" VerticalAlignment="Top"
+                    <Button Content="Create Group" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"
+                            Style="{StaticResource AddButton}"
                             Command="{Binding CreateGroupCommand}" CommandParameter="{x:Null}"/>
                 </StackPanel>
             </ScrollViewer>

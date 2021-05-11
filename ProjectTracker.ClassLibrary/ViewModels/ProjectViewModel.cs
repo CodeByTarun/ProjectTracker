@@ -13,7 +13,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         public ProjectNotesViewModel ProjectNotesViewModel;
 
         private Project _currentProject;
-        private int _selectedIndex;
+        private bool _isShowingOverview;
 
         public Project CurrentProject
         {
@@ -27,16 +27,16 @@ namespace ProjectTracker.ClassLibrary.ViewModels
                 RaisePropertyChangedEvent(nameof(CurrentProject));
             }
         }
-        public int SelectedIndex
+        public bool IsShowingOverview
         {
             get
             {
-                return _selectedIndex;
+                return _isShowingOverview;
             }
             set
             {
-                _selectedIndex = value;
-                RaisePropertyChangedEvent(nameof(SelectedIndex));
+                _isShowingOverview = value;
+                RaisePropertyChangedEvent(nameof(IsShowingOverview));
             }
         }
 
@@ -60,21 +60,24 @@ namespace ProjectTracker.ClassLibrary.ViewModels
 
             SubscribeToEvents();
 
-            SelectedIndex = 0;
+            IsShowingOverview = true;
         }
-
+           
         private void SubscribeToEvents()
         {
             ProjectOverviewViewModel.BoardListViewModel.OpenBoardEvent += BoardListViewModel_OpenBoardEvent;
             ProjectOverviewViewModel.BoardListViewModel.RefreshBoardEvent += BoardListViewModel_RefreshBoardEvent;
+            ProjectOverviewViewModel.BoardListViewModel.ProjectUpdatedEvent += BoardListViewModel_ProjectUpdatedEvent;
             ProjectIssueViewModel.RefreshBoardEvent += ProjectIssueViewModel_RefreshBoardEvent;
         }
 
         private void BoardListViewModel_OpenBoardEvent(object sender, System.EventArgs e)
         {
-
-            ProjectIssueViewModel.SelectedBoard = ProjectIssueViewModel.BoardList.FirstOrDefault(b => b.Id == ProjectOverviewViewModel.BoardListViewModel.SelectedBoard.Id);
-            SelectedIndex = 1;
+            if (ProjectOverviewViewModel.BoardListViewModel.SelectedBoard != null) 
+            {
+                ProjectIssueViewModel.SelectedBoard = ProjectIssueViewModel.BoardList.FirstOrDefault(b => b.Id == ProjectOverviewViewModel.BoardListViewModel.SelectedBoard.Id);
+                IsShowingOverview = false;
+            }
         }
         private void BoardListViewModel_RefreshBoardEvent(object sender, System.EventArgs e)
         {
@@ -88,9 +91,13 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             ProjectIssueViewModel.GetBoardList();
             ProjectIssueViewModel.SelectedBoard = ProjectIssueViewModel.BoardList.FirstOrDefault(b => b.Id == boardId);
         }
+        private void BoardListViewModel_ProjectUpdatedEvent(object sender, System.EventArgs e)
+        {
+            CurrentProject = ProjectOverviewViewModel.BoardListViewModel.CurrentProject;
+        }
         private void ProjectIssueViewModel_RefreshBoardEvent(object sender, System.EventArgs e)
         {
-            ProjectOverviewViewModel.BoardListViewModel.GetBoardList();
+            ProjectOverviewViewModel.BoardListViewModel.RefreshView();
         }
     }
 }

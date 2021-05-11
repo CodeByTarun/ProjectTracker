@@ -9,9 +9,14 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:BoardPopupViewModel, IsDesignTimeCreatable=True}">
     
-    <Border CornerRadius="10" Background="White">
+    <Border Style="{StaticResource PopupBorderStyle}">
         <Grid x:Name="PopupGrid" Margin="15">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -21,7 +26,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding DialogTitle}" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            <TextBlock Text="{Binding DialogTitle}" Grid.Row="0" Style="{StaticResource PopupTitleStyle}"/>
 
             <Button HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource CloseButton}" Command="{Binding ClosePopupCommand}" CommandParameter="{x:Null}"/>
 
@@ -32,16 +37,39 @@
                                               Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Description, Mode=TwoWay}"/>
 
-            <DatePicker Grid.Row="3" Width="300" Margin="0,10,0,10"/>
+            <Grid x:Name="StatusDateGrid" Grid.Row="3" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource PopupTitleLabel}"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="Deadline Date" Style="{StaticResource PopupTitleLabel}" Margin="10,0,0,0"/>
 
-            <StackPanel Grid.Row="4">
+                <ComboBox Grid.Row="1" Grid.Column="0" Margin="5,5,10,5" Text="Add a Tag" Height="30" Style="{StaticResource PopupComboBox}"
+                          ItemsSource="{StaticResource StatusArray}" SelectedItem="{Binding Status, Mode=TwoWay}"/>
+
+                <DatePicker Name="PopupDatePicker" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"
+                            Style="{DynamicResource PopupDatePickerStyle}" CalendarStyle="{StaticResource StyleCalendar}"
+                            SelectedDate="{Binding DeadlineDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            
+
+            <StackPanel Grid.Row="5" Margin="0,10,0,0">
                 <controls:AddTagsControl TagList="{Binding TagList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                          ItemTags="{Binding ItemTags, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                          SelectedTag="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          TagSearchText="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                          AddTagCommand="{Binding AddItemTagCommand}"
                                          RemoveTagCommand="{Binding RemoveItemTagCommand}"/>
-                <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
+                <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" 
+                        Style="{StaticResource BaseButton}"
+                        Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
             </StackPanel>
         </Grid>
     </Border>

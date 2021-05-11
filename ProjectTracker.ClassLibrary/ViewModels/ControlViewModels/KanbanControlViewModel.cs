@@ -18,6 +18,11 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         #region Fields
         private Board _selectedBoard;
         private string _issueSearchText;
+        private Tag _selectedTag;
+        private IEnumerable<Tag> _tagList;
+
+        private Group _selectedGroup;
+        private Issue _selectedIssue;
 
         public Board SelectedBoard
         {
@@ -29,6 +34,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             {
                 _selectedBoard = value;
                 RaisePropertyChangedEvent(nameof(SelectedBoard));
+                GetTagList();
             }
         }
         public string IssueSearchText
@@ -43,6 +49,30 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
                 RaisePropertyChangedEvent(nameof(IssueSearchText));
             }
         }
+        public Tag SelectedTag
+        {
+            get
+            {
+                return _selectedTag;
+            }
+            set
+            {
+                _selectedTag = value;
+                RaisePropertyChangedEvent(nameof(SelectedTag));
+            }
+        }
+        public IEnumerable<Tag> TagList
+        {
+            get
+            {
+                return _tagList;
+            }
+            set
+            {
+                _tagList = value;
+                RaisePropertyChangedEvent(nameof(TagList));
+            }
+        }
 
         private IBoardDataService _boardDataService;
         private IGroupDataService _groupDataService;
@@ -50,6 +80,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
 
         private GroupPopupViewModel _groupPopupViewModel;
         private IssuePopupViewModel _issuePopupViewModel;
+        private DeletePopupViewModel _deletePopupViewModel;
 
         public ICommand CreateGroupCommand { get; private set; }
         public ICommand EditGroupCommand { get; private set; }
@@ -65,13 +96,15 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         {
             _selectedBoard.Groups = CreateGroupList();
         }
-        public KanbanControlViewModel(IBoardDataService boardDataService, IGroupDataService groupDataService, IIssueDataService issueDataService, GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel)
+        public KanbanControlViewModel(IBoardDataService boardDataService, IGroupDataService groupDataService, IIssueDataService issueDataService, 
+            GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel, DeletePopupViewModel deletePopupViewModel)
         {
             _boardDataService = boardDataService;
             _groupDataService = groupDataService;
             _issueDataService = issueDataService;
             _groupPopupViewModel = groupPopupViewModel;
             _issuePopupViewModel = issuePopupViewModel;
+            _deletePopupViewModel = deletePopupViewModel;
 
             InitialSetup();
         }
@@ -195,16 +228,39 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         {
             CreateGroupCommand = new RelayCommand(ShowCreateGroupPopup);
             EditGroupCommand = new RelayCommand(ShowEditGroupPopup);
-            DeleteGroupCommand = new RelayCommand(DeleteGroup);
+            DeleteGroupCommand = new RelayCommand(ShowDeleteGroupPopup);
 
             CreateIssueCommand = new RelayCommand(ShowCreateIssuePopup);
             EditIssueCommand = new RelayCommand(ShowEditIssuePopup);
-            DeleteIssueCommand = new RelayCommand(DeleteIssue);
+            DeleteIssueCommand = new RelayCommand(ShowDeleteIssuePopup);
         }
 
         private async void GetBoard()
         {
             SelectedBoard = await _boardDataService.GetBoardWithInnerEntities(SelectedBoard.Id);
+        }
+
+        private void GetTagList()
+        {
+            if (SelectedBoard != null)
+            {
+                Tag selectedTag = SelectedTag;
+
+                TagList = SelectedBoard.Groups.SelectMany(b => b.Issues).SelectMany(i => i.Tags).GroupBy(t => t.Name).Select(t => t.First()).OrderBy(t => t.Name).ToList();
+
+                if (selectedTag != null)
+                {
+                    SelectedTag = TagList.FirstOrDefault(t => t.Id == selectedTag.Id);
+                }
+
+                if (SelectedTag != null)
+                {
+                    if (!TagList.Any(t => t.Id == SelectedTag.Id))
+                    {
+                        SelectedTag = null;
+                    }
+                }
+            }
         }
         #endregion
 
@@ -219,12 +275,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             GroupSubscribeToEvents();
             _groupPopupViewModel.ShowEditGroupPopup((Group)groupToEdit);
         }
-        private async void DeleteGroup(object groupToDelete)
-        {
-            await _groupDataService.Delete((groupToDelete as Group).Id);
-            GetBoard();
-        }
-
+        
         private void GroupSubscribeToEvents()
         {
             _groupPopupViewModel.CreateOrEditEvent += _groupPopupViewModel_CreateOrEditEvent;
@@ -246,6 +297,41 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             GetBoard();
         }
 
+        private void ShowDeleteGroupPopup(object groupToDelete)
+        {
+            if (groupToDelete != null)
+            {
+                _selectedGroup = (Group)groupToDelete;
+                _deletePopupViewModel.ShowDeleteDialog(_selectedGroup.Name);
+                SubscribeToDeleteGroupEvents();
+            }
+        }
+
+        private void SubscribeToDeleteGroupEvents()
+        {
+            _deletePopupViewModel.DeletedEvent += _deleteGroupPopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent += _deleteGroupPopupViewModel_CanceledEvent;
+        }
+        private void UnsubscribeToDeleteGroupEvents()
+        {
+            _deletePopupViewModel.DeletedEvent -= _deleteGroupPopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent -= _deleteGroupPopupViewModel_CanceledEvent;
+        }
+
+        private async void _deleteGroupPopupViewModel_DeletedEvent(object sender, EventArgs e)
+        {
+            await _groupDataService.Delete((_selectedGroup).Id);
+            GetBoard();
+            UnsubscribeToDeleteGroupEvents();
+            _selectedGroup = null;
+        }
+
+        private void _deleteGroupPopupViewModel_CanceledEvent(object sender, EventArgs e)
+        {
+            UnsubscribeToDeleteGroupEvents();
+            _selectedGroup = null;
+        }
+        
         #endregion
 
         #region Issue Commands
@@ -258,12 +344,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         {
             IssueSubscribeToEvents();
             _issuePopupViewModel.ShowEditIssuePopup((Issue)issueToEdit);
-        }
-
-        private async void DeleteIssue(object issueToDelete)
-        {
-            await _issueDataService.Delete((issueToDelete as Issue).Id);
-            GetBoard();
         }
         
         private void IssueSubscribeToEvents()
@@ -287,7 +367,37 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             GetBoard();
         }
 
-        
+        private void ShowDeleteIssuePopup(object issueToDelete)
+        {
+            if (issueToDelete != null)
+            {
+                _selectedIssue = (Issue)issueToDelete;
+                SubscribeToDeleteIssueEvents();
+                _deletePopupViewModel.ShowDeleteDialog(_selectedIssue.Name);   
+            }
+        }
+
+        private void SubscribeToDeleteIssueEvents()
+        {
+            _deletePopupViewModel.DeletedEvent += _deleteIssuePopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent += _deleteIssuePopupViewModel_CanceledEvent;
+        }
+        private void UnsubscribeToDeleteIssueEvents()
+        {
+            _deletePopupViewModel.DeletedEvent -= _deleteIssuePopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent -= _deleteIssuePopupViewModel_CanceledEvent;
+        }
+
+        private void _deleteIssuePopupViewModel_CanceledEvent(object sender, EventArgs e)
+        {
+            UnsubscribeToDeleteIssueEvents();
+        }
+        private async void _deleteIssuePopupViewModel_DeletedEvent(object sender, EventArgs e)
+        {
+            UnsubscribeToDeleteIssueEvents();
+            await _issueDataService.Delete(_selectedIssue.Id);
+            GetBoard();
+        }
         #endregion
 
         #region Drag and Drop Functions
@@ -329,9 +439,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             // 2. Issues are in different groups 
             // - remove from existing group and add to group of element dragged over.
 
-            int indexOfGroup = _selectedBoard.Groups.IndexOf(issueDragging.Group);
+            int indexOfGroup = _selectedBoard.Groups.IndexOf(SelectedBoard.Groups.FirstOrDefault(g => g.Id == issueDragging.GroupID));
 
-            if (issueDragging.Group == issueOver.Group)
+            if (issueDragging.GroupID == issueOver.GroupID)
             {
                 int indexOfIssueOver = _selectedBoard.Groups[indexOfGroup].Issues.IndexOf(issueOver);
                 _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
@@ -339,10 +449,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
             }
             else
             {
-                int indexOfGroupOver = _selectedBoard.Groups.IndexOf(issueOver.Group);
+                int indexOfGroupOver = _selectedBoard.Groups.IndexOf(SelectedBoard.Groups.FirstOrDefault(g => g.Id == issueOver.GroupID));
                 int indexOfIssueOver = _selectedBoard.Groups[indexOfGroupOver].Issues.IndexOf(issueOver);
 
-                issueDragging.Group = issueOver.Group;
+                issueDragging.GroupID = issueOver.GroupID;
 
                 _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
                 _selectedBoard.Groups[indexOfGroupOver].Issues.Insert(indexOfIssueOver, issueDragging);
@@ -351,10 +461,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         }
         public void MoveIssueToEnd(Issue issueDragging, Group groupOver)
         {
-            int indexOfGroup = _selectedBoard.Groups.IndexOf(issueDragging.Group);
+            int indexOfGroup = _selectedBoard.Groups.IndexOf(_selectedBoard.Groups.FirstOrDefault(g => g.Id == issueDragging.GroupID));
             int indexOfGroupOver = _selectedBoard.Groups.IndexOf(groupOver);
 
-            if (issueDragging.Group == groupOver)
+            if (issueDragging.GroupID == groupOver.Id)
             {
                 if (_selectedBoard.Groups[indexOfGroup].Issues.Last() != issueDragging)
                 {
@@ -371,13 +481,13 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
                 _selectedBoard.Groups[indexOfGroup].Issues.Remove(issueDragging);
                 _selectedBoard.Groups[indexOfGroupOver].Issues.Add(issueDragging);
 
-                issueDragging.Group = groupOver;
+                issueDragging.GroupID = groupOver.Id;
             }
             RaisePropertyChangedEvent(nameof(SelectedBoard));
         }
         public void MoveIssueInDatabase(Issue issue)
         {
-            int indexOfGroupIssueIsMovingTo = SelectedBoard.Groups.IndexOf(SelectedBoard.Groups.FirstOrDefault(g => g.Id == issue.Group.Id));
+            int indexOfGroupIssueIsMovingTo = SelectedBoard.Groups.IndexOf(SelectedBoard.Groups.FirstOrDefault(g => g.Id == issue.GroupID));
 
             Issue issueMoving = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues.FirstOrDefault(i => i.Id == issue.Id);
 
@@ -396,7 +506,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
                 issueAfter = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved + 1];
             }
 
-            _issueDataService.Move(issueMoving, issueBefore, issueAfter, issue.Group.Id);
+            _issueDataService.Move(issueMoving, issueBefore, issueAfter, issue.GroupID);
         }
         #endregion
 

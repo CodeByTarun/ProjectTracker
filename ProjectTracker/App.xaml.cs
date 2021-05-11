@@ -69,12 +69,7 @@ namespace ProjectTracker
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainView>();
             services.AddSingleton<HomeView>();
-            services.AddSingleton<ProjectView>();
-
-            // ProjectViews
-            services.AddSingleton<ProjectOverviewView>();
-            services.AddSingleton<ProjectIssueView>();
-            services.AddSingleton<ProjectNotesView>();
+            services.AddScoped<ProjectView>();
 
             // ViewModels
             services.AddSingleton<MainViewModel>();
@@ -88,6 +83,7 @@ namespace ProjectTracker
             services.AddSingleton<GroupPopupViewModel>();
             services.AddSingleton<IssuePopupViewModel>();
             services.AddSingleton<TagPopupViewModel>();
+            services.AddSingleton<DeletePopupViewModel>();
 
             return services.BuildServiceProvider();
         }

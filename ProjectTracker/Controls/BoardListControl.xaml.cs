@@ -54,5 +54,15 @@ namespace ProjectTracker.Controls
                 button.ContextMenu.StaysOpen = true;
             }
         }
+
+        private void EditProject_Click(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as BoardListViewModel).EditProjectCommnad.Execute(null);
+        }
+
+        private void RemoveProject_Click(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as BoardListViewModel).DeleteProjectCommand.Execute(null);
+        }
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
@@ -14,8 +15,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
     {
         // Extra Fields
         private string _description;
+        private string _status;
         private int _projectId;
         private Board _boardToEdit;
+        private DateTime? _deadlineDate;
 
         public string Description
         {
@@ -27,6 +30,30 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             {
                 _description = value;
                 RaisePropertyChangedEvent(nameof(Description));
+            }
+        }
+        public string Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                _status = value;
+                RaisePropertyChangedEvent(nameof(Status));
+            }
+        }
+        public DateTime? DeadlineDate
+        {
+            get
+            {
+                return _deadlineDate;
+            }
+            set
+            {
+                _deadlineDate = value;
+                RaisePropertyChangedEvent(nameof(DeadlineDate));
             }
         }
 
@@ -45,6 +72,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         private void InitialSetup()
         {
             GetTagList();
+            CreateCommands();
+            Status = "Proposed";
         }
 
         #endregion 
@@ -70,6 +99,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             Name = boardToEdit.Name;
             Description = boardToEdit.Description;
+            Status = boardToEdit.Status;
+            DeadlineDate = boardToEdit.DeadlineDate;
 
             if (boardToEdit.Tags != null)
             {
@@ -81,30 +112,34 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             TagSearchText = "";
 
-            DialogTitle = "Edit Project";
+            DialogTitle = "Edit Board";
             ButtonContent = "Save";
 
             IsVisible = true;
         }
 
-        protected async override void CreateItem()
+        protected async override Task CreateItem()
         {
             Board board = new Board()
             {
                 Name = Name,
                 Description = Description,
+                Status = Status,
                 Tags = ItemTags,
                 DateCreated = DateTime.Now,
-                ProjectID = _projectId
+                ProjectID = _projectId,
+                DeadlineDate = DeadlineDate
             };
 
             await _boardDataService.Create(board);
         }
-        protected async override void EditItem()
+        protected async override Task EditItem()
         {
             _boardToEdit.Name = Name;
             _boardToEdit.Description = Description;
+            _boardToEdit.Status = Status;
             _boardToEdit.Tags = ItemTags;
+            _boardToEdit.DeadlineDate = DeadlineDate;
 
             await _boardDataService.Update(_boardToEdit.Id , _boardToEdit);
         }
@@ -113,6 +148,8 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             Name = "";
             Description = "";
+            Status = "Proposed";
+            DeadlineDate = null;
             _boardToEdit = null;
             _projectId = 0;
             _isEdit = false;

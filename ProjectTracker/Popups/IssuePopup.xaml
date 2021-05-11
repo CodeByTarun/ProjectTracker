@@ -9,10 +9,16 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:IssuePopupViewModel, IsDesignTimeCreatable=True}">
     
-    <Border CornerRadius="10" Background="White">
+    <Border Style="{StaticResource PopupBorderStyle}">
         <Grid x:Name="PopupGrid" Margin="15">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -20,27 +26,33 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding DialogTitle}" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            <TextBlock Text="{Binding DialogTitle}" Grid.Row="0" Style="{StaticResource PopupTitleStyle}"/>
 
             <Button HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource CloseButton}" Command="{Binding ClosePopupCommand}" CommandParameter="{x:Null}"/>
 
-            <controls:LimitedInputUserControl Title="Name" MaxLength="{StaticResource ObjectNameMaxLength}" 
-                                              Grid.Row="1" Width="300"
+            <controls:LimitedInputUserControl Title="Name" MaxLength="{StaticResource IssueNameMaxLength}" 
+                                              Grid.Row="1" Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <controls:LimitedInputUserControl Title="Description" Height="100" MaxLength="{StaticResource DescriptionMaxLength}" Grid.Row="2" 
                                               Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Description, Mode=TwoWay}"/>
 
-            <ComboBox x:Name="IssueTags" Width="300" Grid.Row="3" Margin="0,10,0,0"/>
+            <Label Grid.Row="3" Content="Deadline Date" Style="{StaticResource PopupTitleLabel}" Margin="0,10,0,0"/>
+            
+            <DatePicker Name="PopupDatePicker" Grid.Row="4" VerticalAlignment="Center" Margin="0,0,0,0"
+                            Style="{DynamicResource PopupDatePickerStyle}" CalendarStyle="{StaticResource StyleCalendar}"
+                            SelectedDate="{Binding DeadlineDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <StackPanel Grid.Row="4">
+            <StackPanel Grid.Row="5" Margin="0,10,0,0">
                 <controls:AddTagsControl TagList="{Binding TagList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                          ItemTags="{Binding ItemTags, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                          SelectedTag="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          TagSearchText="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                          AddTagCommand="{Binding AddItemTagCommand}"
                                          RemoveTagCommand="{Binding RemoveItemTagCommand}"/>
-                <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
+                <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75" 
+                        Style="{StaticResource BaseButton}"
+                        Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}"/>
             </StackPanel>
 
         </Grid>

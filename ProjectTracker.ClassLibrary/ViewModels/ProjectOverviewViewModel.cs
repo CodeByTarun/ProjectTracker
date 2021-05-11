@@ -28,7 +28,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         internal void UpdateTags()
         {
             UpdateCurrentProject();
-            BoardListViewModel.GetBoardList();
+            BoardListViewModel.RefreshView();
         }
 
         private async void UpdateCurrentProject()

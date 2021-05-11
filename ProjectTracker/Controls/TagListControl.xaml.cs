@@ -28,6 +28,11 @@ namespace ProjectTracker.Controls
         public static readonly DependencyProperty TagListProperty =
             DependencyProperty.Register("TagList", typeof(IEnumerable<Tag>), typeof(TagListControl));
 
+        public bool IsVerticalMarginRequired { 
+            get; 
+            set; 
+        }
+
         public TagListControl()
         {
             InitializeComponent();

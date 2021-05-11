@@ -17,9 +17,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         public GroupPopupViewModel GroupPopupViewModel { get; private set; }
         public IssuePopupViewModel IssuePopupViewModel { get; private set; }
         public TagPopupViewModel TagPopupViewModel { get; private set; }
+        public DeletePopupViewModel DeletePopupViewModel { get; private set; }
 
         public MainViewModel(TabViewModel tabViewModel, HomeViewModel homeViewModel, ProjectPopupViewModel projectPopupViewModel, BoardPopupViewModel boardPopupViewModel,
-            GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel, TagPopupViewModel tagPopupViewModel)
+            GroupPopupViewModel groupPopupViewModel, IssuePopupViewModel issuePopupViewModel, TagPopupViewModel tagPopupViewModel, DeletePopupViewModel deletePopupViewModel)
         {
             TabViewModel = tabViewModel;
             HomeViewModel = homeViewModel;
@@ -29,6 +30,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             GroupPopupViewModel = groupPopupViewModel;
             IssuePopupViewModel = issuePopupViewModel;
             TagPopupViewModel = tagPopupViewModel;
+            DeletePopupViewModel = deletePopupViewModel;
 
             SubscribeToEvents();
         }
@@ -38,11 +40,23 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             HomeViewModel.ProjectListViewModel.UpdateTabsEvent += ProjectListViewModel_UpdateTabsEvent;
             TagPopupViewModel.AddTagEvent += TagPopupViewModel_AddTagEvent;
             TagPopupViewModel.EditOrDeleteTagEvent += TagPopupViewModel_EditOrDeleteTagEvent;
-        }        
+            TabViewModel.ProjectListChanged += TabViewModel_ProjectListChanged;
+        }
 
-        private void ProjectListViewModel_UpdateTabsEvent(object sender, EventArgs e)
+        private void TabViewModel_ProjectListChanged(object sender, EventArgs e)
         {
-            TabViewModel.CheckTabs(HomeViewModel.ProjectListViewModel.SelectedProject);
+            HomeViewModel.ProjectListViewModel.GetProjectList(null);
+        }
+
+        private void ProjectListViewModel_UpdateTabsEvent(object isEdit, EventArgs e)
+        {
+            if ((bool)isEdit == true)
+            { 
+                TabViewModel.CheckTabs(HomeViewModel.ProjectListViewModel.SelectedProject);
+            } else
+            {
+                TabViewModel.RemoveTabIfOpen(HomeViewModel.ProjectListViewModel.SelectedProject);
+            }
         }
 
         // For this just need to update the popups and tag filter (when created for kanban board, board list, and project list)

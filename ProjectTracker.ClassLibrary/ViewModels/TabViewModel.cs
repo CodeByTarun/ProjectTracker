@@ -1,5 +1,7 @@
-﻿using ProjectTracker.ClassLibrary.Helpers;
+﻿using ProjectTracker.ClassLibrary.Factories;
+using ProjectTracker.ClassLibrary.Helpers;
 using ProjectTracker.ClassLibrary.ServiceInterfaces;
+using ProjectTracker.ClassLibrary.ViewModels.ControlViewModels;
 using ProjectTracker.ClassLibrary.ViewModels.PopupViewModels;
 using ProjectTracker.Model.Models;
 using System;
@@ -36,6 +38,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         }
 
         private TagPopupViewModel _tagPopupViewModel;
+        private ProjectViewModelFactory _projectViewModelFactory;
+
+        public event EventHandler ProjectListChanged;
 
         /// Design Time Constructor 
         public TabViewModel()
@@ -43,9 +48,10 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             Tabs = new ObservableCollection<ProjectViewModel>();
             DummyTabList();
         }
-        public TabViewModel(TagPopupViewModel tagPopupViewModel)
+        public TabViewModel(TagPopupViewModel tagPopupViewModel, ProjectViewModelFactory projectViewModelFactory)
         {
             _tagPopupViewModel = tagPopupViewModel;
+            _projectViewModelFactory = projectViewModelFactory;
 
             Tabs = new ObservableCollection<ProjectViewModel>();
             SelectedTab = null;
@@ -60,7 +66,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             OpenTagsPopupCommand = new RelayCommand(OpenTagPopup);
         }
 
-        /// REMOVE THIS AFTER
         private void DummyTabList()
         {
             Project project1 = new Project()
@@ -105,14 +110,58 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         }
 
         // Remove Tab Command
-        private void RemoveTab(object tab)
+        public void AddTab(Project selectedProject)
         {
-            int index = Tabs.IndexOf((ProjectViewModel)tab);
+                ProjectViewModel vm = Tabs.FirstOrDefault(p => p.CurrentProject.Id == (selectedProject as Project).Id);
+                int index = Tabs.IndexOf(vm);
+
+                if (index >= 0)
+                {
+                    SelectedTab = vm;
+                }
+                else
+                {
+                    ProjectViewModel viewModel = _projectViewModelFactory.CreateProjectViewModel((Project)selectedProject);
+                    SubscribeToProjectEvents(viewModel);
+                    Tabs.Add(viewModel);
+                    SelectedTab = Tabs.LastOrDefault();
+                }
+        }
+
+        private void SubscribeToProjectEvents(ProjectViewModel viewModel)
+        {
+            viewModel.ProjectOverviewViewModel.BoardListViewModel.ProjectUpdatedEvent += BoardListViewModel_ProjectUpdatedEvent; ;
+            viewModel.ProjectOverviewViewModel.BoardListViewModel.ProjectDeletedEvent += BoardListViewModel_ProjectDeletedEvent;
+        }
+
+        private void UnsubscribeToProjectEvents(ProjectViewModel viewModel)
+        {
+            viewModel.ProjectOverviewViewModel.BoardListViewModel.ProjectUpdatedEvent -= BoardListViewModel_ProjectUpdatedEvent;
+            viewModel.ProjectOverviewViewModel.BoardListViewModel.ProjectDeletedEvent -= BoardListViewModel_ProjectDeletedEvent;
+        }
+        private void BoardListViewModel_ProjectUpdatedEvent(object sender, EventArgs e)
+        {
+            ProjectListChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BoardListViewModel_ProjectDeletedEvent(object viewModel, EventArgs e)
+        {
+            object projectViewModel = Tabs.First(t => t.CurrentProject.Id == ((BoardListViewModel)viewModel).CurrentProject.Id);
+            RemoveTab(projectViewModel);
+            ProjectListChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RemoveTab(object viewModel)
+        {
+            int index = Tabs.IndexOf((ProjectViewModel)viewModel);
             ProjectViewModel tabSelected = SelectedTab;
 
-            Tabs.Remove((ProjectViewModel)tab);
+            ((ProjectViewModel)viewModel).CurrentProject = null;
 
-            ChangeTabOnRemove((ProjectViewModel)tab, tabSelected, index);                     
+            UnsubscribeToProjectEvents((ProjectViewModel)viewModel);
+
+            Tabs.Remove((ProjectViewModel)viewModel);
+            ChangeTabOnRemove((ProjectViewModel)viewModel, tabSelected, index);                     
         }
         private void ChangeTabOnRemove(ProjectViewModel tabRemoved, ProjectViewModel tabSelected, int index)
         {
@@ -159,13 +208,25 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         }
 
         // Check if project is in Tabs collection
-        public void CheckTabs(Project project)
+        internal async void CheckTabs(Project project)
         {
             foreach (ProjectViewModel viewModel in Tabs)
             {
                 if (viewModel.CurrentProject.Id == project.Id)
                 {
                     viewModel.CurrentProject = project;
+                    await viewModel.ProjectOverviewViewModel.BoardListViewModel.UpdateProject();
+                    break;
+                }
+            }
+        }
+        internal void RemoveTabIfOpen(Project project)
+        {
+            foreach (ProjectViewModel viewModel in Tabs)
+            {
+                if (viewModel.CurrentProject.Id == project.Id)
+                {
+                    Tabs.Remove(viewModel);
                     break;
                 }
             }

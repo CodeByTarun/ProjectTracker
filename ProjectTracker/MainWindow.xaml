@@ -12,11 +12,27 @@
         xmlns:popups="clr-namespace:ProjectTracker.Popups"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:TabViewModel, IsDesignTimeCreatable=True}"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        Title="MainWindow" Height="450" Width="900" MinWidth="600">
+        WindowStyle="None" Background="Transparent" ResizeMode="CanResize" AllowsTransparency="True"
+        Title="MainWindow" Height="800" Width="900" MinWidth="800">
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="15" Direction="-90"
+                              RenderingBias="Quality" ShadowDepth="2"/>
+    </Window.Effect>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30"
+                        CornerRadius="0"
+                        GlassFrameThickness="0"
+                        NonClientFrameEdges="None"
+                        ResizeBorderThickness="5"
+                        UseAeroCaptionButtons="True"/>
+    </WindowChrome.WindowChrome>
 
-    <Grid Background="{StaticResource QuaternaryColorBrush}">
+    <Grid Background="{StaticResource LightPrimaryColorBrush}">
 
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.8" Color="Green"/>
+        </Grid.Effect>
+        
         <Frame x:Name="MainFrame" 
                NavigationUIVisibility="Hidden"/>
 
@@ -40,6 +56,9 @@
                         <DataTrigger Binding="{Binding TagPopupViewModel.IsVisible}" Value="True">
                             <Setter Property="Visibility" Value='Visible'/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding DeletePopupViewModel.IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
@@ -49,18 +68,7 @@
             </Grid.Background>
 
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Grid x:Name="ProjectPopupGrid" Grid.Row="1" Grid.Column="1">
+                <Grid x:Name="ProjectPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <popups:ProjectPopup x:Name="ProjectPopup" DataContext="{Binding ProjectPopupViewModel}">
                         <popups:ProjectPopup.Style>
                             <Style TargetType="popups:ProjectPopup">
@@ -75,7 +83,7 @@
                     </popups:ProjectPopup>
                 </Grid>
 
-                <Grid x:Name="BoardPopupGrid" Grid.Row="1" Grid.Column="1">
+                <Grid x:Name="BoardPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <popups:BoardPopup x:Name="BoardPopup" DataContext="{Binding BoardPopupViewModel}">
                         <popups:BoardPopup.Style>
                             <Style TargetType="popups:BoardPopup">
@@ -90,7 +98,7 @@
                     </popups:BoardPopup>
                 </Grid>
 
-                <Grid x:Name="GroupPopupGrid" Grid.Row="1" Grid.Column="1">
+                <Grid x:Name="GroupPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <popups:GroupPopup x:Name="GroupPopup" DataContext="{Binding GroupPopupViewModel}">
                         <popups:GroupPopup.Style>
                             <Style TargetType="popups:GroupPopup">
@@ -105,7 +113,7 @@
                     </popups:GroupPopup>
                 </Grid>
 
-                <Grid x:Name="IssuePopupGrid" Grid.Row="1" Grid.Column="1">
+                <Grid x:Name="IssuePopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <popups:IssuePopup x:Name="IssuePopup" DataContext="{Binding IssuePopupViewModel}">
                         <popups:IssuePopup.Style>
                             <Style TargetType="popups:IssuePopup">
@@ -120,7 +128,7 @@
                     </popups:IssuePopup>
                 </Grid>
 
-                <Grid x:Name="TagPopupGrid" Grid.Row="1" Grid.Column="1">
+                <Grid x:Name="TagPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <popups:TagPopup x:Name="TagPopup" DataContext="{Binding TagPopupViewModel}">
                         <popups:TagPopup.Style>
                             <Style TargetType="popups:TagPopup">
@@ -134,7 +142,22 @@
                         </popups:TagPopup.Style>
                     </popups:TagPopup>
                 </Grid>
-                
+
+                <Grid x:Name="DeletePopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <popups:DeletePopup x:Name="DeletePopup" DataContext="{Binding DeletePopupViewModel}">
+                        <popups:DeletePopup.Style>
+                            <Style TargetType="popups:DeletePopup">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                        <Setter Property="Visibility" Value='Visible'/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </popups:DeletePopup.Style>
+                    </popups:DeletePopup>
+                </Grid>
+
             </Grid>
         </Grid>
     </Grid>

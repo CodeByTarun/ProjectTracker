@@ -4,13 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:controls="clr-namespace:ProjectTracker.Controls"
       xmlns:local="clr-namespace:ProjectTracker.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       x:Name="root"
       Title="ProjectIssueView">
 
-    <Grid Background="White">
+    <Grid Background="Transparent" Margin="10,0,10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -24,68 +25,108 @@
         </Grid.ColumnDefinitions>
 
         <!-- Header -->
-        <TextBlock FontSize="25" FontWeight="Bold" Grid.Row="0">
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Text" Value="{Binding BoardName}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedBoard}" Value="{x:Null}">
-                            <Setter Property="Text" Value="Select A Board"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+        <Grid x:Name="HeaderGrid" Margin="0,0,10,20" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Button x:Name="EditRemoveMenuButton" Content="Menu" VerticalAlignment="Center" Margin="20,0,0,0" Grid.Row="0" 
-            HorizontalAlignment="Right" Grid.ColumnSpan="2">
-            <Button.ContextMenu>
-                <ContextMenu x:Name="EditRemoveContextMenu">
-                    <MenuItem Header="Edit" Click="EditBoard_Click"/>
-                    <MenuItem Header="Delete" Click="DeleteBoard_Click"/>
-                </ContextMenu>
-            </Button.ContextMenu>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <Button.Triggers>
-                <EventTrigger SourceName="EditRemoveMenuButton" RoutedEvent="Button.Click">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditRemoveContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
-                                <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <sys:Boolean>True</sys:Boolean>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Button.Triggers>
-        </Button>
+            <Grid x:Name="HeaderStackGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding BoardDescription}" Grid.Row="1" Margin="0,5,0,0"/>
-        
-        <!-- Current Board Edit/Remove -->
-       
-        <!-- Board Controls -->
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <ComboBox x:Name="BoardComboBox" Width="100" DisplayMemberPath="Name"
-                      ItemsSource="{Binding BoardList}" SelectedItem="{Binding SelectedBoard, Mode=TwoWay}"/>
-            <Button x:Name="CreateBoardButton" Content="Add" Margin="10,0,0,0" 
+                <Viewbox Height="95" VerticalAlignment="Center" Margin="-5,-10,0,0" HorizontalAlignment="Left">
+                    <TextBlock LineStackingStrategy="BlockLineHeight" LineHeight="65" Grid.Column="0">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource HeaderTextBlockStyle}">
+                                <Setter Property="Text" Value="{Binding SelectedBoard.Name}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedBoard}" Value="{x:Null}">
+                                        <Setter Property="Text" Value="Select A Board"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Viewbox>
+
+                <Button x:Name="EditRemoveMenuButton" Content="Menu" VerticalAlignment="Center" Margin="0,0,0,0" Style="{StaticResource MenuButton}" Grid.Column="2">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="EditRemoveContextMenu" Style="{StaticResource ItemMenuStyle}">
+                            <MenuItem Header="Edit Board" Click="EditBoard_Click" Style="{StaticResource EditMenuItemStyle}"/>
+                            <MenuItem Header="Delete Board" Click="DeleteBoard_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+
+                    <Button.Triggers>
+                        <EventTrigger SourceName="EditRemoveMenuButton" RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditRemoveContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
+                                        <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                            <DiscreteObjectKeyFrame.Value>
+                                                <sys:Boolean>True</sys:Boolean>
+                                            </DiscreteObjectKeyFrame.Value>
+                                        </DiscreteObjectKeyFrame>
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Button x:Name="CreateBoardButton" Content="Create Board" VerticalAlignment="Center" Grid.Column="1" Style="{StaticResource AddButton}"
                     Command="{Binding CreateBoardCommand}" CommandParameter="{x:Null}"/>
-        </StackPanel>
-        
+            </Grid>
+
+            <TextBlock Text="{Binding SelectedBoard.Description}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource DescriptionTextBlockStyle}">
+            </TextBlock>
+            
+            <StackPanel x:Name="TagsAndStatusStackPanel" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal" Style="{StaticResource TagAndStatusStackPanel}">
+                <Border x:Name="StatusBorder" CornerRadius="10" Background="Gray" VerticalAlignment="Center">
+                    <Border.ToolTip>
+                        <ToolTip Content="Status"/>
+                    </Border.ToolTip>
+                    <TextBlock Text="{Binding SelectedBoard.Status}" Foreground="{StaticResource MainFontColorBrush}" Margin="10,5,10,5"/>
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BoardStatus}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+                <controls:TagListControl TagList="{Binding SelectedBoard.Tags}" VerticalAlignment="Center" Margin="7,0,0,0"/>
+            </StackPanel>
+
+            <!-- Board Controls -->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,50,0,0">
+                <controls:ComboBoxWithCommandControl x:Name="BoardComboBox" VerticalAlignment="Center" Height="30"
+                                                     IsPathNameRequired="True" Width="175"
+                                                     PlaceholderText="Select a Board"
+                                                     Items="{Binding BoardList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                     SelectedItem="{Binding SelectedBoard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     DropDownCommand="{Binding OpenBoardCommand}"/>
+            </StackPanel>
+        </Grid>
+
         <!-- Kanban Control -->
-        <Frame x:Name="IssueFrame" Grid.Row="3" Grid.ColumnSpan="2" LoadCompleted="IssueFrame_LoadCompleted" DataContextChanged="IssueFrame_DataContextChanged"
+        <Frame x:Name="IssueFrame" Grid.Row="3" Grid.ColumnSpan="2" LoadCompleted="IssueFrame_LoadCompleted" DataContextChanged="IssueFrame_DataContextChanged" Margin="10,0,10,0"
                Source="pack://application:,,,/Controls/KanbanControl.xaml" DataContext="{Binding KanbanControlViewModel}"/>
 
-        <Grid x:Name="NoBoardSelectedGrid" Grid.Row="3" Grid.ColumnSpan="2" Panel.ZIndex="1" Background="White">  
-            <Border CornerRadius="10" Background="{StaticResource QuaternaryColorBrush}">
-                <Grid>
-                    <Button Content="Create a Board" VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Command="{Binding CreateBoardCommand}" CommandParameter="{x:Null}"/>
-                </Grid>
-            </Border>
+        <Grid x:Name="NoBoardSelectedGrid" Grid.Row="3" Grid.ColumnSpan="2" Panel.ZIndex="1" Background="Transparent" Margin="10,0,10,0">
+            <Border CornerRadius="10" Background="{StaticResource PrimaryColorBrush}"/>
 
             <Grid.Style>
                 <Style TargetType="Grid">

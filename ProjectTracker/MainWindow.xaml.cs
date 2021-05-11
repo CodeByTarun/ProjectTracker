@@ -17,6 +17,7 @@ namespace ProjectTracker
             this.DataContext = viewModel;
 
             MainFrame.Navigate(mainView);
+            mainView.WindowStateEventSubscriber();
         }
     }
 }

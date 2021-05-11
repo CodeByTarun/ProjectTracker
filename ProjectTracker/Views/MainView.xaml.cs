@@ -1,6 +1,8 @@
 ﻿using ProjectTracker.ClassLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,16 +21,45 @@ namespace ProjectTracker.Views
     /// </summary>
     public partial class MainView : Page
     {
+        private bool _canNavigate;
         private HomeView homeView;
-        private ProjectView projectView;
-        public MainView(TabViewModel tabViewModel, HomeView homeView, ProjectView projectView)
+
+        private Collection<ProjectView> projectViewList;
+
+        public MainView(TabViewModel tabViewModel, HomeView homeView)
         {
             this.homeView = homeView;
-            this.projectView = projectView;
             this.DataContext = tabViewModel;
+
+            projectViewList = new Collection<ProjectView>();
             
             InitializeComponent();
-            MainFrame.Navigate(homeView);
+
+            NavigateToPage(homeView);
+        }
+
+        private void NavigateToPage(Page page)
+        {
+            _canNavigate = true;
+            MainFrame.Navigate(page);
+            _canNavigate = false;
+        }
+
+        public void WindowStateEventSubscriber()
+        {
+            Window window = Application.Current.MainWindow;
+            window.StateChanged += Window_StateChanged;
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (((Window)sender).WindowState == WindowState.Maximized)
+            {
+                btnRestore.Content = "\xE923";
+            } else
+            {
+                btnRestore.Content = "\xE739";
+            }
         }
 
         // Drag and Drop
@@ -57,29 +88,87 @@ namespace ProjectTracker.Views
         }
 
         // Navigation
+        /// TODO
+        /// This will set the data context as well
+        public void AddProjectView(ProjectViewModel viewModel)
+        {
+            ProjectView projectView = new ProjectView(new ProjectOverviewView(), new ProjectIssueView());
+
+            projectView.SetDataContext(viewModel);
+
+            projectViewList.Add(projectView);
+        }
+
+        // THIS IS WRONG
+        public void MatchProjectViewListToViewModelList()
+        {
+            foreach (ProjectView projectView in projectViewList.ToList())
+            {
+                if (projectView.ProjectViewModel.CurrentProject == null)
+                {
+                    projectViewList.Remove(projectView);
+                }
+            }
+        }
+
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            MatchProjectViewListToViewModelList();
+
             ProjectViewModel tab = (ProjectViewModel)((ListBox)sender).SelectedItem;
+
+            var g = projectViewList.FirstOrDefault(v => v.ProjectViewModel == tab);
 
             if (tab == null)
             {
-                MainFrame.Navigate(homeView);
+                NavigateToPage(homeView);
             }
             else
             {
-                MainFrame.Navigate(projectView);
+                if (projectViewList.FirstOrDefault(v => v.ProjectViewModel == tab) == null)
+                {
+                    AddProjectView(tab);
+                } 
 
+                ProjectView projectView = projectViewList.FirstOrDefault(v => v.ProjectViewModel == tab);
+                NavigateToPage(projectView);
             }
         }
-        private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-            int tabIndex = TabsListBox.SelectedIndex;
-
-            if (tabIndex != -1)
+            if (_canNavigate == false)
             {
-                projectView.SetDataContext((this.DataContext as TabViewModel).Tabs[tabIndex]);
-                
+                e.Cancel = true;
             }
         }
+
+        // Window Functions
+        private void CloseClick(object sender, RoutedEventArgs e)
+        {
+            Window mainWindow = Application.Current.MainWindow;
+            mainWindow.Close();
+        }
+        private void MaximizeRestoreClick(object sender, RoutedEventArgs e)
+        {
+            Window mainWindow = Application.Current.MainWindow;
+            if (mainWindow.WindowState == System.Windows.WindowState.Normal)
+            {
+                mainWindow.ResizeMode = ResizeMode.NoResize;
+                mainWindow.WindowState = System.Windows.WindowState.Maximized;
+            }
+            else
+            {
+                mainWindow.WindowState = System.Windows.WindowState.Normal;
+                mainWindow.ResizeMode = ResizeMode.CanResize;
+            }
+
+        }
+        private void MinimizeClick(object sender, RoutedEventArgs e)
+        {
+            Window mainWindow = Application.Current.MainWindow;
+            mainWindow.WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        
     }
 }

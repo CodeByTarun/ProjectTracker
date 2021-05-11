@@ -9,8 +9,9 @@ namespace ProjectTracker.Model.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Status { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime DeadlineDate { get; set; }
+        public DateTime? DeadlineDate { get; set; }
 
         public ObservableCollection<Group> Groups { get; set; }
 

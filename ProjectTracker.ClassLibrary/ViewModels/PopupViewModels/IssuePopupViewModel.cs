@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 {
@@ -11,6 +12,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
     {
         private Group _group;
         private Issue _issueToEdit;
+        private DateTime? _deadlineDate;
 
         private string _description;
         public string Description
@@ -23,6 +25,18 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             {
                 _description = value;
                 RaisePropertyChangedEvent(nameof(Description));
+            }
+        }
+        public DateTime? DeadlineDate
+        {
+            get
+            {
+                return _deadlineDate;
+            }
+            set
+            {
+                _deadlineDate = value;
+                RaisePropertyChangedEvent(nameof(DeadlineDate));
             }
         }
 
@@ -39,6 +53,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         private void InitialSetup()
         {
             GetTagList();
+            CreateCommands();
         }
 
         #endregion 
@@ -61,6 +76,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             Name = issueToEdit.Name;
             Description = issueToEdit.Description;
+            DeadlineDate = issueToEdit.DeadlineDate;
 
             if (issueToEdit.Tags != null)
             {
@@ -78,7 +94,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
             IsVisible = true;
         }
 
-        protected async override void CreateItem()
+        protected async override Task CreateItem()
         {
             Issue issue = new Issue()
             {
@@ -86,16 +102,17 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
                 Description = Description,
                 Tags = ItemTags,
                 DateCreated = DateTime.Now,
-                GroupID = _group.Id
+                GroupID = _group.Id,
+                DeadlineDate = DeadlineDate
             };
-
             await _issueDataService.Create(issue);
         }
-        protected async override void EditItem()
+        protected async override Task EditItem()
         {
             _issueToEdit.Name = Name;
             _issueToEdit.Description = Description;
             _issueToEdit.Tags = ItemTags;
+            _issueToEdit.DeadlineDate = DeadlineDate;
 
             await _issueDataService.Update(_issueToEdit.Id, _issueToEdit);
         }
@@ -104,6 +121,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             this.Name = "";
             this.Description = "";
+            DeadlineDate = null;
             _group = null;
             _issueToEdit = null;
             _isEdit = false;

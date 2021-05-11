@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ProjectOverviewView">
 
-    <Grid Background="DarkOrange">
+    <Grid Background="Transparent">
 
         <Frame x:Name="BoardListControlFrame" Source="pack://application:,,,/Controls/BoardListControl.xaml" DataContext="{Binding BoardListViewModel}"
                LoadCompleted="BoardListControlFrame_LoadCompleted" DataContextChanged="BoardListControlFrame_DataContextChanged"/>

@@ -35,6 +35,18 @@ namespace ProjectTracker.ClassLibrary.Services
                 return createdResult.Entity;
             }
         }
+        public override async Task<Group> Update(int id, Group entity)
+        {
+            using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
+            {
+                Group group = await context.Set<Group>().FirstOrDefaultAsync(g => g.Id == entity.Id);
+                group.Name = entity.Name;
+                context.Set<Group>().Update(group);
+                await context.SaveChangesAsync();
+
+                return entity;
+            }
+        }
         public override async Task<bool> Delete(int id)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))

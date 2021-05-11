@@ -25,7 +25,7 @@ namespace ProjectTracker.Controls
             if (e.ChangedButton == MouseButton.Left)
             {
                 e.Handled = true;
-                Grid button = (Grid)sender;
+                Border button = (Border)sender;
                 button.ContextMenu.IsOpen = true;
                 button.ContextMenu.StaysOpen = true;
             }
@@ -41,7 +41,7 @@ namespace ProjectTracker.Controls
         }
         private void RemoveProject_Click(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as ProjectListViewModel).RemoveProject((this.DataContext as ProjectListViewModel).SelectedProject);
+            (this.DataContext as ProjectListViewModel).ShowDeleteDialog((this.DataContext as ProjectListViewModel).SelectedProject);                  
         }
     }
 }

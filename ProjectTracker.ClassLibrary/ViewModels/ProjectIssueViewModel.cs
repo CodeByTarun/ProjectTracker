@@ -22,6 +22,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels
 
         private string _boardName;
         private string _boardDescription;
+        private string _boardStatus;
 
         public Board SelectedBoard
         {
@@ -72,15 +73,29 @@ namespace ProjectTracker.ClassLibrary.ViewModels
                 RaisePropertyChangedEvent(nameof(BoardDescription));
             }
         }
+        public string BoardStatus
+        {
+            get
+            {
+                return _boardStatus;
+            }
+            set
+            {
+                _boardStatus = value;
+                RaisePropertyChangedEvent(nameof(BoardStatus));
+            }
+        }
 
         private IBoardDataService _boardDataService;
 
         private BoardPopupViewModel _boardPopupViewModel;
         public KanbanControlViewModel KanbanControlViewModel;
+        private DeletePopupViewModel _deletePopupViewModel;
 
         public ICommand CreateBoardCommand { get; private set; }
         public ICommand EditBoardCommand { get; private set; }
         public ICommand DeleteBoardCommand { get; private set; }
+        public ICommand OpenBoardCommand { get; private set; }
 
         public event EventHandler RefreshBoardEvent;
         #endregion
@@ -94,13 +109,14 @@ namespace ProjectTracker.ClassLibrary.ViewModels
                 Description = "This is the first of many"
             };
         }
-        public ProjectIssueViewModel(Project currentProject, IBoardDataService boardDataService, BoardPopupViewModel boardPopupViewModel, KanbanControlViewModel kanbanControlViewModel)
+        public ProjectIssueViewModel(Project currentProject, IBoardDataService boardDataService, BoardPopupViewModel boardPopupViewModel, KanbanControlViewModel kanbanControlViewModel, DeletePopupViewModel deletePopupViewModel)
         {
             this._currentProject = currentProject;
 
             this._boardDataService = boardDataService;
             this._boardPopupViewModel = boardPopupViewModel;
             this.KanbanControlViewModel = kanbanControlViewModel;
+            this._deletePopupViewModel = deletePopupViewModel;
 
             InitialSetup();
         }
@@ -129,8 +145,15 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         {
             CreateBoardCommand = new RelayCommand(ShowCreateBoardPopup);
             EditBoardCommand = new RelayCommand(ShowEditBoardPopup, CanEditOrDeleteBoard);
-            DeleteBoardCommand = new RelayCommand(DeleteBoard, CanEditOrDeleteBoard);
+            DeleteBoardCommand = new RelayCommand(ShowDeleteBoardPopup, CanEditOrDeleteBoard);
+            OpenBoardCommand = new RelayCommand(OpenBoard);
         }
+
+        private void OpenBoard(object obj)
+        {
+            SetBoardFields();
+        }
+
         public async void GetBoardList()
         {
             BoardList = await _boardDataService.GetAllInProject(_currentProject.Id);
@@ -142,7 +165,13 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             {
                 BoardName = SelectedBoard.Name;
                 BoardDescription = SelectedBoard.Description;
+                BoardStatus = SelectedBoard.Status;
                 KanbanControlViewModel.SelectedBoard = await _boardDataService.GetBoardWithInnerEntities(SelectedBoard.Id);
+            } else
+            {
+                BoardName = "";
+                BoardDescription = "";
+                BoardStatus = "";
             }
         }
         #endregion
@@ -161,14 +190,6 @@ namespace ProjectTracker.ClassLibrary.ViewModels
             _isEdit = true;
         }
 
-        private async void DeleteBoard(object na)
-        {
-            await _boardDataService.Delete(SelectedBoard.Id);
-
-            SelectedBoard = BoardList.FirstOrDefault();
-
-            RefreshBoardEvent?.Invoke(this, EventArgs.Empty);
-        }
         private bool CanEditOrDeleteBoard(object na)
         {
             return (SelectedBoard != null);
@@ -205,6 +226,38 @@ namespace ProjectTracker.ClassLibrary.ViewModels
 
             RefreshBoardEvent?.Invoke(this, EventArgs.Empty);
             _isEdit = false;
+        }
+
+        private void ShowDeleteBoardPopup(object na)
+        {
+            _deletePopupViewModel.ShowDeleteDialog(SelectedBoard.Name);
+            SubscribeToDeleteBoardEvents();
+        }
+
+        private void SubscribeToDeleteBoardEvents()
+        {
+            _deletePopupViewModel.DeletedEvent += _deletePopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent += _deletePopupViewModel_CanceledEvent;
+        }
+        private void UnsubscribeToDeleteBoardEvents()
+        {
+            _deletePopupViewModel.DeletedEvent -= _deletePopupViewModel_DeletedEvent;
+            _deletePopupViewModel.CanceledEvent -= _deletePopupViewModel_CanceledEvent;
+        }
+
+        private async void _deletePopupViewModel_DeletedEvent(object sender, EventArgs e)
+        {
+            await _boardDataService.Delete(SelectedBoard.Id);
+            GetBoardList();
+            SelectedBoard = BoardList.FirstOrDefault();
+
+            RefreshBoardEvent?.Invoke(this, EventArgs.Empty);
+
+            UnsubscribeToDeleteBoardEvents();
+        }
+        private void _deletePopupViewModel_CanceledEvent(object sender, EventArgs e)
+        {
+            UnsubscribeToDeleteBoardEvents();
         }
 
         #endregion

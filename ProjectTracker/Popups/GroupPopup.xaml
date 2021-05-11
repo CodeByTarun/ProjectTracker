@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:GroupPopupViewModel, IsDesignTimeCreatable=True}">
 
-    <Border CornerRadius="10" Background="White" VerticalAlignment="Center">
+    <Border Style="{StaticResource PopupBorderStyle}">
         <Grid x:Name="PopupGrid" Margin="15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -17,7 +17,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding DialogTitle}" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            <TextBlock Text="{Binding DialogTitle}" Grid.Row="0" Style="{StaticResource PopupTitleStyle}"/>
 
             <Button HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource CloseButton}" Command="{Binding ClosePopupCommand}" CommandParameter="{x:Null}"/>
 
@@ -25,7 +25,7 @@
                                                   Grid.Row="1" Width="300"
                                                   InputText="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Width="75"  VerticalAlignment="Center"
+            <Button Content="{Binding ButtonContent}" Margin="0,15,0,0" Style="{StaticResource PopupButtonStyle}"
                     Command="{Binding CreateOrEditCommand}" CommandParameter="{x:Null}" Grid.Row="2"/>
         </Grid>
     </Border>

@@ -2,25 +2,344 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:fa="http://schemas.fontawesome.com/icons/">
 
+    <Style x:Key="BaseButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border" CornerRadius="5" Width="Auto" Height="30" Background="{StaticResource SecondaryColorBrush}">
+                        <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Margin="10,0,10,0"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ConfirmDeleteButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border" CornerRadius="5" Width="Auto" Height="30" Background="{StaticResource CloseButtonPressedColorBrush}">
+                        <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Margin="10,0,10,0"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="CloseButton" TargetType="{x:Type Button}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="10" Width="15" Height="15">
-                        <StackPanel>
-                            <fa:FontAwesome Icon="Solid_Times" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black"/>
+                    <Border x:Name="CloseBorder" CornerRadius="5" Width="20" Height="20">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <fa:FontAwesome x:Name="CloseIcon" Icon="Solid_Times" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>
                         </StackPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CloseIcon" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-
-        </Style.Triggers>
     </Style>
 
+    <Style x:Key="AddButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="AddBorder" CornerRadius="5" Width="30" Height="30" Background="Transparent">
+                        <TextBlock Text="&#xE948;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Border.ToolTip>
+                            <ToolTip Content="{TemplateBinding Content}"/>
+                        </Border.ToolTip>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="AddBorder" Property="Background" Value="{StaticResource LightSecondaryColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="AddBorder" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/> 
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="PopupAddButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="CloseBorder" CornerRadius="5" Width="12" Height="12">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <fa:FontAwesome x:Name="CloseIcon" Icon="Solid_Plus" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CloseIcon" Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
 
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TrashButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="CloseBorder" CornerRadius="5">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <fa:FontAwesome x:Name="Icon" Icon="Regular_TrashAlt" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Icon" Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ProjectToggleButton" TargetType="ToggleButton">
+        <Setter Property="BorderThickness" Value="5"/>
+        <Setter Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border CornerRadius="0,5,5,0" Background="{TemplateBinding Background}" Width="30">
+                        <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontSize="20" FontFamily="Segoe MDL2 Assets" 
+                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-1,0,0,1"
+                                   RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Content" Value="&#xF0E3;"/>
+                            <Setter Property="ToolTip" Value="Go to boards"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Content" Value="&#xEA37;"/>
+                            <Setter Property="ToolTip" Value="Go to board list"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource LightSecondaryColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FontColorToggleButton" TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="Border" CornerRadius="5" Width="70" Height="30"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="Black"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MenuButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="MenuBorder" CornerRadius="5" Width="30" Height="30" Background="Transparent">
+                        <Border.ToolTip>
+                            <ToolTip Content="Menu"/>
+                        </Border.ToolTip>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <fa:FontAwesome x:Name="Elipsis" Icon="Solid_EllipsisH" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" Foreground="{StaticResource MainFontColorBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MenuBorder" Property="Background" Value="{StaticResource LightSecondaryColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="MenuBorder" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="IssueMenuButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="MenuBorder" CornerRadius="5" Width="20" Height="10" Background="Transparent">
+                        <Border.ToolTip>
+                            <ToolTip Content="Menu"/>
+                        </Border.ToolTip>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <fa:FontAwesome x:Name="Elipsis" Icon="Solid_EllipsisH" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" Foreground="Gray"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Elipsis" Property="Foreground" Value="Black"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Elipsis" Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Window Buttons -->
+    <Style x:Key="CaptionButtonStyle" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                        <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="10" 
+                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource SecondaryColorBrush}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MinimizeButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE949;"/>
+    </Style>
+
+    <Style x:Key="MaximizeButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE739;"/>
+    </Style>
+
+    <Style x:Key="RestoreButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE739;"/>
+    </Style>
+
+    <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                        <TextBlock x:Name="txt" Text="&#xE106;" FontFamily="Segoe MDL2 Assets" FontSize="10" 
+                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource CloseButtonColorBrush}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource CloseButtonPressedColorBrush}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Top Bar buttons -->
+    <Style x:Key="UtilityButtons" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button" >
+                    <Border x:Name="LayoutRoot" Background="Transparent" Width="35" Height="30" CornerRadius="5">
+                        <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="15" 
+                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource SecondaryColorBrush}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TagButtonStyle" TargetType="Button" BasedOn="{StaticResource UtilityButtons}">
+        <Setter Property="Content" Value="&#xE8EC;"/>
+        <Setter Property="ToolTip" Value="Tags"/>
+    </Style>
+
+    <Style x:Key="TimerButtonStyle" TargetType="Button" BasedOn="{StaticResource UtilityButtons}">
+        <Setter Property="Content" Value="&#xE9CA;"/>
+        <Setter Property="ToolTip" Value="Timer"/>
+    </Style>
+
+    <Style x:Key="ProfileButtonStyle" TargetType="Button" BasedOn="{StaticResource UtilityButtons}">
+        <Setter Property="Content" Value="&#xE77B;"/>
+        <Setter Property="ToolTip" Value="Profile"/>
+    </Style>
+
+    <Style x:Key="HomeButtonStyle" TargetType="Button" BasedOn="{StaticResource UtilityButtons}">
+        <Setter Property="Content" Value="&#xE80F;"/>
+        <Setter Property="ToolTip" Value="Home"/>
+    </Style>
+    
 </ResourceDictionary>
 
 

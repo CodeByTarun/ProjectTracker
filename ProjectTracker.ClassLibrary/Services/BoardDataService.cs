@@ -88,7 +88,7 @@ namespace ProjectTracker.ClassLibrary.Services
         public async Task<ObservableCollection<Group>> GetGroupsInBoard(int boardId, ProjectTrackerDBContext context)
         {
             List<Group> groups = await context.Set<Group>().FromSqlRaw("WITH RECURSIVE my_tree as (SELECT * FROM Groups WHERE NextID = 0 AND BoardID = {0} " +
-                    "UNION ALL SELECT g.Id, g.name, g.BoardID, g.NextID FROM Groups g join my_tree p on p.Id = g.NextID) SELECT * FROM my_tree", boardId).ToListAsync();
+                    "UNION ALL SELECT g.Id, g.name, g.BoardID, g.NextID FROM Groups g join my_tree p on p.Id = g.NextID) SELECT * FROM my_tree", boardId).AsNoTracking().ToListAsync();
 
             ObservableCollection<Group> observableGroup = new ObservableCollection<Group>(Enumerable.Reverse(groups));
 
@@ -97,7 +97,7 @@ namespace ProjectTracker.ClassLibrary.Services
         public async Task<ObservableCollection<Issue>> GetIssuesInGroup(int groupId, ProjectTrackerDBContext context)
         {
             List<Issue> issues = await context.Set<Issue>().FromSqlRaw("WITH RECURSIVE my_tree as (SELECT * FROM Issues WHERE NextID = 0 AND GroupID = {0} " +
-                    "UNION ALL SELECT g.Id, g.DateCreated, g.Description, g.GroupID, g.Name, g.NextID FROM Issues g join my_tree p on p.Id = g.NextID) SELECT * FROM my_tree", groupId).ToListAsync();
+                    "UNION ALL SELECT g.Id, g.DateCreated, g.Deadlinedate, g.Description, g.GroupID, g.Name, g.NextID FROM Issues g join my_tree p on p.Id = g.NextID) SELECT * FROM my_tree", groupId).AsNoTracking().ToListAsync();
 
             ObservableCollection<Issue> observableIssues = new ObservableCollection<Issue>(Enumerable.Reverse(issues));
 
@@ -114,7 +114,7 @@ namespace ProjectTracker.ClassLibrary.Services
         public ObservableCollection<Tag> GetTagsInIssue(int issuesId, ProjectTrackerDBContext context)
         {
 
-            List<Tag> tags = (List<Tag>)context.Set<Issue>().Include(i => i.Tags).FirstOrDefault(i => i.Id == issuesId).Tags.ToList();
+            List<Tag> tags = (List<Tag>)context.Set<Issue>().AsNoTracking().Include(i => i.Tags).FirstOrDefault(i => i.Id == issuesId).Tags.ToList();
 
             if(tags != null)
             {
