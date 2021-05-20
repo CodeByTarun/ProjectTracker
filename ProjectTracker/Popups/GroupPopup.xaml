@@ -21,7 +21,7 @@
 
             <Button HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource CloseButton}" Command="{Binding ClosePopupCommand}" CommandParameter="{x:Null}"/>
 
-            <controls:LimitedInputUserControl Title="Name" MaxLength="{StaticResource ObjectNameMaxLength}" 
+            <controls:LimitedInputUserControl Title="Name" MaxLength="{StaticResource ObjectNameMaxLength}" Height="68"
                                                   Grid.Row="1" Width="300"
                                                   InputText="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 

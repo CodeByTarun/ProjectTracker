@@ -24,10 +24,10 @@ namespace ProjectTracker.Converters
             
             if (width > tabsWidth)
             {
-                return tabsWidth;
+                return tabsWidth - 15;
             } else
             {
-                return width;
+                return width - 15;
             }
         }
 

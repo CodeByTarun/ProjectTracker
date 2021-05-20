@@ -13,11 +13,9 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:TabViewModel, IsDesignTimeCreatable=True}"
         WindowStyle="None" Background="Transparent" ResizeMode="CanResize" AllowsTransparency="True"
-        Title="MainWindow" Height="800" Width="900" MinWidth="800">
-    <Window.Effect>
-        <DropShadowEffect BlurRadius="15" Direction="-90"
-                              RenderingBias="Quality" ShadowDepth="2"/>
-    </Window.Effect>
+        StateChanged="Window_StateChanged"
+        Title="Project Tracker" Height="800" Width="900" MinWidth="800">
+
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="30"
                         CornerRadius="0"
@@ -27,138 +25,148 @@
                         UseAeroCaptionButtons="True"/>
     </WindowChrome.WindowChrome>
 
-    <Grid Background="{StaticResource LightPrimaryColorBrush}">
+    <Border Background="Transparent">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Effect" Value="{StaticResource BasicDropShadow}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="Maximized">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Effect" Value="{x:Null}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
 
-        <Grid.Effect>
-            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.8" Color="Green"/>
-        </Grid.Effect>
-        
-        <Frame x:Name="MainFrame" 
-               NavigationUIVisibility="Hidden"/>
+        <Grid Background="{StaticResource LightPrimaryColorBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <Grid x:Name="PopupGrid" Panel.ZIndex="1">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Hidden"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ProjectPopupViewModel.IsVisible}" Value="True">
-                            <Setter Property="Visibility" Value='Visible'/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding BoardPopupViewModel.IsVisible}" Value="True">
-                            <Setter Property="Visibility" Value='Visible'/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding GroupPopupViewModel.IsVisible}" Value="True">
-                            <Setter Property="Visibility" Value='Visible'/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IssuePopupViewModel.IsVisible}" Value="True">
-                            <Setter Property="Visibility" Value='Visible'/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding TagPopupViewModel.IsVisible}" Value="True">
-                            <Setter Property="Visibility" Value='Visible'/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding DeletePopupViewModel.IsVisible}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
 
-            <Grid.Background>
-                <SolidColorBrush Color="Black" Opacity="0.5"/>
-            </Grid.Background>
+            <Grid x:Name="PopupGrid" Panel.ZIndex="1">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ProjectPopupViewModel.IsVisible}" Value="True">
+                                <Setter Property="Visibility" Value='Visible'/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding BoardPopupViewModel.IsVisible}" Value="True">
+                                <Setter Property="Visibility" Value='Visible'/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding GroupPopupViewModel.IsVisible}" Value="True">
+                                <Setter Property="Visibility" Value='Visible'/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IssuePopupViewModel.IsVisible}" Value="True">
+                                <Setter Property="Visibility" Value='Visible'/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding TagPopupViewModel.IsVisible}" Value="True">
+                                <Setter Property="Visibility" Value='Visible'/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DeletePopupViewModel.IsVisible}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
-            <Grid>
-                <Grid x:Name="ProjectPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <popups:ProjectPopup x:Name="ProjectPopup" DataContext="{Binding ProjectPopupViewModel}">
-                        <popups:ProjectPopup.Style>
-                            <Style TargetType="popups:ProjectPopup">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                        <Setter Property="Visibility" Value='Visible'/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </popups:ProjectPopup.Style>
-                    </popups:ProjectPopup>
+                <Grid.Background>
+                    <SolidColorBrush Color="Black" Opacity="0.5"/>
+                </Grid.Background>
+
+                <Grid>
+                    <Grid x:Name="ProjectPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <popups:ProjectPopup x:Name="ProjectPopup" DataContext="{Binding ProjectPopupViewModel}">
+                            <popups:ProjectPopup.Style>
+                                <Style TargetType="popups:ProjectPopup">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                            <Setter Property="Visibility" Value='Visible'/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </popups:ProjectPopup.Style>
+                        </popups:ProjectPopup>
+                    </Grid>
+
+                    <Grid x:Name="BoardPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <popups:BoardPopup x:Name="BoardPopup" DataContext="{Binding BoardPopupViewModel}">
+                            <popups:BoardPopup.Style>
+                                <Style TargetType="popups:BoardPopup">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                            <Setter Property="Visibility" Value='Visible'/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </popups:BoardPopup.Style>
+                        </popups:BoardPopup>
+                    </Grid>
+
+                    <Grid x:Name="GroupPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <popups:GroupPopup x:Name="GroupPopup" DataContext="{Binding GroupPopupViewModel}">
+                            <popups:GroupPopup.Style>
+                                <Style TargetType="popups:GroupPopup">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                            <Setter Property="Visibility" Value='Visible'/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </popups:GroupPopup.Style>
+                        </popups:GroupPopup>
+                    </Grid>
+
+                    <Grid x:Name="IssuePopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <popups:IssuePopup x:Name="IssuePopup" DataContext="{Binding IssuePopupViewModel}">
+                            <popups:IssuePopup.Style>
+                                <Style TargetType="popups:IssuePopup">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                            <Setter Property="Visibility" Value='Visible'/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </popups:IssuePopup.Style>
+                        </popups:IssuePopup>
+                    </Grid>
+
+                    <Grid x:Name="TagPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <popups:TagPopup x:Name="TagPopup" DataContext="{Binding TagPopupViewModel}">
+                            <popups:TagPopup.Style>
+                                <Style TargetType="popups:TagPopup">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                            <Setter Property="Visibility" Value='Visible'/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </popups:TagPopup.Style>
+                        </popups:TagPopup>
+                    </Grid>
+
+                    <Grid x:Name="DeletePopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <popups:DeletePopup x:Name="DeletePopup" DataContext="{Binding DeletePopupViewModel}">
+                            <popups:DeletePopup.Style>
+                                <Style TargetType="popups:DeletePopup">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                                            <Setter Property="Visibility" Value='Visible'/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </popups:DeletePopup.Style>
+                        </popups:DeletePopup>
+                    </Grid>
+
                 </Grid>
-
-                <Grid x:Name="BoardPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <popups:BoardPopup x:Name="BoardPopup" DataContext="{Binding BoardPopupViewModel}">
-                        <popups:BoardPopup.Style>
-                            <Style TargetType="popups:BoardPopup">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                        <Setter Property="Visibility" Value='Visible'/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </popups:BoardPopup.Style>
-                    </popups:BoardPopup>
-                </Grid>
-
-                <Grid x:Name="GroupPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <popups:GroupPopup x:Name="GroupPopup" DataContext="{Binding GroupPopupViewModel}">
-                        <popups:GroupPopup.Style>
-                            <Style TargetType="popups:GroupPopup">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                        <Setter Property="Visibility" Value='Visible'/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </popups:GroupPopup.Style>
-                    </popups:GroupPopup>
-                </Grid>
-
-                <Grid x:Name="IssuePopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <popups:IssuePopup x:Name="IssuePopup" DataContext="{Binding IssuePopupViewModel}">
-                        <popups:IssuePopup.Style>
-                            <Style TargetType="popups:IssuePopup">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                        <Setter Property="Visibility" Value='Visible'/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </popups:IssuePopup.Style>
-                    </popups:IssuePopup>
-                </Grid>
-
-                <Grid x:Name="TagPopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <popups:TagPopup x:Name="TagPopup" DataContext="{Binding TagPopupViewModel}">
-                        <popups:TagPopup.Style>
-                            <Style TargetType="popups:TagPopup">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                        <Setter Property="Visibility" Value='Visible'/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </popups:TagPopup.Style>
-                    </popups:TagPopup>
-                </Grid>
-
-                <Grid x:Name="DeletePopupGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <popups:DeletePopup x:Name="DeletePopup" DataContext="{Binding DeletePopupViewModel}">
-                        <popups:DeletePopup.Style>
-                            <Style TargetType="popups:DeletePopup">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                        <Setter Property="Visibility" Value='Visible'/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </popups:DeletePopup.Style>
-                    </popups:DeletePopup>
-                </Grid>
-
             </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

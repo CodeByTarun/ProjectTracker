@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\App.xaml
-261800873654
+27-812143674
 
-39-1011736957
+41507558539
 226151930179
-Controls\AddTagsControl.xaml;Controls\BoardListControl.xaml;Controls\ComboBoxWithCommandControl.xaml;Controls\KanbanControl.xaml;Controls\LimitedInputUserControl.xaml;Controls\ProjectListControl.xaml;Controls\SearchControl.xaml;Controls\TagListControl.xaml;MainWindow.xaml;Popups\BoardPopup.xaml;Popups\DeletePopup.xaml;Popups\GroupPopup.xaml;Popups\IssuePopup.xaml;Popups\ProjectPopup.xaml;Popups\TagPopupControl.xaml;Styles\Borders.xaml;Styles\Buttons.xaml;Styles\Common.xaml;Styles\Miscellaneous.xaml;Styles\Values.xaml;Views\HomeView.xaml;Views\MainView.xaml;Views\ProjectIssueView.xaml;Views\ProjectNotesView.xaml;Views\ProjectOverviewView.xaml;Views\ProjectView.xaml;
+Controls\AddTagsControl.xaml;Controls\BoardListControl.xaml;Controls\ComboBoxWithCommandControl.xaml;Controls\KanbanControl.xaml;Controls\LimitedInputUserControl.xaml;Controls\ProjectListControl.xaml;Controls\SearchControl.xaml;Controls\TagListControl.xaml;MainWindow.xaml;Popups\BoardPopup.xaml;Popups\DeletePopup.xaml;Popups\GroupPopup.xaml;Popups\IssuePopup.xaml;Popups\ProjectPopup.xaml;Popups\TagPopupControl.xaml;Styles\Borders.xaml;Styles\Buttons.xaml;Styles\Common.xaml;Styles\EffectAndAnimations.xaml;Styles\Miscellaneous.xaml;Styles\Values.xaml;Views\HomeView.xaml;Views\MainView.xaml;Views\ProjectIssueView.xaml;Views\ProjectNotesView.xaml;Views\ProjectOverviewView.xaml;Views\ProjectView.xaml;
 
-True
+False
 

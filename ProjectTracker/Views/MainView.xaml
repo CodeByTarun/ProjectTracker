@@ -25,15 +25,19 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="NavigationGrid" Background="{StaticResource DarkPrimaryColorBrush}" Grid.Row="0">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="2" ShadowDepth="1" Direction="270" Color="Black"/>
+            </Grid.Effect>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/> 
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="NavigationStackPanel" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="5,5,0,0">
+            <StackPanel x:Name="NavigationStackPanel" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="5,5,0,5">
 
 
-                <Button x:Name="HomeButton" Margin="10,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True"
+                <Button x:Name="HomeButton" Margin="5,1,0,1" WindowChrome.IsHitTestVisibleInChrome="True" 
                     Command="{Binding GoToHomeCommand}" CommandParameter="{Binding SelectedTab}">
                     <Button.Style>
                         <Style TargetType="Button">
@@ -41,17 +45,49 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
                                         <Border x:Name="LayoutRoot" Background="Transparent" Width="35" Height="30" CornerRadius="5">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualStateGroup.Transitions>
+                                                        <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                                    </VisualStateGroup.Transitions>
+                                                    <VisualState x:Name="Normal"/>
+                                                    <VisualState x:Name="MouseOver">
+                                                        <Storyboard>
+                                                            <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
                                             <TextBlock x:Name="txt" Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="15" 
-                                                       Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Path=SelectedTab}" Value="{x:Null}">
-                                                <Setter TargetName="LayoutRoot"  Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
                                             </DataTrigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
-                                            </Trigger>
+                                            <DataTrigger Binding="{Binding Path=SelectedTab, Converter={StaticResource IsNullConverter}}" Value="False">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -63,7 +99,7 @@
 
                 <ListBox x:Name="TabsListBox" ItemsSource="{Binding Tabs, Mode=OneWay}" Grid.Column="1" 
                      HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     BorderThickness="0" Margin="5" Padding="0" VerticalAlignment="Bottom"
+                     BorderThickness="0" Margin="5,0,5,0" Padding="0" VerticalAlignment="Bottom"
                      Background="Transparent" ItemContainerStyle="{StaticResource TabListBoxItemStyle}"
                      SelectedItem="{Binding SelectedTab, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
                     <ListBox.Width>
@@ -92,9 +128,9 @@
                                     MouseMove="TabBorder_MouseMove">
                                 <Border.ToolTip>
                                     <ToolTip x:Name="TabToolTip" Placement="Bottom" Background="Transparent" BorderThickness="0">
-                                        <Border CornerRadius="5" Background="White" Margin="-5,2,0,0" Width="250" Height="Auto">
-                                            <StackPanel Orientation="Vertical" Margin="5">
-                                                <TextBlock Text="{Binding CurrentProject.Name}" TextWrapping="Wrap" FontWeight="Bold" FontSize="13" Margin="0,0,0,2"/>
+                                        <Border CornerRadius="5" Background="White" Margin="-5,4,0,0" MaxWidth="250" Height="Auto">
+                                            <StackPanel Orientation="Vertical" Margin="7">
+                                                <TextBlock Text="{Binding CurrentProject.Name}" TextWrapping="Wrap" FontWeight="Bold" FontSize="13" Margin="0,0,0,5"/>
                                                 <TextBlock Text="{Binding CurrentProject.Description}" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </Border>
@@ -106,8 +142,22 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding CurrentProject.Name}" Grid.Column="0" Foreground="{StaticResource MainFontColorBrush}" Margin="5,0,0,0" VerticalAlignment="Center"
-                                               MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False"/>
+                                    <TextBlock Text="{Binding CurrentProject.Name}" Grid.Column="0" Margin="5,0,0,0" VerticalAlignment="Center"
+                                               MaxWidth="{StaticResource MaxTabWidth}" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="Gray"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                                                        <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                                                        <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
                                     <Button x:Name="CloseButton" Style="{StaticResource CloseButton}" 
                                         Grid.Column="1" Margin="5,0,5,0" VerticalAlignment="Center"
@@ -122,7 +172,7 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" x:Name="UtilitiesStackPanel">
-                <Button x:Name="TagButton" Style="{StaticResource TagButtonStyle}" Command="{Binding OpenTagsPopupCommand}" CommandParameter="{x:Null}" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button x:Name="TagButton" Style="{StaticResource TagButtonStyle}" Command="{Binding OpenTagsPopupCommand}" CommandParameter="{x:Null}" WindowChrome.IsHitTestVisibleInChrome="True" Margin="5,0,20,0"/>
                 <Button x:Name="TimerButton" Style="{StaticResource TimerButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" Visibility="Collapsed"/>
                 <Button x:Name="ProfileButton" Style="{StaticResource ProfileButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" Visibility="Collapsed"/>
 
@@ -146,12 +196,6 @@
                              DockPanel.Dock="Right"
                              WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
-        </Grid>
-
-        <Grid x:Name="TransitionGrid" Background="{StaticResource DarkPrimaryColorBrush}" Grid.Row="1" Margin="0,-1,0,0" Height="5">
-            <Grid.Effect>
-                <DropShadowEffect Opacity="0.3" Direction="-40" BlurRadius="10" ShadowDepth="5"/>
-            </Grid.Effect>
         </Grid>
 
         <Frame x:Name="MainFrame" Grid.Row="2"

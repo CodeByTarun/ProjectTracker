@@ -76,6 +76,7 @@ namespace ProjectTracker.Controls
                 (this.DataContext as KanbanControlViewModel).MoveIssues(issueDragging, issueOver);
             }
         }
+
         private void GroupEmptySpaceGrid_DragEnter(object sender, DragEventArgs e)
         {
             Issue issueDragging = (Issue)e.Data.GetData(typeof(Issue));

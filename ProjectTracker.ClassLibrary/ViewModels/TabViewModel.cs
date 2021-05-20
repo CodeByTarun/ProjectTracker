@@ -174,6 +174,9 @@ namespace ProjectTracker.ClassLibrary.ViewModels
                 else if ((index - 1) >= 0)
                 {
                     SelectedTab = Tabs.ElementAt(index - 1);
+                } else
+                {
+                    SelectedTab = null;
                 }
             }
         }

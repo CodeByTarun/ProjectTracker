@@ -32,7 +32,7 @@
             </ComboBox.Style>
         </ComboBox>
 
-        <Button x:Name="ResetFilterButton" Grid.Column="0" Click="RestFilterButton_Click" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <Button x:Name="ResetFilterButton" Grid.Column="0" Click="RestFilterButton_Click" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource CloseButton}">
                     <Setter Property="Visibility" Value="Hidden"/>

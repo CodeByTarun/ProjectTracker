@@ -123,6 +123,9 @@
     <Page Update="Styles\Common.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Styles\EffectAndAnimations.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Styles\Miscellaneous.xaml">
       <SubType>Designer</SubType>
     </Page>

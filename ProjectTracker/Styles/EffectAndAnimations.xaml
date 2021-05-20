@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ProjectTracker.Styles">
+
+    <!-- Effects -->
+    
+    <DropShadowEffect x:Key="BasicDropShadow" BlurRadius="10" ShadowDepth="3" Direction="270" Color="Black"/>
+
+    <DropShadowEffect x:Key="KanbanDropShadow" BlurRadius="6" ShadowDepth="0.5" Direction="180" Color="Black"/>
+
+    <!-- Animations -->
+    
+    
+    
+</ResourceDictionary>

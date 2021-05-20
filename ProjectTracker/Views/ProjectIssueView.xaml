@@ -11,7 +11,7 @@
       x:Name="root"
       Title="ProjectIssueView">
 
-    <Grid Background="Transparent" Margin="10,0,10,0">
+    <Grid Background="Transparent" Margin="0,0,0,-15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -24,8 +24,8 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Header -->
-        <Grid x:Name="HeaderGrid" Margin="0,0,10,20" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <!-- Header -->        
+        <Grid x:Name="HeaderGrid" Margin="0,0,10,15" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -44,7 +44,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Viewbox Height="95" VerticalAlignment="Center" Margin="-5,-10,0,0" HorizontalAlignment="Left">
+                <Viewbox Height="95" VerticalAlignment="Center" Margin="-5,-10,50,0" HorizontalAlignment="Left">
                     <TextBlock LineStackingStrategy="BlockLineHeight" LineHeight="65" Grid.Column="0">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource HeaderTextBlockStyle}">
@@ -59,7 +59,7 @@
                     </TextBlock>
                 </Viewbox>
 
-                <Button x:Name="EditRemoveMenuButton" Content="Menu" VerticalAlignment="Center" Margin="0,0,0,0" Style="{StaticResource MenuButton}" Grid.Column="2">
+                <Button x:Name="EditRemoveMenuButton" Content="Menu" VerticalAlignment="Center" Margin="0,0,5,0" Style="{StaticResource MenuButton}" Grid.Column="1">
                     <Button.ContextMenu>
                         <ContextMenu x:Name="EditRemoveContextMenu" Style="{StaticResource ItemMenuStyle}">
                             <MenuItem Header="Edit Board" Click="EditBoard_Click" Style="{StaticResource EditMenuItemStyle}"/>
@@ -84,13 +84,13 @@
                     </Button.Triggers>
                 </Button>
 
-                <Button x:Name="CreateBoardButton" Content="Create Board" VerticalAlignment="Center" Grid.Column="1" Style="{StaticResource AddButton}"
+                <Button x:Name="CreateBoardButton" Content="Create Board" VerticalAlignment="Center" Grid.Column="2" Style="{StaticResource AddButton}" 
                     Command="{Binding CreateBoardCommand}" CommandParameter="{x:Null}"/>
             </Grid>
 
             <TextBlock Text="{Binding SelectedBoard.Description}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource DescriptionTextBlockStyle}">
             </TextBlock>
-            
+
             <StackPanel x:Name="TagsAndStatusStackPanel" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal" Style="{StaticResource TagAndStatusStackPanel}">
                 <Border x:Name="StatusBorder" CornerRadius="10" Background="Gray" VerticalAlignment="Center">
                     <Border.ToolTip>
@@ -121,11 +121,11 @@
             </StackPanel>
         </Grid>
 
-        <!-- Kanban Control -->
-        <Frame x:Name="IssueFrame" Grid.Row="3" Grid.ColumnSpan="2" LoadCompleted="IssueFrame_LoadCompleted" DataContextChanged="IssueFrame_DataContextChanged" Margin="10,0,10,0"
+        <!-- Kanban Control -->         
+        <Frame x:Name="IssueFrame" Grid.Row="3" Grid.ColumnSpan="2" LoadCompleted="IssueFrame_LoadCompleted" DataContextChanged="IssueFrame_DataContextChanged" Margin="10,0,10,10"
                Source="pack://application:,,,/Controls/KanbanControl.xaml" DataContext="{Binding KanbanControlViewModel}"/>
-
-        <Grid x:Name="NoBoardSelectedGrid" Grid.Row="3" Grid.ColumnSpan="2" Panel.ZIndex="1" Background="Transparent" Margin="10,0,10,0">
+        
+        <Grid x:Name="NoBoardSelectedGrid" Grid.Row="3" Grid.ColumnSpan="2" Panel.ZIndex="1" Background="Transparent" Margin="8,-2,8,-2">
             <Border CornerRadius="10" Background="{StaticResource PrimaryColorBrush}"/>
 
             <Grid.Style>

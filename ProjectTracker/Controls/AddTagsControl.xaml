@@ -104,16 +104,10 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
-                                <Button x:Name="RemoveTagButton" Content="x" Grid.Column="1" Margin="-8,0,5,0" Visibility="Collapsed"
+                                <Button x:Name="RemoveTagButton" Content="x" Grid.Column="1" Margin="-8,0,5,0"
                                     Click="RemoveTagButton_Click" Style="{StaticResource CloseButton}"/>
                             </Grid>
                         </Border>
-
-                        <DataTemplate.Triggers>
-                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                <Setter TargetName="RemoveTagButton" Property="Visibility" Value="Visible"/>
-                            </Trigger>
-                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

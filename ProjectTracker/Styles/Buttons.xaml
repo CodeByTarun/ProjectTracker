@@ -6,21 +6,37 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border" CornerRadius="5" Width="Auto" Height="30" Background="{StaticResource SecondaryColorBrush}">
-                        <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Margin="10,0,10,0"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity" To="0.7" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{StaticResource DarkSecondaryColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity" To="0.5" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Border x:Name="Border" CornerRadius="5" Width="Auto" Height="30" Background="{StaticResource SecondaryColorBrush}">
+
+                            <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Margin="10,0,10,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -30,18 +46,28 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border" CornerRadius="5" Width="Auto" Height="30" Background="{StaticResource CloseButtonPressedColorBrush}">
+                    <Border x:Name="Border" CornerRadius="5" Width="Auto" Height="30" Background="{StaticResource CloseButtonColorBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Opacity" To="0.7" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{StaticResource CloseButtonPressedColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Margin="10,0,10,0"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -52,18 +78,29 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="CloseBorder" CornerRadius="5" Width="20" Height="20">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="CloseIcon" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="CloseIcon" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <fa:FontAwesome x:Name="CloseIcon" Icon="Solid_Times" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>
+                            <fa:FontAwesome x:Name="CloseIcon" Icon="Solid_Times" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"/>
                         </StackPanel>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="CloseIcon" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -74,42 +111,30 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="AddBorder" CornerRadius="5" Width="30" Height="30" Background="Transparent">
-                        <TextBlock Text="&#xE948;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold"
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="AddIcon" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="AddIcon" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <TextBlock x:Name="AddIcon" Text="&#xE948;" FontFamily="Segoe MDL2 Assets" FontWeight="Bold"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         <Border.ToolTip>
                             <ToolTip Content="{TemplateBinding Content}"/>
                         </Border.ToolTip>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="AddBorder" Property="Background" Value="{StaticResource LightSecondaryColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="AddBorder" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/> 
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    <Style x:Key="PopupAddButton" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="CloseBorder" CornerRadius="5" Width="12" Height="12">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <fa:FontAwesome x:Name="CloseIcon" Icon="Solid_Plus" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>
-                        </StackPanel>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="CloseIcon" Property="Foreground" Value="White"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -120,18 +145,27 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="CloseBorder" CornerRadius="5">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Icon" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Icon" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <fa:FontAwesome x:Name="Icon" Icon="Regular_TrashAlt" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>
+                            <fa:FontAwesome x:Name="Icon" Icon="Regular_TrashAlt" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"/>
                         </StackPanel>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Icon" Property="Foreground" Value="White"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -139,26 +173,35 @@
 
     <Style x:Key="ProjectToggleButton" TargetType="ToggleButton">
         <Setter Property="BorderThickness" Value="5"/>
-        <Setter Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border CornerRadius="0,5,5,0" Background="{TemplateBinding Background}" Width="30">
+                    <Border CornerRadius="5,5,5,5" Background="{TemplateBinding Background}" Width="30">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontSize="20" FontFamily="Segoe MDL2 Assets" 
-                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-1,0,0,1"
+                                   Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-1,0,0,1"
                                    RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Content" Value="&#xF0E3;"/>
-                            <Setter Property="ToolTip" Value="Go to boards"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
                             <Setter Property="Content" Value="&#xEA37;"/>
                             <Setter Property="ToolTip" Value="Go to board list"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource LightSecondaryColorBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -170,15 +213,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border x:Name="Border" CornerRadius="5" Width="70" Height="30"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="White"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="Black"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    <Border x:Name="Border" CornerRadius="5" Width="70" Height="30" Background="White">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="Black" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="White" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -189,21 +242,30 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="MenuBorder" CornerRadius="5" Width="30" Height="30" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Elipsis" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Elipsis" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Border.ToolTip>
                             <ToolTip Content="Menu"/>
                         </Border.ToolTip>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <fa:FontAwesome x:Name="Elipsis" Icon="Solid_EllipsisH" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" Foreground="{StaticResource MainFontColorBrush}"/>
+                            <fa:FontAwesome x:Name="Elipsis" Icon="Solid_EllipsisH" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
                         </StackPanel>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="MenuBorder" Property="Background" Value="{StaticResource LightSecondaryColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="MenuBorder" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -214,21 +276,30 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="MenuBorder" CornerRadius="5" Width="20" Height="10" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Elipsis" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Elipsis" Storyboard.TargetProperty="(fa:FontAwesome.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Border.ToolTip>
                             <ToolTip Content="Menu"/>
                         </Border.ToolTip>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <fa:FontAwesome x:Name="Elipsis" Icon="Solid_EllipsisH" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" Foreground="Gray"/>
+                            <fa:FontAwesome x:Name="Elipsis" Icon="Solid_EllipsisH" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
                         </StackPanel>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Elipsis" Property="Foreground" Value="Black"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Elipsis" Property="Foreground" Value="Black"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -239,21 +310,31 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                    <Grid x:Name="LayoutRoot" Width="44" Height="30" Background="{StaticResource DarkPrimaryColorBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="{StaticResource LightPrimaryColor}" Duration="0"/>
+                                        <DoubleAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Opacity" To="0.5" Duration="0"/>
+                                        <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="{StaticResource LightPrimaryColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="10" 
-                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                     </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource SecondaryColorBrush}"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -275,21 +356,30 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                    <Grid x:Name="LayoutRoot" Background="{StaticResource DarkPrimaryColorBrush}" Width="44" Height="30">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="{StaticResource CloseButtonColor}" Duration="0"/>
+                                        <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="{StaticResource CloseButtonPressedColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <TextBlock x:Name="txt" Text="&#xE106;" FontFamily="Segoe MDL2 Assets" FontSize="10" 
-                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                     </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource CloseButtonColorBrush}"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource CloseButtonPressedColorBrush}"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -301,20 +391,23 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button" >
                     <Border x:Name="LayoutRoot" Background="Transparent" Width="35" Height="30" CornerRadius="5">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="txt" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="15" 
-                                   Foreground="{StaticResource MainFontColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{StaticResource SecondaryColorBrush}"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

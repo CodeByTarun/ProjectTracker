@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance Type=vm:KanbanControlViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="root">
-    
+
     <Border x:Name="KanbanBorder">
         <Grid x:Name="KanbanGrid">
             <Grid.RowDefinitions>
@@ -21,7 +21,7 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"  MaxWidth="500"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
             
@@ -38,7 +38,7 @@
             </Grid>
 
             <!-- First create the groups and hook them up to the database, once that works correctly then work on the issues -->
-            <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Margin="0,0,0,15">
+            <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal">
                     <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding SelectedBoard.Groups}">
                         <ItemsControl.ItemsPanel>
@@ -48,19 +48,32 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Name="GroupBorder" CornerRadius="10" Background="DimGray" Margin="0,15,15,0"
+                                <Grid>
+
+                                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Black"
+                                            Margin="0,15,15,0" CornerRadius="10" Width="350"
+                                            BorderThickness="0.2" Effect="{StaticResource KanbanDropShadow}">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.8"/>
+                                        </Border.Background>
+                                    </Border>
+
+                                    <Border Name="GroupBorder" CornerRadius="10" Margin="0,15,15,0"
                                         AllowDrop="True" Width="350"
                                         PreviewMouseLeftButtonDown="GroupBorder_PreviewMouseLeftButtonDown"
                                         DragEnter="GroupBorder_DragEnter">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.8"/>
+                                    </Border.Background>
                                 
                                     <Grid x:Name="GroupGrid" Margin="0,5,0,5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                                        <Grid x:Name="GroupHeaderGrid" Width="350" Grid.Row="0" Margin="5,0,0,5">
+                                            <Grid x:Name="GroupHeaderGrid" Width="350" Grid.Row="0" Margin="5,0,0,5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
@@ -71,7 +84,7 @@
                                                 Margin="10,10,10,10">
 
                                                 <Border x:Name="CardCount" 
-                                                    Background="{StaticResource SecondaryColorBrush}" 
+                                                    Background="{StaticResource LightSecondaryColorBrush}" 
                                                     Height="30" Width="30" 
                                                     CornerRadius="5" Margin="0,0,10,0"
                                                     IsHitTestVisible="False">
@@ -130,10 +143,19 @@
 
                                         <ScrollViewer x:Name="IssuesScrollViewer"
                                                       Grid.Row="1"
-                                                      Margin="10,-5,10,10"
                                                       VerticalScrollBarVisibility="Auto"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Background="Transparent">
+                                            <ScrollViewer.Style>
+                                                <Style TargetType="ScrollViewer">
+                                                    <Setter Property="Margin" Value="10,-5,10,10"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="ComputedVerticalScrollBarVisibility" Value="Visible">
+                                                            <Setter Property="Margin" Value="10,-5,0,10"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ScrollViewer.Style>
 
                                             <ScrollViewer.MaxHeight>
                                                 <MultiBinding Converter="{StaticResource GroupHeightConverter}">
@@ -145,110 +167,118 @@
 
                                             <ItemsControl x:Name="IssuesItemsControl" ItemsSource="{Binding Path=Issues}">
                                                 <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border x:Name="IssueBorder" CornerRadius="5" Background="WhiteSmoke" Margin="0,2.5,0,5"
+                                                        <DataTemplate>
+                                                            <Grid>
+
+                                                                <Border x:Name="IssueBorder" CornerRadius="5"  Margin="0,2.5,0,5"
                                                                 AllowDrop="True" BorderBrush="{StaticResource PrimaryColorBrush}" BorderThickness="1"
                                                                 DragEnter="IssueBorder_DragEnter"
                                                                 PreviewMouseLeftButtonDown="IssueBorder_PreviewMouseLeftButtonDown">
-                                                            <Grid Margin="10,10,10,10">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="*"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                </Grid.RowDefinitions>
+                                                                    <Border.Background>
+                                                                        <SolidColorBrush Color="{StaticResource LightPrimaryColor}" Opacity="0.5"/>
+                                                                    </Border.Background>
+                                                                    <Grid Margin="10,10,10,10">
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*"/>
+                                                                            <RowDefinition Height="*"/>
+                                                                            <RowDefinition Height="*"/>
+                                                                            <RowDefinition Height="*"/>
+                                                                        </Grid.RowDefinitions>
 
-                                                                <Grid x:Name="IssueHeader" Grid.Row="0" Margin="0,5,0,10">
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="Auto"/>
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap" IsHitTestVisible="False" 
-                                                                               Foreground="Black" FontWeight="Bold" Grid.Column="0"/>
-                                                                    <Button x:Name="IssueMenuButton" Content="Menu" HorizontalAlignment="Right"
+                                                                        <Grid x:Name="IssueHeader" Grid.Row="0" Margin="0,5,0,10">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap" IsHitTestVisible="False" 
+                                                                               Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Grid.Column="0"/>
+                                                                            <Button x:Name="IssueMenuButton" Content="Menu" HorizontalAlignment="Right"
                                                                             Grid.Column="1" Style="{StaticResource IssueMenuButton}" Margin="0,0,5,0">
-                                                                        <Button.ContextMenu>
-                                                                            <ContextMenu Name="IssueContextMenu" Style="{StaticResource ItemMenuStyle}">
-                                                                                <MenuItem Header="Edit Issue" Click="EditIssue_Click" Style="{StaticResource EditMenuItemStyle}"/>
-                                                                                <MenuItem Header="Delete Issue" Click="DeleteIssue_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
-                                                                            </ContextMenu>
-                                                                        </Button.ContextMenu>
+                                                                                <Button.ContextMenu>
+                                                                                    <ContextMenu Name="IssueContextMenu" Style="{StaticResource ItemMenuStyle}">
+                                                                                        <MenuItem Header="Edit Issue" Click="EditIssue_Click" Style="{StaticResource EditMenuItemStyle}"/>
+                                                                                        <MenuItem Header="Delete Issue" Click="DeleteIssue_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
+                                                                                    </ContextMenu>
+                                                                                </Button.ContextMenu>
 
-                                                                        <Button.Triggers>
-                                                                            <EventTrigger SourceName="IssueMenuButton" RoutedEvent="Button.Click">
-                                                                                <BeginStoryboard>
-                                                                                    <Storyboard>
-                                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="IssueContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
-                                                                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                                                                <DiscreteObjectKeyFrame.Value>
-                                                                                                    <sys:Boolean>True</sys:Boolean>
-                                                                                                </DiscreteObjectKeyFrame.Value>
-                                                                                            </DiscreteObjectKeyFrame>
-                                                                                        </ObjectAnimationUsingKeyFrames>
-                                                                                    </Storyboard>
-                                                                                </BeginStoryboard>
-                                                                            </EventTrigger>
-                                                                        </Button.Triggers>
-                                                                    </Button>
-                                                                </Grid>
+                                                                                <Button.Triggers>
+                                                                                    <EventTrigger SourceName="IssueMenuButton" RoutedEvent="Button.Click">
+                                                                                        <BeginStoryboard>
+                                                                                            <Storyboard>
+                                                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="IssueContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
+                                                                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                                                                        <DiscreteObjectKeyFrame.Value>
+                                                                                                            <sys:Boolean>True</sys:Boolean>
+                                                                                                        </DiscreteObjectKeyFrame.Value>
+                                                                                                    </DiscreteObjectKeyFrame>
+                                                                                                </ObjectAnimationUsingKeyFrames>
+                                                                                            </Storyboard>
+                                                                                        </BeginStoryboard>
+                                                                                    </EventTrigger>
+                                                                                </Button.Triggers>
+                                                                            </Button>
+                                                                        </Grid>
 
-                                                                <TextBlock x:Name="IssueDescription"
+                                                                        <TextBlock x:Name="IssueDescription"
                                                                            IsHitTestVisible="False"
-                                                                           Foreground="Black"
+                                                                           Foreground="{StaticResource MainFontColorBrush}"
                                                                            Text="{Binding Path=Description}" 
                                                                            TextWrapping="Wrap" Grid.Row="1">
-                                                                    <TextBlock.Style>
-                                                                        <Style TargetType="TextBlock">
-                                                                            <Style.Triggers>
-                                                                                <Trigger Property="Text" Value="">
-                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                </Trigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </TextBlock.Style>
-                                                                </TextBlock>   
+                                                                            <TextBlock.Style>
+                                                                                <Style TargetType="TextBlock">
+                                                                                    <Style.Triggers>
+                                                                                        <Trigger Property="Text" Value="">
+                                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                        </Trigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </TextBlock.Style>
+                                                                        </TextBlock>
 
-                                                                <local:TagListControl TagList="{Binding Tags}" IsVerticalMarginRequired="True" Grid.Row="2" Margin="0,0,0,5"/>
+                                                                        <local:TagListControl TagList="{Binding Tags}" IsVerticalMarginRequired="True" Grid.Row="2" Margin="0,0,0,5" IsHitTestVisible="False"/>
 
-                                                                <Grid x:Name="IssueInfo" Grid.Row="3" HorizontalAlignment="Right" IsHitTestVisible="True">
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="Auto"/>
-                                                                        <ColumnDefinition Width="Auto"/>
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <fa:FontAwesome Icon="Solid_Exclamation" Foreground="IndianRed" 
+                                                                        <Grid x:Name="IssueInfo" Grid.Row="3" HorizontalAlignment="Right" IsHitTestVisible="True">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <fa:FontAwesome Icon="Solid_Exclamation" Foreground="IndianRed" 
                                                                                     Visibility="{Binding DeadlineDate, Converter={StaticResource DeadlineExclamationVisibilityConverter}}"
                                                                                     VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                                                    <TextBlock Text="{Binding Path=DeadlineDate, StringFormat='{}{0: MMM d}'}"
-                                                                               Grid.Column="1" Foreground="Black" ToolTip="Deadline">
-                                                                        <TextBlock.Style>
-                                                                            <Style TargetType="TextBlock">
-                                                                                <Style.Triggers>
-                                                                                    <DataTrigger Binding="{Binding DeadlineDate}" Value="{x:Null}">
-                                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                    </DataTrigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </TextBlock.Style>
-                                                                    </TextBlock>
-                                                                </Grid>
+                                                                            <TextBlock Text="{Binding Path=DeadlineDate, StringFormat='{}{0: MMM d}'}"
+                                                                               Grid.Column="1" Foreground="{StaticResource MainFontColorBrush}" ToolTip="Deadline">
+                                                                                <TextBlock.Style>
+                                                                                    <Style TargetType="TextBlock">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding DeadlineDate}" Value="{x:Null}">
+                                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBlock.Style>
+                                                                            </TextBlock>
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Border>
                                                             </Grid>
-                                                        </Border>
-                                                        <DataTemplate.Triggers>
-                                                            <DataTrigger Value="False">
-                                                                <DataTrigger.Binding>
-                                                                    <MultiBinding Converter="{StaticResource IssueVisiblityConverter}">
-                                                                        <Binding Path="Name"/>
-                                                                        <Binding Path="Description"/>
-                                                                        <Binding ElementName="IssueSearchBox" Path="SearchText"/>
-                                                                        <Binding Path="Tags"/>
-                                                                        <Binding ElementName="IssueTagComboBox" Path="SelectedItem"/>
-                                                                    </MultiBinding>
-                                                                </DataTrigger.Binding>
-                                                                <Setter Property="Visibility" Value="Collapsed" TargetName="IssueBorder"/>
-                                                            </DataTrigger>
-                                                        </DataTemplate.Triggers>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
+                                                            <DataTemplate.Triggers>
+                                                                <DataTrigger Value="False">
+                                                                    <DataTrigger.Binding>
+                                                                        <MultiBinding Converter="{StaticResource IssueVisiblityConverter}">
+                                                                            <Binding Path="Name"/>
+                                                                            <Binding Path="Description"/>
+                                                                            <Binding ElementName="IssueSearchBox" Path="SearchText"/>
+                                                                            <Binding Path="Tags"/>
+                                                                            <Binding ElementName="IssueTagComboBox" Path="SelectedItem"/>
+                                                                        </MultiBinding>
+                                                                    </DataTrigger.Binding>
+                                                                    <DataTrigger.Setters>
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger.Setters>
+                                                                </DataTrigger>
+                                                            </DataTemplate.Triggers>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
                                             </ItemsControl>
 
                                         </ScrollViewer>
@@ -259,6 +289,7 @@
 
                                     </Grid>
                                 </Border>
+                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

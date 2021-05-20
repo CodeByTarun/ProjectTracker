@@ -88,8 +88,6 @@ namespace ProjectTracker.Views
         }
 
         // Navigation
-        /// TODO
-        /// This will set the data context as well
         public void AddProjectView(ProjectViewModel viewModel)
         {
             ProjectView projectView = new ProjectView(new ProjectOverviewView(), new ProjectIssueView());
@@ -99,7 +97,6 @@ namespace ProjectTracker.Views
             projectViewList.Add(projectView);
         }
 
-        // THIS IS WRONG
         public void MatchProjectViewListToViewModelList()
         {
             foreach (ProjectView projectView in projectViewList.ToList())
@@ -153,13 +150,11 @@ namespace ProjectTracker.Views
             Window mainWindow = Application.Current.MainWindow;
             if (mainWindow.WindowState == System.Windows.WindowState.Normal)
             {
-                mainWindow.ResizeMode = ResizeMode.NoResize;
                 mainWindow.WindowState = System.Windows.WindowState.Maximized;
             }
             else
             {
                 mainWindow.WindowState = System.Windows.WindowState.Normal;
-                mainWindow.ResizeMode = ResizeMode.CanResize;
             }
 
         }

@@ -80,7 +80,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             if (TagList != null)
             {
-                if (ItemTags.Count() > 0)
+                if (ItemTags.Count() == 0)
                 {
                     TagList = TagList.Where(t => t.Name.ToLower().Contains(TagSearchText.ToLower()));
                 }

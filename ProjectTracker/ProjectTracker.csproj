@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <ApplicationIcon>Resources\icons8-panda-48.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Factories\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Views\DialogViews\" />
   </ItemGroup>
 

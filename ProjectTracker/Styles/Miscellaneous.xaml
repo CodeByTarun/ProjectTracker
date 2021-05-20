@@ -185,21 +185,21 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <StackPanel>
-                        <Border x:Name="TabBorder" CornerRadius="5,5,0,0" HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Border x:Name="TabBorder" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0">
                             <ContentPresenter/>
                         </Border>
-                    </StackPanel>
+                        <Border VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="20" BorderThickness="0,0,0.5,0" BorderBrush="Gray"/>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
                                 <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -325,7 +325,11 @@
                 <Setter Property="Background" Value="{StaticResource LightPrimaryColorBrush}"/>
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{StaticResource DarkSecondaryColorBrush}"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.4"/>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="Height" Value="auto"/>
             </Trigger>
         </Style.Triggers>
@@ -353,11 +357,14 @@
             <Border x:Name="Border"
                         Grid.ColumnSpan="2"
                         BorderBrush="Transparent"
-                        Background="Transparent"
                         RenderOptions.EdgeMode="Aliased"
-                        Margin="-5,-1,-5,-1"
+                        Margin="-5,-2.5,-5,-2.5"
                         CornerRadius="5"
-                        BorderThickness="1"/>
+                        BorderThickness="1">
+                <Border.Background>
+                    <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.4"/>
+                </Border.Background>
+            </Border>
             <Border Grid.Column="0"
                     CornerRadius="2,0,0,2"
                     Background="Transparent"
@@ -371,8 +378,20 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger SourceName="ComboGrid" Property="IsMouseOver" Value="True">
-
-                <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource MainFontColorBrush}"/>
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)" To="Gray" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -438,7 +457,20 @@
                                     <Setter Property="Foreground" Value="Gray"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsMouseOver, ElementName=ComboBoxGrid}" Value="True">
-                                            <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -456,7 +488,7 @@
                                 MaxHeight="200">
                                 <Border x:Name="DropDownBorder"
                                         BorderBrush="{StaticResource LightPrimaryColorBrush}"
-                                        Background="{StaticResource LightPrimaryColorBrush}"
+                                        Background="{StaticResource PrimaryColorBrush}"
                                         BorderThickness="1"/>
                                 <ScrollViewer Margin="0,5,0,0" SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -776,7 +808,7 @@
                                   Storyboard.TargetName="NormalText"
                                   Storyboard.TargetProperty="(TextElement.Foreground).
                       (SolidColorBrush.Color)"
-                                  To="#FFFFFFFF" />
+                                  To="#FFFFFF" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -827,7 +859,7 @@
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Margin="5,1,5,1">
                             <TextElement.Foreground>
-                                <SolidColorBrush Color="{StaticResource MainFontColorBrush}" />
+                                <SolidColorBrush Color="{StaticResource MainFontColor}" />
                             </TextElement.Foreground>
                         </ContentPresenter>
                         <Path x:Name="Blackout"
@@ -970,7 +1002,7 @@
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Margin="1,0,1,1">
                             <TextElement.Foreground>
-                                <SolidColorBrush Color="{StaticResource MainFontColorBrush}" />
+                                <SolidColorBrush Color="{StaticResource MainFontColor}" />
                             </TextElement.Foreground>
                         </ContentPresenter>
                         <Rectangle x:Name="CalendarButtonFocusVisual"
@@ -1155,7 +1187,7 @@
                   BorderThickness="{TemplateBinding BorderThickness}"
                   Background="{TemplateBinding Background}"
                   CornerRadius="1">
-                            <Border BorderBrush="#FFFFFFFF"
+                            <Border BorderBrush="#FFFFFF"
                     BorderThickness="0"
                     CornerRadius="1">
                                 <Grid>

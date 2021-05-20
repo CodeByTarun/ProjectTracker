@@ -11,13 +11,13 @@
       Title="ProjectView">
 
     <Grid Background="{StaticResource PrimaryColorBrush}">
-        <Grid Margin="10">
+        <Grid Margin="0,10,0,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <ToggleButton x:Name="BoardListKanbanBoardToggleButton" Height="30"  
-                          Panel.ZIndex="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-25,20,0,0"
+                          Panel.ZIndex="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,28,80,0"
                           Checked="BoardListKanbanBoardToggleButton_Checked" IsChecked="{Binding IsShowingOverview, Mode=TwoWay}"
                           Unchecked="BoardListKanbanBoardToggleButton_Unchecked"
                           Style="{StaticResource ProjectToggleButton}"/>

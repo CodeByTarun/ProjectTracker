@@ -7,13 +7,15 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="LayoutRoot">
-    <Border CornerRadius="5" Background="{StaticResource PrimaryColorBrush}" Height="30">
+    <Border CornerRadius="5" Background="Transparent" Height="30">
         <Grid x:Name="SearchGrid" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+
+            
 
             <TextBlock x:Name="SearchIcon" Text="&#xE721;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" 
                    Margin="10,0,10,0" FontWeight="Bold" Grid.Column="0" RenderTransformOrigin="0.5,0.5">
@@ -24,12 +26,32 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="Gray"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsFocused, ElementName=SearchTextBox}" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Path=IsMouseOver, ElementName=SearchTextBox}" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Value="True">
+                                        <Condition.Binding>
+                                            <MultiBinding Converter="{StaticResource BooleanOrConverter}">
+                                                <Binding ElementName="SearchTextBox" Path="IsMouseOver"/>
+                                                <Binding ElementName="SearchTextBox" Path="IsFocused"/>
+                                            </MultiBinding>
+                                        </Condition.Binding>
+                                    </Condition>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.ExitActions>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
@@ -60,7 +82,7 @@
                 <TextBox.CaretBrush>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="White" Offset="0"/> 
+                            <GradientStop Color="White" Offset="0"/>
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
                 </TextBox.CaretBrush>
@@ -76,24 +98,60 @@
                             <DataTrigger Binding="{Binding Text, ElementName=SearchTextBox}"  Value="">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsFocused, ElementName=SearchTextBox}" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=SearchTextBox}" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource MainFontColorBrush}"/>
-                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Value="True">
+                                        <Condition.Binding>
+                                            <MultiBinding Converter="{StaticResource BooleanOrConverter}">
+                                                <Binding ElementName="SearchTextBox" Path="IsMouseOver"/>
+                                                <Binding ElementName="SearchTextBox" Path="IsFocused"/>
+                                            </MultiBinding>
+                                        </Condition.Binding>
+                                    </Condition>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="{StaticResource MainFontColor}" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="Gray" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.ExitActions>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </TextBox.Style>
             </TextBox>
 
-            <Border x:Name="SearchBorder" Grid.Column="0" Grid.ColumnSpan="3" CornerRadius="5" Background="Transparent" Margin="-1" IsHitTestVisible="False">
+            <Border x:Name="SearchBorder" Grid.Column="0" Grid.ColumnSpan="3" CornerRadius="5" BorderThickness="2" Margin="-3" Panel.ZIndex="-2" IsHitTestVisible="False">
                 <Border.Style>
                     <Style TargetType="Border">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.4"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Border.Style>
+            </Border>
+
+            <Border x:Name="SearchOutlineBorder" Grid.Column="0" Grid.ColumnSpan="3" CornerRadius="5" BorderThickness="2" Margin="-2" Panel.ZIndex="-1" IsHitTestVisible="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="Transparent"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=SearchTextBox}" Value="True">
-                                <Setter Property="BorderThickness" Value="2"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource LightSecondaryColorBrush}"/>
+                                <Setter Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{StaticResource LightSecondaryColor}"/>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

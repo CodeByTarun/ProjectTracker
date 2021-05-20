@@ -19,5 +19,17 @@ namespace ProjectTracker
             MainFrame.Navigate(mainView);
             mainView.WindowStateEventSubscriber();
         }
+
+        private void Window_StateChanged(object sender, System.EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.BorderThickness = new Thickness(6);
+            }
+            else
+            {
+                this.BorderThickness = new Thickness(0);
+            }
+        }
     }
 }
