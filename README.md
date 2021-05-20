@@ -45,7 +45,7 @@
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt) for more information.
+Distributed under the [MIT License](https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt).
 
 ## Contact
 Tarun Bola - Tarundeep1@hotmail.com
