@@ -1,4 +1,9 @@
-# Project Tracker
+## About The Project
+
+### Built With
+* [.NET Core] (https://dotnet.microsoft.com/)
+* [WPF (Windows Presentation Foundation)] (https://docs.microsoft.com/en-us/dotnet/desktop/wpf/?view=netdesktop-5.0)
+* Entity Framework Core (https://docs.microsoft.com/en-us/ef/)
 
 ## Getting Started
 
