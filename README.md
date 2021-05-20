@@ -1,7 +1,10 @@
 <!-- Project Logo -->
-<p aligh="center">
-  <h2 align="center">Project Tracker</h2>
+<p align="center">
+  <h1 align="center">Project Tracker</h1>
+  <p align="center">Keep track of your projects with this simple to use kanban application!</p>
 </p>
+
+
 
 <!-- Table of Contents -->
 <details open="open">
