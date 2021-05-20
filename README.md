@@ -1,3 +1,8 @@
+<!-- Project Logo -->
+<p aligh="center">
+  <h2 align="center">Project Tracker</h2>
+</p>
+
 <!-- Table of Contents -->
 <details open="open">
   <summary>Table of Contents</summary>
