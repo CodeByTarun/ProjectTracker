@@ -45,7 +45,7 @@
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt) for more information.
 
 ## Contact
 Tarun Bola - Tarundeep1@hotmail.com
@@ -57,3 +57,6 @@ Project Link: [https://github.com/TarunBola/ProjectTracker](https://github.com/T
 * [XAML Behaviours WPF](https://github.com/Microsoft/XamlBehaviorsWpf)
 * [Font Awesome](https://fontawesome.com)
 * [Icons8](https://icons8.com/)
+
+<!-- Links and Images -->
+[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
