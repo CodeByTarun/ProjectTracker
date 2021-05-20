@@ -8,6 +8,10 @@
 
 ## Contributing
 
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
 ## Contact
 Tarun Bola - Tarundeep1@hotmail.com
 
