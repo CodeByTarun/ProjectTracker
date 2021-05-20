@@ -213,13 +213,16 @@ namespace ProjectTracker.ClassLibrary.ViewModels
         // Check if project is in Tabs collection
         internal async void CheckTabs(Project project)
         {
-            foreach (ProjectViewModel viewModel in Tabs)
+            if (project != null)
             {
-                if (viewModel.CurrentProject.Id == project.Id)
+                foreach (ProjectViewModel viewModel in Tabs)
                 {
-                    viewModel.CurrentProject = project;
-                    await viewModel.ProjectOverviewViewModel.BoardListViewModel.UpdateProject();
-                    break;
+                    if (viewModel.CurrentProject.Id == project.Id)
+                    {
+                        viewModel.CurrentProject = project;
+                        await viewModel.ProjectOverviewViewModel.BoardListViewModel.UpdateProject();
+                        break;
+                    }
                 }
             }
         }

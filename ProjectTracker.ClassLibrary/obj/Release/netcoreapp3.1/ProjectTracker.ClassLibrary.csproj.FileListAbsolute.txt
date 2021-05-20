@@ -1,0 +1,12 @@
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.deps.json
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.dll
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.pdb
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Release\netcoreapp3.1\ProjectTracker.Model.dll
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\bin\Release\netcoreapp3.1\ProjectTracker.Model.pdb
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.csprojAssemblyReference.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.AssemblyInfoInputs.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.AssemblyInfo.cs
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.csproj.CoreCompileInputs.cache
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.csproj.CopyComplete
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.dll
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker.ClassLibrary\obj\Release\netcoreapp3.1\ProjectTracker.ClassLibrary.pdb
