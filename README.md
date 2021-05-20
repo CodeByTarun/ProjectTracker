@@ -29,10 +29,13 @@
 </details>
 
 ## About The Project
-Project Tracker's goal is to create a space where you can keep track of any projects or topics you are working on using Kanban boards. For each project created you create boards where you can keep track of the progress made that specific part of your project. A detailed explanation on the usage of this application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below.
+Project Tracker's goal is to create a space where you can keep track of any projects or topics you are working on using Kanban boards. For each project created you create boards where you can keep track of the progress made for that specific part of your project. That could be a phase of your project, research section, bugs, future additions, etc.  A detailed explanation on the usage of this application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below.
 
-This project was created because I wanted to create something for my portfolio that covered a wide range of topics. 
-I wanted it to be easy-to-use, have a modern UI and  be something I would actually use myself. In the later stages of devolpment I actually used it to keep track of changes and things I wanted to add to the project.
+This project was created because I wanted to create something for my portfolio that covered a wide range of topics. The project used OOP design principles
+
+It utilizes model-view-viewmodel (MVVM) for separation fo the UI from the model. Many design patterns were used in the project such as the factory pattern, dependency injection using IOC containers, singleton pattern, composite pattern, command pattern, observer pattern etc. As the project developed, I started using test driven development as it made it easier to make changes with the code without running into bugs in the future. This was used for all of the service classes created. Entity Framework Core was used to create a code first SQLite database. 
+
+I wanted it to be easy-to-use, have a modern UI and  be something I would actually use myself. In the later stages of development I actually used it to keep track of changes and features I wanted to add to the project.
 
 ### Built With
 * [.NET Core](https://dotnet.microsoft.com/)
