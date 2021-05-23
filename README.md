@@ -4,8 +4,6 @@
   <p align="center">Keep track of your projects with this easy-to-use kanban application!</p>
 </p>
 
-
-
 <!-- Table of Contents -->
 <details open="open">
   <summary>Table of Contents</summary>
@@ -29,6 +27,9 @@
 </details>
 
 ## About The Project
+
+![image](https://user-images.githubusercontent.com/14295466/119246269-35d61d80-bb4e-11eb-8336-683c162d3fba.png)
+
 Project Tracker's goal is to create a space where you can keep track of any projects or topics you are working on using Kanban boards. For each project created you create boards where you can keep track of the progress made for that specific part of your project. That could be a phase of your project, research section, bugs, future additions, etc.  A detailed explanation on the usage of this application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below.
 
 This project was created because I wanted to create something for my portfolio that covered a wide range of topics. The project used OOP design principles
