@@ -28,7 +28,7 @@
 
 ## About The Project
 
-![image](https://user-images.githubusercontent.com/14295466/119246269-35d61d80-bb4e-11eb-8336-683c162d3fba.png)
+![image](https://user-images.githubusercontent.com/14295466/119246293-70d85100-bb4e-11eb-95e0-7907fef3961b.png)
 
 Project Tracker's goal is to create a space where you can keep track of any projects or topics you are working on using Kanban boards. For each project created you create boards where you can keep track of the progress made for that specific part of your project. That could be a phase of your project, research section, bugs, future additions, etc.  A detailed explanation on the usage of this application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below.
 
