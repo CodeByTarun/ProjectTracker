@@ -49,6 +49,8 @@ I wanted it to be easy-to-use, have a modern UI and  be something I would actual
 
 ## Roadmap
 
+See the [open issues](https://github.com/TarunBola/ProjectTracker/issues) for a list of proposed features (and known issues).
+
 ## Contributing
 
 ## License
