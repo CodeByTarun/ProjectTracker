@@ -49,7 +49,7 @@ All the service classes were created through test driven development (TTD) which
 
 When the application is opened you will be taken to the home page. Here is where all your projects are shown in a list. This list can be searched through and filtered by tag and status. To create a project, click on the add button located in the top right. Multiple projects can be opened at once as this application features tabs for easy multitasking. These tabs can be rearranged by drag and drop. 
 
-*Picture of tag popup*
+![image](https://user-images.githubusercontent.com/14295466/120390651-f94bb400-c2fb-11eb-8b92-da94bc1dbdc6.png)
 
 Tags are not project specific. To create a tag, click on the tag button located to the left of the minimize button. Tags are fully customizable and are a great way to keep your projects, boards and issues organized. Deleting or editing a tag will be reflected for ALL projects so be cautious when making changes to a tag. 
 
