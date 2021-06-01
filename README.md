@@ -45,6 +45,16 @@ All the service classes were created through test driven development (TTD) which
 
 ## Usage
 
+*Picture of the home page and project list*
+When the application is opened you will be taken to the home page. Here is where all your projects are shown in a list. This list can be searched through and filtered by tag and status. To create a project, click on the add button located in the top right. Multiple projects can be opened at once as this application features tabs for easy multitasking. These tabs can be rearranged by drag and drop. 
+*Picture of tag popup*
+Tags are not project specific. To create a tag, click on the tag button located to the left of the minimize button. Tags are fully customizable and are a great way to keep your projects, boards and issues organized. Deleting or editing a tag will be reflected for ALL projects so be cautious when making changes to a tag. 
+*Picture of board list*
+After creating a project, double click on it to be taken to the projects page. Here, you can create boards to work on different parts of you project. Each of these boards will have their own set of Kanban groups and issues. This allows for a good breakdown of the different sections of your projects. Boards can be cycled through on the Kanban board page as well for faster navigation.
+*Picture of Kanban board* (maybe the issue popup as well)
+Usage of the Kanban board is straight forward. Create as many groups as needed and then you can create issues under each of the groups. Groups can be rearranged through drag and drop, and issues can be moved to different groups by doing this as well. 
+
+
 ## Roadmap
 
 See the [open issues](https://github.com/TarunBola/ProjectTracker/issues) for a list of proposed features (and known issues).
