@@ -32,9 +32,9 @@
 
 Project tracker was created because I wanted an easy-to-use lightweight Kanban board application to keep track of projects that I was working on. Also, it was a way for me to showcase a lot of the programming concepts and skills I have developed. A detailed explanation of how to use the application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below. 
 
-This WPF application was created using the Model-view-viewmodel (MVVM) design pattern. The separation this pattern provides between the UI and business logic made it easier to make changes to the application. Many other design patterns were used to create this project such as the singleton pattern, composite pattern, command pattern, observer pattern, factory method pattern, etc. IOC containers were used as well for easier incorporation of dependency injection.
+This WPF application was created using the Model-view-viewmodel (MVVM) design pattern. The separation this pattern provides between the UI and business logic made it easier to make changes to the application. Many other design patterns were used to create this project such as the singleton pattern, composite pattern, command pattern, observer pattern, factory method pattern, etc. IOC containers were used as well for easier use of dependency injection.
 
- All the service classes were created through test driven development (TTD) which saved a lot of time when the service classes dealt with concepts such as linked lists in SQL and SQL queries. The database was created using the Code First approach in Entity Framework. This allowed for creation of the model in C# first and then through configurations of each class in the model, a database was created to match it.  
+All the service classes were created through test driven development (TTD) which saved a lot of time when the service classes dealt with concepts such as linked lists in SQL and SQL queries. The database was created using the Code First approach in Entity Framework. This allowed for creation of the model in C# first and then through configurations of each class in the model, a database was created to match it.  
 
 ### Built With
 * [.NET Core](https://dotnet.microsoft.com/)
