@@ -122,7 +122,6 @@ C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcorea
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.g.resources
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.AssemblyInfoInputs.cache
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.AssemblyInfo.cs
-C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.csproj.CoreCompileInputs.cache
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.csproj.CopyComplete
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.dll
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.pdb
@@ -134,3 +133,4 @@ C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcorea
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\Popups\DeletePopup.g.cs
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\Popups\DeletePopup.baml
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\Styles\EffectAndAnimations.baml
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x86\Debug\netcoreapp3.1\ProjectTracker.csproj.CoreCompileInputs.cache

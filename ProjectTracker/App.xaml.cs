@@ -13,6 +13,7 @@ using System.Windows;
 using ProjectTracker.ClassLibrary.Factories;
 using ProjectTracker.ClassLibrary.ViewModels.Interfaces;
 using ProjectTracker.ClassLibrary.ViewModels.PopupViewModels;
+using System.Threading;
 
 namespace ProjectTracker
 {
@@ -21,6 +22,7 @@ namespace ProjectTracker
     /// </summary>
     public partial class App : Application
     {
+        private static Mutex _mutex = null;
 
         public readonly IDesignTimeDbContextFactory<ProjectTrackerDBContext> contextFactory = new ProjectTrackerDBContextFactory();
         public static IServiceProvider ServiceProvider { get; set; }
@@ -37,6 +39,16 @@ namespace ProjectTracker
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            const string appName = "ProjectTracker";
+            bool createdNew;
+
+            _mutex = new Mutex(true, appName, out createdNew);
+
+            if (!createdNew)
+            {
+                Application.Current.Shutdown();
+            }
+
             base.OnStartup(e);
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Loaded += MainWindow_Loaded;

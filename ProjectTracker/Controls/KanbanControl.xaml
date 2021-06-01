@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:ProjectTracker.Controls"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels.ControlViewModels;assembly=ProjectTracker.ClassLibrary"
@@ -40,16 +41,25 @@
             <!-- First create the groups and hook them up to the database, once that works correctly then work on the issues -->
             <ScrollViewer x:Name="KanbanGroupScrollViewer" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal">
-                    <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding SelectedBoard.Groups}">
+                    <ItemsControl x:Name="GroupItemsControl" ItemsSource="{Binding SelectedBoard.Groups}" DragOver="GroupItemsControl_DragOver">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <i:Interaction.Behaviors>
+                                        <i:FluidMoveBehavior AppliesTo="Children" Duration="00:00:00.25"/>
+                                    </i:Interaction.Behaviors>
+                                </StackPanel>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-
+                                    <Grid.Opacity>
+                                        <MultiBinding Converter="{StaticResource ItemOpacityConverter}">
+                                            <Binding Path="Id"/>
+                                            <Binding Path="DataContext.GroupDraggingID" ElementName="root"/>
+                                        </MultiBinding>
+                                    </Grid.Opacity>
                                     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Black"
                                             Margin="0,15,15,0" CornerRadius="10" Width="350"
                                             BorderThickness="0.2" Effect="{StaticResource KanbanDropShadow}">
@@ -62,11 +72,12 @@
                                         AllowDrop="True" Width="350"
                                         PreviewMouseLeftButtonDown="GroupBorder_PreviewMouseLeftButtonDown"
                                         DragEnter="GroupBorder_DragEnter">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.8"/>
-                                    </Border.Background>
-                                
-                                    <Grid x:Name="GroupGrid" Margin="0,5,0,5">
+
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{StaticResource DarkPrimaryColor}" Opacity="0.8"/>
+                                        </Border.Background>
+
+                                        <Grid x:Name="GroupGrid" Margin="0,5,0,5">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
@@ -74,25 +85,25 @@
                                             </Grid.RowDefinitions>
 
                                             <Grid x:Name="GroupHeaderGrid" Width="350" Grid.Row="0" Margin="5,0,0,5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <StackPanel Grid.Column="0"
+                                                <StackPanel Grid.Column="0"
                                                 Orientation="Horizontal"
                                                 Margin="10,10,10,10">
 
-                                                <Border x:Name="CardCount" 
+                                                    <Border x:Name="CardCount" 
                                                     Background="{StaticResource LightSecondaryColorBrush}" 
                                                     Height="30" Width="30" 
                                                     CornerRadius="5" Margin="0,0,10,0"
                                                     IsHitTestVisible="False">
-                                                    <TextBlock Text="{Binding Issues.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                        <TextBlock Text="{Binding Issues.Count}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                                Margin="0,0,0,0" FontSize="15" Foreground="{StaticResource MainFontColorBrush}" FontWeight="SemiBold"/>
-                                                </Border>
+                                                    </Border>
 
-                                                <TextBlock x:Name="GroupName"
+                                                    <TextBlock x:Name="GroupName"
                                                        IsHitTestVisible="False"
                                                        Foreground="{StaticResource MainFontColorBrush}"
                                                        FontSize="15"
@@ -100,80 +111,92 @@
                                                        Text="{Binding Path=Name}"
                                                        TextWrapping="Wrap"
                                                        VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        
-                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                                                </StackPanel>
 
-                                                <Button x:Name="GroupMenu" Style="{StaticResource MenuButton}"
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+
+                                                    <Button x:Name="GroupMenu" Style="{StaticResource MenuButton}"
                                                         Margin="30,0,0,0"
                                                         Content="Threebuttons">
-                                                    <Button.ContextMenu>
-                                                        <ContextMenu Name="GroupContextMenu" Style="{StaticResource ItemMenuStyle}">
-                                                            <MenuItem Header="Edit Group" Click="EditGroup_Click" Style="{StaticResource EditMenuItemStyle}"/>
-                                                            <MenuItem Header="Delete Group" Click="DeleteGroup_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
-                                                        </ContextMenu>
-                                                    </Button.ContextMenu>
+                                                        <Button.ContextMenu>
+                                                            <ContextMenu Name="GroupContextMenu" Style="{StaticResource ItemMenuStyle}">
+                                                                <MenuItem Header="Edit Group" Click="EditGroup_Click" Style="{StaticResource EditMenuItemStyle}"/>
+                                                                <MenuItem Header="Delete Group" Click="DeleteGroup_Click" Style="{StaticResource RemoveMenuItemStyle}"/>
+                                                            </ContextMenu>
+                                                        </Button.ContextMenu>
 
-                                                    <Button.Triggers>
-                                                        <EventTrigger SourceName="GroupMenu" RoutedEvent="Button.Click">
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GroupContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
-                                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                                                                            <DiscreteObjectKeyFrame.Value>
-                                                                                <sys:Boolean>True</sys:Boolean>
-                                                                            </DiscreteObjectKeyFrame.Value>
-                                                                        </DiscreteObjectKeyFrame>
-                                                                    </ObjectAnimationUsingKeyFrames>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </EventTrigger>
-                                                    </Button.Triggers>
-                                                </Button>
+                                                        <Button.Triggers>
+                                                            <EventTrigger SourceName="GroupMenu" RoutedEvent="Button.Click">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GroupContextMenu" Storyboard.TargetProperty="(ContextMenu.IsOpen)">
+                                                                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                                                <DiscreteObjectKeyFrame.Value>
+                                                                                    <sys:Boolean>True</sys:Boolean>
+                                                                                </DiscreteObjectKeyFrame.Value>
+                                                                            </DiscreteObjectKeyFrame>
+                                                                        </ObjectAnimationUsingKeyFrames>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
 
-                                                <Button x:Name="AddIssueButton" Style="{StaticResource AddButton}"
+                                                    <Button x:Name="AddIssueButton" Style="{StaticResource AddButton}"
                                                         Command="{Binding ElementName=root, Path=DataContext.CreateIssueCommand}"
                                                         CommandParameter="{Binding}"
                                                         Margin="0,0,10,0"
                                                         Content="Create Issue"/>
 
-                                            </StackPanel>
+                                                </StackPanel>
 
-                                        </Grid>
+                                            </Grid>
 
-                                        <ScrollViewer x:Name="IssuesScrollViewer"
+                                            <ScrollViewer x:Name="IssuesScrollViewer"
                                                       Grid.Row="1"
                                                       VerticalScrollBarVisibility="Auto"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Background="Transparent">
-                                            <ScrollViewer.Style>
-                                                <Style TargetType="ScrollViewer">
-                                                    <Setter Property="Margin" Value="10,-5,10,10"/>
-                                                    <Style.Triggers>
-                                                        <Trigger Property="ComputedVerticalScrollBarVisibility" Value="Visible">
-                                                            <Setter Property="Margin" Value="10,-5,0,10"/>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </ScrollViewer.Style>
+                                                <ScrollViewer.Style>
+                                                    <Style TargetType="ScrollViewer">
+                                                        <Setter Property="Margin" Value="10,-5,10,10"/>
+                                                        <Style.Triggers>
+                                                            <Trigger Property="ComputedVerticalScrollBarVisibility" Value="Visible">
+                                                                <Setter Property="Margin" Value="10,-5,0,10"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ScrollViewer.Style>
 
-                                            <ScrollViewer.MaxHeight>
-                                                <MultiBinding Converter="{StaticResource GroupHeightConverter}">
-                                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type Border}}"/>
-                                                    <Binding Path="ActualHeight" ElementName="GroupHeaderGrid"/>
-                                                </MultiBinding>
-                                            </ScrollViewer.MaxHeight>
+                                                <ScrollViewer.MaxHeight>
+                                                    <MultiBinding Converter="{StaticResource GroupHeightConverter}">
+                                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type Border}}"/>
+                                                        <Binding Path="ActualHeight" ElementName="GroupHeaderGrid"/>
+                                                    </MultiBinding>
+                                                </ScrollViewer.MaxHeight>
 
-
-                                            <ItemsControl x:Name="IssuesItemsControl" ItemsSource="{Binding Path=Issues}">
-                                                <ItemsControl.ItemTemplate>
+                                                <ItemsControl x:Name="IssuesItemsControl" ItemsSource="{Binding Path=Issues}" DragOver="IssuesItemsControl_DragOver" Background="Transparent">
+                                                    <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid>
+                                                            <Grid x:Name="IssueGrid">
+                                                                <Grid.Opacity>
+                                                                    <MultiBinding Converter="{StaticResource ItemOpacityConverter}">
+                                                                        <Binding Path="Id"/>
+                                                                        <Binding Path="DataContext.IssueDraggingID" ElementName="root"/>
+                                                                    </MultiBinding>
+                                                                </Grid.Opacity>
+
+                                                                <Grid.IsHitTestVisible>
+                                                                    <MultiBinding Converter="{StaticResource KanbanIsHitTestVisibleConverter}">
+                                                                        <Binding Path="Id"/>
+                                                                        <Binding Path="DataContext.IssueDraggingID" ElementName="root"/>
+                                                                    </MultiBinding>
+                                                                </Grid.IsHitTestVisible>
 
                                                                 <Border x:Name="IssueBorder" CornerRadius="5"  Margin="0,2.5,0,5"
-                                                                AllowDrop="True" BorderBrush="{StaticResource PrimaryColorBrush}" BorderThickness="1"
-                                                                DragEnter="IssueBorder_DragEnter"
-                                                                PreviewMouseLeftButtonDown="IssueBorder_PreviewMouseLeftButtonDown">
+                                                            AllowDrop="True" BorderBrush="{StaticResource PrimaryColorBrush}" BorderThickness="1"
+                                                            DragEnter="IssueBorder_DragEnter"
+                                                            PreviewMouseLeftButtonDown="IssueBorder_PreviewMouseLeftButtonDown">
                                                                     <Border.Background>
                                                                         <SolidColorBrush Color="{StaticResource LightPrimaryColor}" Opacity="0.5"/>
                                                                     </Border.Background>
@@ -191,9 +214,9 @@
                                                                                 <ColumnDefinition Width="Auto"/>
                                                                             </Grid.ColumnDefinitions>
                                                                             <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap" IsHitTestVisible="False" 
-                                                                               Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Grid.Column="0"/>
+                                                                            Foreground="{StaticResource MainFontColorBrush}" FontWeight="Bold" Grid.Column="0"/>
                                                                             <Button x:Name="IssueMenuButton" Content="Menu" HorizontalAlignment="Right"
-                                                                            Grid.Column="1" Style="{StaticResource IssueMenuButton}" Margin="0,0,5,0">
+                                                                        Grid.Column="1" Style="{StaticResource IssueMenuButton}" Margin="0,0,5,0">
                                                                                 <Button.ContextMenu>
                                                                                     <ContextMenu Name="IssueContextMenu" Style="{StaticResource ItemMenuStyle}">
                                                                                         <MenuItem Header="Edit Issue" Click="EditIssue_Click" Style="{StaticResource EditMenuItemStyle}"/>
@@ -219,21 +242,24 @@
                                                                             </Button>
                                                                         </Grid>
 
-                                                                        <TextBlock x:Name="IssueDescription"
-                                                                           IsHitTestVisible="False"
-                                                                           Foreground="{StaticResource MainFontColorBrush}"
-                                                                           Text="{Binding Path=Description}" 
-                                                                           TextWrapping="Wrap" Grid.Row="1">
-                                                                            <TextBlock.Style>
-                                                                                <Style TargetType="TextBlock">
+                                                                        <TextBox x:Name="IssueDescription"
+                                                                            IsHitTestVisible="{Binding Path=DataContext.IssueDraggingID, ElementName=root, Converter={StaticResource IsNullConverter}}"
+                                                                            Foreground="{StaticResource MainFontColorBrush}"
+                                                                            Text="{Binding Path=Description}" 
+                                                                            IsReadOnly="True"
+                                                                            Background="Transparent"
+                                                                            BorderThickness="0"
+                                                                            TextWrapping="Wrap" Grid.Row="1">
+                                                                            <TextBox.Style>
+                                                                                <Style TargetType="TextBox">
                                                                                     <Style.Triggers>
                                                                                         <Trigger Property="Text" Value="">
                                                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                                                         </Trigger>
                                                                                     </Style.Triggers>
                                                                                 </Style>
-                                                                            </TextBlock.Style>
-                                                                        </TextBlock>
+                                                                            </TextBox.Style>
+                                                                        </TextBox>
 
                                                                         <local:TagListControl TagList="{Binding Tags}" IsVerticalMarginRequired="True" Grid.Row="2" Margin="0,0,0,5" IsHitTestVisible="False"/>
 
@@ -243,10 +269,10 @@
                                                                                 <ColumnDefinition Width="Auto"/>
                                                                             </Grid.ColumnDefinitions>
                                                                             <fa:FontAwesome Icon="Solid_Exclamation" Foreground="IndianRed" 
-                                                                                    Visibility="{Binding DeadlineDate, Converter={StaticResource DeadlineExclamationVisibilityConverter}}"
-                                                                                    VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                                                                Visibility="{Binding DeadlineDate, Converter={StaticResource DeadlineExclamationVisibilityConverter}}"
+                                                                                VerticalAlignment="Center" Margin="0,0,5,0"/>
                                                                             <TextBlock Text="{Binding Path=DeadlineDate, StringFormat='{}{0: MMM d}'}"
-                                                                               Grid.Column="1" Foreground="{StaticResource MainFontColorBrush}" ToolTip="Deadline">
+                                                                            Grid.Column="1" Foreground="{StaticResource MainFontColorBrush}" ToolTip="Deadline">
                                                                                 <TextBlock.Style>
                                                                                     <Style TargetType="TextBlock">
                                                                                         <Style.Triggers>
@@ -260,6 +286,7 @@
                                                                         </Grid>
                                                                     </Grid>
                                                                 </Border>
+
                                                             </Grid>
                                                             <DataTemplate.Triggers>
                                                                 <DataTrigger Value="False">
@@ -279,16 +306,26 @@
                                                             </DataTemplate.Triggers>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Vertical">
+                                                                <i:Interaction.Behaviors>
+                                                                    <i:FluidMoveBehavior AppliesTo="Children" Duration="00:00:00.25" 
+                                                                                         IsActive="{Binding Path=DataContext.IssueDraggingID, ElementName=root, Converter={StaticResource IsNotNullConverter}}"/>
+                                                                </i:Interaction.Behaviors>
+                                                            </StackPanel>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
 
-                                        </ScrollViewer>
+                                            </ScrollViewer>
 
-                                        <Grid x:Name="GroupEmptySpaceGrid" Grid.Row="2" Background="Transparent"
+                                            <Grid x:Name="GroupEmptySpaceGrid" Grid.Row="2" Background="Transparent"
                                               AllowDrop="True"
                                               DragEnter="GroupEmptySpaceGrid_DragEnter"/>
 
-                                    </Grid>
-                                </Border>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

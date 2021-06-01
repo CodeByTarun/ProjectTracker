@@ -17,8 +17,9 @@
             </Grid.ColumnDefinitions>
             <Grid>
                 <ComboBox x:Name="TagListComboBox" Margin="5,10,10,10" DisplayMemberPath="Name" 
-                      IsEditable="True" IsTextSearchEnabled="True" Visibility="Visible" VerticalAlignment="Center"
+                      IsEditable="True" IsTextSearchEnabled="False" Visibility="Visible" VerticalAlignment="Center"
                       PreviewTextInput="TagListComboBox_PreviewTextInput" Height="30" MaxWidth="100"
+                      TextBoxBase.TextChanged="TagListComboBox_TextChanged"
                       DropDownClosed="TagListComboBox_DropDownClosed" Style="{StaticResource PopupComboBox}"
                       ItemsSource="{Binding TagList, Mode=OneWay}" SelectedItem="{Binding SelectedTag, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
                       Text="{Binding TagSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

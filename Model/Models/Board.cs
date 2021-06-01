@@ -5,7 +5,7 @@ using ProjectTracker.Model.Interfaces;
 
 namespace ProjectTracker.Model.Models
 {
-    public class Board : DomainObjectWithTag, IProjectLink
+    public class Board : DomainObjectWithTag, IProjectLink, IItem
     {
         public string Name { get; set; }
         public string Description { get; set; }

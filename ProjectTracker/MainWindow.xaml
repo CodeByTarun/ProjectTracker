@@ -28,7 +28,8 @@
     <Border Background="Transparent">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Effect" Value="{StaticResource BasicDropShadow}"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="Maximized">

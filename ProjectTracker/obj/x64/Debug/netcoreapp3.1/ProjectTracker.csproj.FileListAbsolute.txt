@@ -133,3 +133,4 @@ C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x64\Debug\netcorea
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x64\Debug\netcoreapp3.1\Controls\SearchControl.baml
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x64\Debug\netcoreapp3.1\Popups\DeletePopup.g.cs
 C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x64\Debug\netcoreapp3.1\Popups\DeletePopup.baml
+C:\Users\tarun\source\repos\ProjectTracker\ProjectTracker\obj\x64\Debug\netcoreapp3.1\Styles\EffectAndAnimations.baml

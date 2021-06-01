@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "2iTd2by4zyqXYE1fdIZNhc/xlCleNsl+DPEP1dGDEb+aw9T2i5d9EYWYlmSlphIm3Ozjnk1lqy6XS2cKOr/AVg==",
+  "dgSpecHash": "5ujSFwwxOn79cg4TRktOUTEeS33eZCNZWQbV7KNI0gtZQzis8/qfqrEdj0hdZbOvUy5kbEmA+seS6asO9zc50w==",
   "success": true,
   "projectFilePath": "C:\\Users\\tarun\\source\\repos\\ProjectTracker\\ProjectTracker\\ProjectTracker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tarun\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
+    "C:\\Users\\tarun\\.nuget\\packages\\expression.blend.sdk\\1.0.2\\expression.blend.sdk.1.0.2.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\extended.wpf.toolkit\\4.0.2\\extended.wpf.toolkit.4.0.2.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\fontawesome5\\2.1.0\\fontawesome5.2.1.0.nupkg.sha512",
     "C:\\Users\\tarun\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
@@ -123,6 +124,16 @@
     "C:\\Users\\tarun\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Expression.Blend.Sdk 1.0.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Expression.Blend.Sdk",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

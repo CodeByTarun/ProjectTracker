@@ -191,7 +191,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <local:TagListControl TagList="{Binding Tags}"/>
+                                            <local:TagListControl TagList="{Binding Tags}" IsVerticalMarginRequired="True" Margin="0,0,0,10" Height="Auto"/>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>

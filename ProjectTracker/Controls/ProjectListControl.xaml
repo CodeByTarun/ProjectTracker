@@ -24,14 +24,14 @@
         </Grid.ColumnDefinitions>
 
         <!-- Header -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10">
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10">
             <Viewbox Height="95" VerticalAlignment="Center" Margin="-5,-10,0,0" HorizontalAlignment="Left">
                 <TextBlock Text="My Projects" Style="{StaticResource HeaderTextBlockStyle}" LineStackingStrategy="BlockLineHeight" LineHeight="65"/>
             </Viewbox>
-            <Button x:Name="CreateProjectButton" Content="Create Project"
+            <Button x:Name="CreateProjectButton" Content="Create Project" HorizontalAlignment="Right"
                     Command="{Binding CreateProjectCommand}" CommandParameter="{Binding SelectedProject}" 
-                    Margin="20,0,0,0" VerticalAlignment="Center" Style="{StaticResource AddButton}"/>
-        </StackPanel>
+                    Margin="0,0,10,0" VerticalAlignment="Center" Style="{StaticResource AddButton}"/>
+        </Grid>
 
         <!-- Search -->
         <Grid x:Name="FilteringControlsGrid" Grid.Row="1" Grid.ColumnSpan="2">

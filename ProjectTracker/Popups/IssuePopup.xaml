@@ -33,7 +33,7 @@
             <controls:LimitedInputUserControl Title="Name" MaxLength="{StaticResource IssueNameMaxLength}" Height="68"
                                               Grid.Row="1" Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <controls:LimitedInputUserControl Title="Description" Height="100" MaxLength="{StaticResource DescriptionMaxLength}" Grid.Row="2" 
+            <controls:LimitedInputUserControl Title="Description" Height="180" MaxLength="{StaticResource DescriptionMaxLength}" Grid.Row="2" 
                                               Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Description, Mode=TwoWay}"/>
 

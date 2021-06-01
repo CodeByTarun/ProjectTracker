@@ -55,6 +55,23 @@ namespace ProjectTracker.ClassLibrary.Services
             }
         }
 
+        public async override Task<Issue> Update(int id, Issue entity)
+        {
+            Issue issueToEdit;
+
+            using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))
+            {
+                issueToEdit = context.Issues.FirstOrDefault(t => t.Id == id);
+            }
+
+            issueToEdit.Name = entity.Name;
+            issueToEdit.Description = entity.Description;
+            issueToEdit.Tags = entity.Tags;
+            issueToEdit.DeadlineDate = entity.DeadlineDate;
+
+            return await base.Update(id, issueToEdit);
+        }
+
         public async override Task<bool> Delete(int id)
         {
             using (ProjectTrackerDBContext context = _contextFactory.CreateDbContext(null))

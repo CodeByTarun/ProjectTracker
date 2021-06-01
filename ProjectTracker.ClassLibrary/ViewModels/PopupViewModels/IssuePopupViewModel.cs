@@ -62,7 +62,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         {
             _group = group;
 
-            DialogTitle = "Create an Issue";
+            DialogTitle = "Create a Task";
             ButtonContent = "Create";
 
             IsVisible = true;
@@ -88,7 +88,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
 
             TagSearchText = "";
 
-            DialogTitle = "Edit Issue";
+            DialogTitle = "Edit Task";
             ButtonContent = "Save";
 
             IsVisible = true;

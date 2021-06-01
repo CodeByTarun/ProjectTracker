@@ -88,7 +88,7 @@
                     Command="{Binding CreateBoardCommand}" CommandParameter="{x:Null}"/>
             </Grid>
 
-            <TextBlock Text="{Binding SelectedBoard.Description}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource DescriptionTextBlockStyle}">
+            <TextBlock Text="{Binding SelectedBoard.Description}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Style="{StaticResource DescriptionTextBlockStyle}">
             </TextBlock>
 
             <StackPanel x:Name="TagsAndStatusStackPanel" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal" Style="{StaticResource TagAndStatusStackPanel}">

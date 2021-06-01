@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.CompilerServices;
+using ProjectTracker.Model.Interfaces;
 
 namespace ProjectTracker.Controls
 {
@@ -85,7 +86,7 @@ namespace ProjectTracker.Controls
             comboBox.IsDropDownOpen = true;
         }
 
-        private void RestFilterButton_Click(object sender, RoutedEventArgs e)
+        private void ResetFilterButton_Click(object sender, RoutedEventArgs e)
         {
             ComboBoxWithCommand.SelectedIndex = -1;
 

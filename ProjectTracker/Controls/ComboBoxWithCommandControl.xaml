@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox x:Name="ComboBoxWithCommand" Grid.Column="1" MaxDropDownHeight="100"
+        <ComboBox x:Name="ComboBoxWithCommand" Grid.Column="1" MaxDropDownHeight="100" 
                   IsTextSearchEnabled="True" IsEditable="True" VerticalContentAlignment="Center"
                   ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=local:ComboBoxWithCommandControl}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                   SelectedItem="{Binding SelectedItem, ElementName=self, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -32,7 +32,7 @@
             </ComboBox.Style>
         </ComboBox>
 
-        <Button x:Name="ResetFilterButton" Grid.Column="0" Click="RestFilterButton_Click" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <Button x:Name="ResetFilterButton" Grid.Column="0" Click="ResetFilterButton_Click" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource CloseButton}">
                     <Setter Property="Visibility" Value="Hidden"/>

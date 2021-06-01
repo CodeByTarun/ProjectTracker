@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v3.1": {
       "ProjectTracker/1.0.0": {
         "dependencies": {
+          "Expression.Blend.Sdk": "1.0.2",
           "Extended.Wpf.Toolkit": "4.0.2",
           "FontAwesome5": "2.1.0",
           "Microsoft.EntityFrameworkCore.Design": "5.0.3",
@@ -38,6 +39,14 @@
           "lib/netstandard1.5/Castle.Core.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "4.4.1.0"
+          }
+        }
+      },
+      "Expression.Blend.Sdk/1.0.2": {
+        "runtime": {
+          "lib/net45/System.Windows.Interactivity.dll": {
+            "assemblyVersion": "4.5.0.0",
+            "fileVersion": "3.0.40218.0"
           }
         }
       },
@@ -1205,10 +1214,6 @@
           "lib/net40/Microsoft.Expression.Interactions.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "2.0.20525.0"
-          },
-          "lib/net40/System.Windows.Interactivity.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "2.0.20525.0"
           }
         }
       },
@@ -1293,6 +1298,13 @@
       "sha512": "sha512-zanbjWC0Y05gbx4eGXkzVycOQqVOFVeCjVsDSyuao9P4mtN1w3WxxTo193NGC7j3o2u3AJRswaoC6hEbnGACnQ==",
       "path": "castle.core/4.4.1",
       "hashPath": "castle.core.4.4.1.nupkg.sha512"
+    },
+    "Expression.Blend.Sdk/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2rOHxr7HsJ4gVc75JymaFDS80VvhT/1rpm50LHUKRmsykE1cdM4n2rmcntcTSG08/S1ZedLuSWQpb3yBY3xfUQ==",
+      "path": "expression.blend.sdk/1.0.2",
+      "hashPath": "expression.blend.sdk.1.0.2.nupkg.sha512"
     },
     "Extended.Wpf.Toolkit/4.0.2": {
       "type": "package",

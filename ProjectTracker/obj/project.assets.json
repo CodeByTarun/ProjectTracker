@@ -23,6 +23,15 @@
           "lib/netstandard1.5/Castle.Core.dll": {}
         }
       },
+      "Expression.Blend.Sdk/1.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net45/System.Windows.Interactivity.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Windows.Interactivity.dll": {}
+        }
+      },
       "Extended.Wpf.Toolkit/4.0.2": {
         "type": "package",
         "compile": {
@@ -1926,6 +1935,29 @@
         "lib/netstandard1.5/Castle.Core.dll",
         "lib/netstandard1.5/Castle.Core.xml",
         "readme.txt"
+      ]
+    },
+    "Expression.Blend.Sdk/1.0.2": {
+      "sha512": "2rOHxr7HsJ4gVc75JymaFDS80VvhT/1rpm50LHUKRmsykE1cdM4n2rmcntcTSG08/S1ZedLuSWQpb3yBY3xfUQ==",
+      "type": "package",
+      "path": "expression.blend.sdk/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "expression.blend.sdk.1.0.2.nupkg.sha512",
+        "expression.blend.sdk.nuspec",
+        "lib/net40-client/System.Windows.Interactivity.dll",
+        "lib/net45/System.Windows.Interactivity.dll",
+        "lib/netcore45/Windows.UI.Interactivity.dll",
+        "lib/netcore45/Windows.UI.Interactivity.pri",
+        "lib/netcore45/Windows.UI.Interactivity.xml",
+        "lib/netcore451/Windows.UI.Interactivity.dll",
+        "lib/netcore451/Windows.UI.Interactivity.pri",
+        "lib/netcore451/Windows.UI.Interactivity.xml",
+        "lib/sl4-wp71/System.Windows.Interactivity.dll",
+        "lib/sl40/System.Windows.Interactivity.dll",
+        "lib/sl50/System.Windows.Interactivity.dll",
+        "lib/wp8/System.Windows.Interactivity.dll"
       ]
     },
     "Extended.Wpf.Toolkit/4.0.2": {
@@ -6412,6 +6444,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "Expression.Blend.Sdk >= 1.0.2",
       "Extended.Wpf.Toolkit >= 4.0.2",
       "FontAwesome5 >= 2.1.0",
       "Microsoft.EntityFrameworkCore.Design >= 5.0.3",
@@ -6470,6 +6503,10 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "Expression.Blend.Sdk": {
+            "target": "Package",
+            "version": "[1.0.2, )"
+          },
           "Extended.Wpf.Toolkit": {
             "target": "Package",
             "version": "[4.0.2, )"
@@ -6520,6 +6557,16 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Expression.Blend.Sdk 1.0.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Expression.Blend.Sdk",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -95,6 +96,20 @@ namespace ProjectTracker.Controls
         private void RemoveTagButton_Click(object sender, RoutedEventArgs e)
         {
             RemoveTagCommand.Execute((sender as FrameworkElement).DataContext);
+        }
+
+        private void TagListComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+
+            if (comboBox.Text == null)
+            {
+                comboBox.ItemsSource = TagList;
+            }
+            else
+            {
+                comboBox.ItemsSource = TagList.Where(t => ((Tag)t).Name.ToLower().Contains(comboBox.Text.ToLower()));
+            }
         }
     }
 }

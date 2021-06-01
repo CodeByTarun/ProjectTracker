@@ -24,6 +24,34 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
         private Group _selectedGroup;
         private Issue _selectedIssue;
 
+        private int? _groupDraggingID;
+        private int? _issueDraggingID;
+
+        public int? GroupDraggingID
+        {
+            get
+            {
+                return  _groupDraggingID;
+            }
+            set
+            {
+                _groupDraggingID = value;
+                RaisePropertyChangedEvent(nameof(GroupDraggingID));
+            }
+        }
+        public int? IssueDraggingID
+        {
+            get
+            {
+                return _issueDraggingID;
+            }
+            set
+            {
+                _issueDraggingID = value;
+                RaisePropertyChangedEvent(nameof(IssueDraggingID));
+            }
+        }
+
         public Board SelectedBoard
         {
             get
@@ -498,12 +526,12 @@ namespace ProjectTracker.ClassLibrary.ViewModels.ControlViewModels
 
             if (indexOfIssueMoved - 1 >= 0)
             {
-                issueBefore = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved - 1];
+                issueAfter = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved - 1];
             }
 
             if (indexOfIssueMoved + 1 <= SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues.Count() - 1)
             {
-                issueAfter = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved + 1];
+                issueBefore = SelectedBoard.Groups[indexOfGroupIssueIsMovingTo].Issues[indexOfIssueMoved + 1];
             }
 
             _issueDataService.Move(issueMoving, issueBefore, issueAfter, issue.GroupID);

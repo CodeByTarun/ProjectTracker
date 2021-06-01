@@ -114,7 +114,7 @@ namespace ProjectTracker.ClassLibrary.ViewModels.PopupViewModels
         }
         private bool CanCreateorEditItem(object na)
         {
-            return (Name != "");
+            return (Name.Replace(" ", "") != "");
         }
 
         protected abstract Task CreateItem();

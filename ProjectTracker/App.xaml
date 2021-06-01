@@ -19,6 +19,9 @@
             <converters:DeadlineExclamationVisibilityConverter x:Key="DeadlineExclamationVisibilityConverter"/>
             <converters:TagIsSelectedTag x:Key="TagIsSelectedTagConverter"/>
             <converters:BooleanOr x:Key="BooleanOrConverter"/>
+            <converters:ItemOpacityConverter x:Key="ItemOpacityConverter"/>
+            <converters:KanbanIsHitTestVisibleConverter x:Key="KanbanIsHitTestVisibleConverter"/>
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/Common.xaml"/>

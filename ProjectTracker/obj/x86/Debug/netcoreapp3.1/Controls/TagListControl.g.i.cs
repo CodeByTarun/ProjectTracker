@@ -61,7 +61,7 @@ namespace ProjectTracker.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ProjectTracker;component/controls/taglistcontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ProjectTracker;V1.0.0.0;component/controls/taglistcontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Controls\TagListControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

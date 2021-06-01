@@ -33,7 +33,7 @@
             <controls:LimitedInputUserControl Title="Name" MaxLength="{StaticResource ObjectNameMaxLength}" Height="68"
                                               Grid.Row="1" Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <controls:LimitedInputUserControl Title="Description" Height="100" MaxLength="{StaticResource DescriptionMaxLength}" Grid.Row="2" 
+            <controls:LimitedInputUserControl Title="Description" Height="180" MaxLength="{StaticResource DescriptionMaxLength}" Grid.Row="2" 
                                               Width="{Binding ElementName=PopupGrid, Path=ActualWidth}"
                                               InputText="{Binding Description, Mode=TwoWay}"/>
 
@@ -50,7 +50,8 @@
                 <Label Grid.Column="0" Grid.Row="0" Content="Status" Style="{StaticResource PopupTitleLabel}"/>
                 <Label Grid.Column="1" Grid.Row="0" Content="Deadline Date" Style="{StaticResource PopupTitleLabel}" Margin="10,0,0,0"/>
 
-                <ComboBox Grid.Row="1" Grid.Column="0" Margin="5,5,10,5" Text="Add a Tag" Height="30" Style="{StaticResource PopupComboBox}"
+                <ComboBox Grid.Row="1" Grid.Column="0" Margin="5,5,10,5" Text="Add a Tag" Height="30" Style="{StaticResource PopupComboBox}" 
+                          IsEditable="False" Foreground="White"
                           ItemsSource="{StaticResource StatusArray}" SelectedItem="{Binding Status, Mode=TwoWay}"/>
 
                 <DatePicker Name="PopupDatePicker" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ProjectTracker.Views"
       xmlns:fa="http://schemas.fontawesome.com/icons/"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:vm="clr-namespace:ProjectTracker.ClassLibrary.ViewModels;assembly=ProjectTracker.ClassLibrary"
       mc:Ignorable="d" 
@@ -114,7 +115,11 @@
 
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid HorizontalAlignment="Stretch" Rows="1"/>
+                            <UniformGrid HorizontalAlignment="Stretch" Rows="1">
+                                <i:Interaction.Behaviors>
+                                    <i:FluidMoveBehavior AppliesTo="Children" Duration="00:00:00.25"/>
+                                </i:Interaction.Behaviors>
+                            </UniformGrid>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 

@@ -26,6 +26,14 @@
           }
         }
       },
+      "Expression.Blend.Sdk/1.0.2": {
+        "runtime": {
+          "lib/net45/System.Windows.Interactivity.dll": {
+            "assemblyVersion": "4.5.0.0",
+            "fileVersion": "3.0.40218.0"
+          }
+        }
+      },
       "Extended.Wpf.Toolkit/4.0.2": {
         "runtime": {
           "lib/net40/Xceed.Wpf.AvalonDock.Themes.Aero.dll": {
@@ -1665,6 +1673,13 @@
       "sha512": "sha512-zanbjWC0Y05gbx4eGXkzVycOQqVOFVeCjVsDSyuao9P4mtN1w3WxxTo193NGC7j3o2u3AJRswaoC6hEbnGACnQ==",
       "path": "castle.core/4.4.1",
       "hashPath": "castle.core.4.4.1.nupkg.sha512"
+    },
+    "Expression.Blend.Sdk/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2rOHxr7HsJ4gVc75JymaFDS80VvhT/1rpm50LHUKRmsykE1cdM4n2rmcntcTSG08/S1ZedLuSWQpb3yBY3xfUQ==",
+      "path": "expression.blend.sdk/1.0.2",
+      "hashPath": "expression.blend.sdk.1.0.2.nupkg.sha512"
     },
     "Extended.Wpf.Toolkit/4.0.2": {
       "type": "package",

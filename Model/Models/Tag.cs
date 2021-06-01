@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProjectTracker.Model.Models
 {
-    public class Tag : DomainObject
+    public class Tag : DomainObject, IItem
     {
         public string Name { get; set; }
         public int Color { get; set; }
