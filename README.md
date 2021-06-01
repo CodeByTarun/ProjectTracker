@@ -30,13 +30,11 @@
 
 ![image](https://user-images.githubusercontent.com/14295466/119246293-70d85100-bb4e-11eb-95e0-7907fef3961b.png)
 
-Project Tracker's goal is to create a space where you can keep track of any projects or topics you are working on using Kanban boards. For each project created you create boards where you can keep track of the progress made for that specific part of your project. That could be a phase of your project, research section, bugs, future additions, etc.  A detailed explanation on the usage of this application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below.
+Project tracker was created because I wanted an easy-to-use lightweight Kanban board application to keep track of projects that I was working on. Also, it was a way for me to showcase a lot of the programming concepts and skills I have developed. A detailed explanation of how to use the application is in the [Usage](https://github.com/TarunBola/ProjectTracker#usage) section below. 
 
-This project was created because I wanted to create something for my portfolio that covered a wide range of topics. The project used OOP design principles
+This WPF application was created using the Model-view-viewmodel (MVVM) design pattern. The separation this pattern provides between the UI and business logic made it easier to make changes to the application. Many other design patterns were used to create this project such as the singleton pattern, composite pattern, command pattern, observer pattern, factory method pattern, etc. IOC containers were used as well for easier incorporation of dependency injection.
 
-It utilizes model-view-viewmodel (MVVM) for separation fo the UI from the model. Many design patterns were used in the project such as the factory pattern, dependency injection using IOC containers, singleton pattern, composite pattern, command pattern, observer pattern etc. As the project developed, I started using test driven development as it made it easier to make changes with the code without running into bugs in the future. This was used for all of the service classes created. Entity Framework Core was used to create a code first SQLite database. 
-
-I wanted it to be easy-to-use, have a modern UI and  be something I would actually use myself. In the later stages of development I actually used it to keep track of changes and features I wanted to add to the project.
+ All the service classes were created through test driven development (TTD) which saved a lot of time when the service classes dealt with concepts such as linked lists in SQL and SQL queries. The database was created using the Code First approach in Entity Framework. This allowed for creation of the model in C# first and then through configurations of each class in the model, a database was created to match it.  
 
 ### Built With
 * [.NET Core](https://dotnet.microsoft.com/)
