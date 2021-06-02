@@ -53,7 +53,7 @@ When the application is opened you will be taken to the home page. Here is where
 
 Tags are not project specific. To create a tag, click on the tag button located to the left of the minimize button. Tags are fully customizable and are a great way to keep your projects, boards and issues organized. Deleting or editing a tag will be reflected for ALL projects so be cautious when making changes to a tag. 
 
-![image](https://user-images.githubusercontent.com/14295466/120536964-ba2c6a00-c3b2-11eb-9e65-e66667550ae9.png)
+![image](https://user-images.githubusercontent.com/14295466/120537037-cfa19400-c3b2-11eb-9a2b-624a59172f33.png)
 
 After creating a project, double click on it to be taken to the projects page. Here, you can create boards to work on different parts of you project. Each of these boards will have their own set of Kanban groups and issues. This allows for a good breakdown of the different sections of your projects. Boards can be cycled through on the Kanban board page as well for faster navigation.
 
