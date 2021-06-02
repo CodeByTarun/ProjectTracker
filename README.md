@@ -57,7 +57,7 @@ Tags are not project specific. To create a tag, click on the tag button located 
 
 After creating a project, double click on it to be taken to the projects page. Here, you can create boards to work on different parts of you project. Each of these boards will have their own set of Kanban groups and issues. This allows for a good breakdown of the different sections of your projects. Boards can be cycled through on the Kanban board page as well for faster navigation.
 
-*Picture of Kanban board* (maybe the issue popup as well)
+![image](https://user-images.githubusercontent.com/14295466/120537406-4048b080-c3b3-11eb-94ad-d22f3cbbff16.png)
 
 Usage of the Kanban board is straight forward. Create as many groups as needed and then you can create issues under each of the groups. Groups can be rearranged through drag and drop, and issues can be moved to different groups by doing this as well. 
 
