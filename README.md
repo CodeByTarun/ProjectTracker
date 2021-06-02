@@ -43,6 +43,8 @@ All the service classes were created through test driven development (TTD) which
 
 ## Getting Started
 
+To use this application you must have Visual Studio 2019. Open the solution in Visual Studio and publish it wherever you would like to store the application. Now you can start using Project Tracker!
+
 ## Usage
 
 ![image](https://user-images.githubusercontent.com/14295466/120536731-6e79c080-c3b2-11eb-9c11-2b63b55e35ac.png)
