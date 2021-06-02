@@ -94,7 +94,7 @@ namespace ProjectTracker.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ProjectTracker;V1.0.0.0;component/controls/comboboxwithcommandcontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ProjectTracker;component/controls/comboboxwithcommandcontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Controls\ComboBoxWithCommandControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

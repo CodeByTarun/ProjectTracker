@@ -6,7 +6,7 @@
 
     <sys:Int32 x:Key="ObjectNameMaxLength">20</sys:Int32>
     <sys:Int32 x:Key="DescriptionMaxLength">400</sys:Int32>
-    <sys:Int32 x:Key="TagMaxLength">10</sys:Int32>
+    <sys:Int32 x:Key="TagMaxLength">15</sys:Int32>
     <sys:Int32 x:Key="IssueNameMaxLength">40</sys:Int32>
 
     <x:Array x:Key="StatusArray" Type="{x:Type sys:String}">

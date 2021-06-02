@@ -70,7 +70,7 @@ namespace ProjectTracker.Popups {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ProjectTracker;V1.0.0.0;component/popups/deletepopup.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ProjectTracker;component/popups/deletepopup.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Popups\DeletePopup.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
