@@ -83,7 +83,7 @@ Any contributions to this project are welcomed! To contribute:
 Distributed under the [MIT License](https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt).
 
 ## Contact
-Tarun Bola - Tarundeep1@hotmail.com
+Tarun Bola - bolatarun@gmail.com
 
 Project Link: [https://github.com/TarunBola/ProjectTracker](https://github.com/TarunBola/ProjectTracker)
 
